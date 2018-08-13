@@ -1,0 +1,55 @@
+<root>
+	<plc>
+		<dev>
+			<title>dev1</title>
+			<ip>192.168.100.10</ip>
+			<port>502</port>
+			<!--设备类型 -->
+			<devtype>0</devtype>
+			<!-- 操作间隔 单位为：秒 -->
+			<interval>30</interval>
+		</dev>
+		<dev>
+			<title>dev1</title>
+			<ip>192.168.100.10</ip>
+			<port>502</port>
+			<!--设备类型 -->
+			<devtype>1</devtype>
+			<!-- 操作间隔 单位为：秒 -->
+			<interval>20</interval>
+		</dev>
+	</plc>
+	<sql>
+		<dev>
+			<title>dev1</title>
+			<!-- 数据类型：0:sql server 1: orcale 2:mysql 3:access-->
+			<dbtype>0</dbtype>
+			<ip>192.168.104.142</ip>
+			<port></port>
+			<user>root</user>
+			<pwd>sa</pwd>
+			<!-- 数据库名 -->
+			<dbname>result</dbname>
+			<!-- 设备类型 -->
+			<devtype>0</devtype>
+			<!-- 操作间隔 单位为：秒 -->
+			<interval>30</interval>
+		</dev>
+		<dev>
+			<title>dev1</title>
+			<!-- 数据类型：0:sql server 1: orcale 2:mysql 3:access-->
+			<dbtype>0</dbtype>
+			<ip>192.168.104.142</ip>
+			<port></port>
+			<user>root</user>
+			<pwd>sa</pwd>
+			<!-- 数据库名 -->
+			<dbname>result</dbname>
+			<!-- 设备类型 -->
+			<devtype>1</devtype>
+			<!-- 操作间隔 单位为：秒 -->
+			<interval>30</interval>
+		</dev>
+	</sql>
+
+</root>
