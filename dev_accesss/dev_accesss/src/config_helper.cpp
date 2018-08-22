@@ -7,6 +7,7 @@
 ConfigHelper::ConfigHelper()
 	: m_strFile("./dev_config.xml")
 {
+	memset(&m_svrConf, 0, sizeof(m_svrConf));
 }
 
 ConfigHelper::~ConfigHelper()
@@ -33,6 +34,11 @@ TSQLLst ConfigHelper::GetSqlLst()
 TPLCLst ConfigHelper::GetPlcLst()
 {
 	return m_plcLst;
+}
+
+stSQLConf ConfigHelper::GetSqlConf()
+{
+	return m_svrConf;
 }
 
 int ConfigHelper::ParseConf(const char *file)
@@ -105,5 +111,27 @@ int ConfigHelper::ParseConf(const char *file)
 
 		m_sqlLst.push_back(conf);
 	}
+
+	TiXmlElement *svrElm = root->FirstChildElement("svr");
+	if (!svrElm)
+	{
+		WLogError("svrElm is null, file:%s", file);
+		return ERR_ERROR;
+	}
+	string strDbType, strIp, strPort;
+	string strUser, strPwd, strDbname;
+	_xmlGetFirstElement(svrElm, "dbtype", strDbType);
+	_xmlGetFirstElement(svrElm, "ip", strIp);
+	_xmlGetFirstElement(svrElm, "port", strPort);
+	_xmlGetFirstElement(svrElm, "user", strUser);
+	_xmlGetFirstElement(svrElm, "pwd", strPwd);
+	_xmlGetFirstElement(svrElm, "dbname", strDbname);
+
+	strncpy(m_svrConf.szIpAddr, strIp.c_str(), sizeof(m_svrConf.szIpAddr));
+	m_svrConf.uPort = atoi(strPort.c_str());
+	strncpy(m_svrConf.szUser, strUser.c_str(), sizeof(m_svrConf.szUser));
+	strncpy(m_svrConf.szPwd, strPwd.c_str(), sizeof(m_svrConf.szPwd));
+	strncpy(m_svrConf.szDbName, strDbname.c_str(), sizeof(m_svrConf.szDbName));
+
 	return 0;
 }

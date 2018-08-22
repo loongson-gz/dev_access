@@ -20,6 +20,7 @@ public:
 
 	TSQLLst GetSqlLst();
 	TPLCLst GetPlcLst();
+	stSQLConf GetSqlConf();
 private:
 	int ParseConf(const char *file);
 
@@ -27,6 +28,7 @@ private:
 	TSQLLst m_sqlLst;
 	TPLCLst m_plcLst;
 	string m_strFile;
+	stSQLConf m_svrConf;
 
 };
 

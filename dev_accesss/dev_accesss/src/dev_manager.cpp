@@ -50,6 +50,7 @@ int DevManager::Start()
 		m_plcObjLst.push_back(obj);
 	}
 
+	m_mesSvr.Start();
 	return 0;
 }
 

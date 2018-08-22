@@ -105,6 +105,9 @@
     <ClCompile Include="src\mitsubishi_q02uccpu.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\mes_svr.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\common.h">
@@ -183,6 +186,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\mitsubishi_q02uccpu.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mes_svr.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

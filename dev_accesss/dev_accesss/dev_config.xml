@@ -22,7 +22,7 @@
 	<sql>
 		<dev>
 			<title>dev1</title>
-			<!-- 数据类型：0:sql server 1: orcale 2:mysql 3:access-->
+			<!-- 数据类型：0:sql server 1: oracle 2:mysql 3:access-->
 			<dbtype>0</dbtype>
 			<ip>192.168.104.142</ip>
 			<port></port>
@@ -37,19 +37,28 @@
 		</dev>
 		<dev>
 			<title>dev1</title>
-			<!-- 数据类型：0:sql server 1: orcale 2:mysql 3:access-->
-			<dbtype>0</dbtype>
-			<ip>192.168.104.142</ip>
-			<port></port>
-			<user>root</user>
-			<pwd>sa</pwd>
+			<!-- 数据类型：0:sql server 1: oracle 2:mysql 3:access-->
+			<dbtype>1</dbtype>
+			<ip>120.77.226.172</ip>
+			<port>1521</port>
+			<user>jmuser</user>
+			<pwd>qwer1234</pwd>
 			<!-- 数据库名 -->
-			<dbname>result</dbname>
+			<dbname>wjlwmsst</dbname>
 			<!-- 设备类型 -->
 			<devtype>1</devtype>
 			<!-- 操作间隔 单位为：秒 -->
 			<interval>30</interval>
 		</dev>
 	</sql>
-
+	<svr>
+		<!-- 数据类型：0:sql server 1: orcale 2:mysql 3:access-->
+		<dbtype>1</dbtype>
+		<ip>120.77.226.172</ip>
+		<port>1521</port>
+		<user>jmuser</user>
+		<pwd>qwer1234</pwd>
+		<!-- 数据库名 -->
+		<dbname>wjlmesst</dbname>
+	</svr>
 </root>
