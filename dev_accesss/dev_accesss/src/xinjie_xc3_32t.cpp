@@ -1,7 +1,14 @@
 #include "xinjie_xc3_32t.h"
 
 
+static void ThdFn(void *args)
+{
+	XinJieXc3 *This = static_cast<XinJieXc3 *>(args);
+	This->DoStart();
+}
+
 XinJieXc3::XinJieXc3(stPLCConf * conf)
+	: m_bStop(false)
 {
 	WLogInfo("%s make", __FUNCTION__);
 	port = conf->uPort;
@@ -18,29 +25,39 @@ XinJieXc3::~XinJieXc3()
 int XinJieXc3::Start()
 {
 	DEBUG_WHERE;
+	m_th = thread(ThdFn, this);
+	return 0;
+}
+
+int XinJieXc3::Stop()
+{
+	m_bStop = true;
+	if (m_th.joinable())
+	{
+		m_th.join();
+	}
+	mb->ModbusClose();
+	return 0;
+}
+
+void XinJieXc3::DoStart()
+{
 	volatile int i = 0;
-	int IntSet[10] = {0,1,2,3,4,5,6,7,8,9};
+	int IntSet[10] = { 0,1,2,3,4,5,6,7,8,9 };
 	if (!ModbusInit(2)) //≤‚ ‘
 	{
-		return -1;
+		WLogError("%s:%d test failure .....", __FUNCTION__, __LINE__);
+		return ;
 	}
-	for (;;)
+	while (!m_bStop)
 	{
-		cout<<"[" <<i<< "]  "<<ModbusStart(3001)<<endl;
+		cout << "[" << i << "]  " << ModbusStart(3001) << endl;
 		if (i++ == 99)
 		{
 			i = 0;
 		}
 		Sleep(10);
 	}
-	
-	return 0;
-}
-
-int XinJieXc3::Stop()
-{
-	mb->ModbusClose();
-	return 0;
 }
 
 
