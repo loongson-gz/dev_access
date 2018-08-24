@@ -409,7 +409,7 @@ namespace __W_LOG_PLAY
 
 	bool LogData::DeleteFile_(const char *lpfile)
 	{
-		if ( 0 == unlink(lpfile) )
+		if ( 0 == _unlink(lpfile) )
 			return true;
 		return false;
 	}

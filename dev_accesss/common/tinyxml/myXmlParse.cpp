@@ -214,10 +214,10 @@ SimpleXmlMaker &SimpleXmlMaker::AddHead(const char *ver /* = NULL */,const char 
 		sprintf(buf,"<?xml version=\"%s\" encoding=\"%s\" ?>",ver,encode);
 	}else if (ver)
 	{
-		sprintf(buf,"<?xml version=\"%s\" ?>",ver,encode);
+		sprintf(buf,"<?xml version=\"%s\" ?>",ver);
 	}else if (encode)
 	{
-		sprintf(buf,"<?xml encoding=\"%s\" ?>",ver,encode);
+		sprintf(buf,"<?xml encoding=\"%s\" ?>",encode);
 	}else
 	{
 		sprintf(buf,"<?xml ?>");

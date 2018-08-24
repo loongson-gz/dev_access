@@ -1,0 +1,14 @@
+*.a
+*.vs
+*.opendb
+*.db
+*.aps
+*.user
+
+
+
+x64/
+Debug/
+log/
+
+

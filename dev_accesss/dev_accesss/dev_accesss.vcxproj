@@ -87,8 +87,9 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rd\poco_1.9.0\include;$(SolutionDir)common;./include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CRT_SECURE_NO_WARNINGS;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)common;./include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <UndefinePreprocessorDefinitions>%(UndefinePreprocessorDefinitions)</UndefinePreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -195,9 +196,11 @@
     <ClInclude Include="include\microplan.h" />
     <ClInclude Include="include\mitsubishi_q02uccpu.h" />
     <ClInclude Include="include\modbus.h" />
+    <ClInclude Include="include\modbus_exception.h" />
     <ClInclude Include="include\plc_base.h" />
     <ClInclude Include="include\sql_base.h" />
     <ClInclude Include="include\xinjie_xc3_32t.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
