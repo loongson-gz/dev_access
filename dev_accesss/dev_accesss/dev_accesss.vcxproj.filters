@@ -87,9 +87,6 @@
     <ClCompile Include="src\mc_acsii.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\modbus.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="src\microplan.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -103,6 +100,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\mitsubishi_q02uccpu.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modbus.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -161,9 +161,6 @@
     <ClInclude Include="include\error_code.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\modbus.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="include\mc_acsii.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -183,6 +180,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\mitsubishi_q02uccpu.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\modbus_exception.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\modbus.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

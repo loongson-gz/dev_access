@@ -7,7 +7,7 @@
 
 //#include "stdafx.h"
 #include "CrossPlatformFuncs.h"
-#ifdef _WIN32
+#ifdef WIN32
 #include <Winsock2.h>
 #else
 #include <pthread.h>
@@ -20,7 +20,7 @@
 #include <sys/ioctl.h>
 #endif
 
-#ifndef _WIN32
+#ifndef WIN32
 #ifndef SOCKET
 #define SOCKET int
 #endif

@@ -3,7 +3,7 @@
 
 #include "common.h"
 #include "plc_base.h"
-#include "modbus.h"
+//#include "modbus.h"
 
 class Mitsubishi_Q02UUCPU : public PlcBase {
 public:

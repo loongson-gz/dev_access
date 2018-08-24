@@ -2,7 +2,7 @@
 	<plc>
 		<dev>
 			<title>dev1</title>
-			<ip>192.168.100.10</ip>
+			<ip>192.168.1.102</ip>
 			<port>502</port>
 			<!--设备类型 -->
 			<devtype>0</devtype>

@@ -41,6 +41,7 @@ typedef struct _stPLCConf
 	char szTitle[256];		//标题
 	char szIpAddr[20];		//IP地址
 	uint16_t uPort;			//端口号
+	unsigned char id;		//设备地址
 	//PLCMODE mode;			//协议类型
 	PLCDEVTYPE devType;		//设备类型
 	int interval;			//与设备交互的操作间隔

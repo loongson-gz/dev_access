@@ -2,9 +2,7 @@
  *SocketAPI.cpp
  *******************************************************************************/
 #include "SocketAPI.h"
-//#include "stdafx.h"
-//#define _WIN_
-#ifdef _WIN_
+#ifdef WIN32
 #pragma comment(lib, "ws2_32.lib")
 #endif
 
@@ -12,7 +10,7 @@
 
 bool InitSocket()
 {
-#ifdef _WIN_
+#ifdef WIN32
 	//prepare for socket
 	WORD wVersionRequested;
 	WSADATA wsaData;
@@ -40,14 +38,14 @@ bool InitSocket()
 
 void FreeSocket()
 {
-#ifdef _WIN_
+#ifdef WIN32
 	WSACleanup();
 #endif
 }
 
 int Close(SOCKET iSocket)
 {
-#ifdef _WIN_
+#ifdef WIN32
 	return closesocket(iSocket);
 #else
 	return close(iSocket);
@@ -173,7 +171,7 @@ SOCKET Accept(SOCKET iSocket, struct sockaddr *pAddr, int *pAddrlen)
 
 	*pAddrlen = sizeof(sockaddr_in);
 	memset(pAddr, 0x00, sizeof(sockaddr_in));
-#ifdef _WIN_
+#ifdef WIN32
 	SOCKET iSocketClient = accept(iSocket, pAddr, pAddrlen);
 #else
 	SOCKET iSocketClient = accept(iSocket, pAddr, (socklen_t *)pAddrlen);
@@ -209,7 +207,7 @@ int SendTo(SOCKET iSocket, const char *pData, int iLen, int flags, struct sockad
 }
 int RecvFrom(SOCKET iSocket, char *pData, int iLen, int flags, struct sockaddr *pAddr, int *pAddrLen)
 {
-#ifdef _WIN_
+#ifdef WIN32
 
 	struct timeval tm;
 	tm.tv_sec = 0;
@@ -240,7 +238,7 @@ int SetSocketNBlock(SOCKET iSocket, bool bNBlock)
 		lFlag = 1;
 	}
 
-#ifdef _WIN_
+#ifdef WIN32
 	int iResult = ioctlsocket(iSocket, FIONBIO, &lFlag);
 
 	if(iResult != 0)
