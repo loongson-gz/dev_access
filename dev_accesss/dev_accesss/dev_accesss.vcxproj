@@ -165,6 +165,7 @@
     <ClCompile Include="src\mc_acsii.cpp" />
     <ClCompile Include="src\mes_svr.cpp" />
     <ClCompile Include="src\microplan.cpp" />
+    <ClCompile Include="src\mitsubishi_fx3u_32m.cpp" />
     <ClCompile Include="src\mitsubishi_q02uccpu.cpp" />
     <ClCompile Include="src\modbus.cpp" />
     <ClCompile Include="src\plc_base.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="include\mc_acsii.h" />
     <ClInclude Include="include\mes_svr.h" />
     <ClInclude Include="include\microplan.h" />
+    <ClInclude Include="include\mitsubishi_fx3u_32m.h" />
     <ClInclude Include="include\mitsubishi_q02uccpu.h" />
     <ClInclude Include="include\modbus.h" />
     <ClInclude Include="include\modbus_exception.h" />

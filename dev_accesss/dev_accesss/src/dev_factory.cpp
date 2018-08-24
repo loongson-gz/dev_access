@@ -24,6 +24,9 @@ PlcBase * DevFactory::CreatePlcDev(stPLCConf *conf)
 	case eMITSUBISHI_Q02UCCPU:
 		dev = new Mitsubishi_Q02UUCPU(conf);
 		break;
+	case eMITSUBISHI_FX3U_32M:
+		dev = new Mitsubishi_FX3U_32M(conf);
+		break;
 	default:
 		break;
 	}

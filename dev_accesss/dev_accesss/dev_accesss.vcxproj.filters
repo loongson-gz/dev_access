@@ -105,6 +105,12 @@
     <ClCompile Include="src\modbus.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\mes_svr.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mitsubishi_fx3u_32m.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\common.h">
@@ -189,6 +195,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\modbus.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mes_svr.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mitsubishi_fx3u_32m.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

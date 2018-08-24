@@ -62,10 +62,11 @@ int ConfigHelper::ParseConf(const char *file)
 	TiXmlElement *pPlcDev = plcElm->FirstChildElement("dev");
 	for (; pPlcDev != NULL ; pPlcDev = pPlcDev->NextSiblingElement("dev"))
 	{
-		string strTitle, strIp, strPort, strDevType, strInterval;
+		string strTitle, strIp, strPort, strId, strDevType, strInterval;
 		_xmlGetFirstElement(pPlcDev, "title", strTitle);
 		_xmlGetFirstElement(pPlcDev, "ip", strIp);
 		_xmlGetFirstElement(pPlcDev, "port", strPort);
+		_xmlGetFirstElement(pPlcDev, "id", strId);
 		_xmlGetFirstElement(pPlcDev, "devtype", strDevType);
 		_xmlGetFirstElement(pPlcDev, "interval", strInterval);
 
@@ -73,6 +74,7 @@ int ConfigHelper::ParseConf(const char *file)
 		strncpy(conf.szTitle, strTitle.c_str(), sizeof(conf.szTitle));
 		strncpy(conf.szIpAddr, strIp.c_str(), sizeof(conf.szIpAddr));
 		conf.uPort = atoi(strPort.c_str());
+		conf.id = atoi(strId.c_str());
 		conf.devType = (PLCDEVTYPE)atoi(strDevType.c_str());
 		conf.interval = atoi(strInterval.c_str());
 

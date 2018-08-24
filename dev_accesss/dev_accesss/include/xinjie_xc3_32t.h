@@ -3,7 +3,7 @@
 
 #include "common.h"
 #include "plc_base.h"
-#include "Modbus.h"
+
 
 class XinJieXc3 : public PlcBase {
 public:
