@@ -35,6 +35,14 @@ enum SQLDEVTYPE
 	eMICROPLAN = 0,					//迈克普兰
 };
 
+//事件类型
+enum EVENTTYPE 
+{
+	eEVENT_MITSUBISHI_Q03UDVCPU = 0 ,
+	eEVENT_MITSUBISHI_FX3U_32M ,
+
+};
+
 //plc 配置
 typedef struct _stPLCConf
 {
@@ -61,6 +69,12 @@ typedef struct _stSQLConf
 }stSQLConf;
 
 
-
+/*
+*@breif: 事件回调
+*@param: iEvtType  事件类型
+*@param: pData  数据
+*@param: pUser 用户数据
+*/
+typedef void(*EventMsgFn)(EVENTTYPE iEvtType, void *pData, void *pUser);
 
 #endif // !__DEV_ACCESS_H__

@@ -33,6 +33,7 @@ int DevManager::Start()
 		{
 			continue;
 		}
+		obj->SetEventCallback(&DevManager::EventMsg, this);
 		obj->Start();
 		m_sqlObjLst.push_back(obj);
 	}
@@ -46,6 +47,7 @@ int DevManager::Start()
 		{
 			continue;
 		}
+		obj->SetEventCallback(&DevManager::EventMsg, this);
 		obj->Start();
 		m_plcObjLst.push_back(obj);
 	}
@@ -75,4 +77,18 @@ int DevManager::Stop()
 	m_plcObjLst.clear();
 
 	return 0;
+}
+
+void DevManager::EventMsg(EVENTTYPE iEvtType, void * pData, void * pUser)
+{
+	DevManager *This = static_cast<DevManager *>(pUser);
+	if (This)
+	{
+		This->DoEventProcess(iEvtType, pData);
+	}
+}
+
+void DevManager::DoEventProcess(EVENTTYPE iEvtType, void * pData)
+{
+	WLogDebug("====================EvtType:%d", iEvtType);
 }

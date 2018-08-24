@@ -18,6 +18,10 @@ public:
 	int Start();
 	int Stop();
 
+	static void EventMsg(EVENTTYPE iEvtType, void *pData, void *pUser);
+	void DoEventProcess(EVENTTYPE iEvtType, void *pData);
+
+
 private:
 	DevFactory m_factory;
 	ConfigHelper *m_config;
