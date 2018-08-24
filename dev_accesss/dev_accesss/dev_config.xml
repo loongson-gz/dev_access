@@ -31,7 +31,7 @@
 			<!--设备类型 -->
 			<devtype>3</devtype>
 			<!-- 操作间隔 单位为：秒 -->
-			<interval>20</interval>
+			<interval>3</interval>
 		</dev>
 	</plc>
 	<sql>

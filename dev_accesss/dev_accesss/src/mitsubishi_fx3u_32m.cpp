@@ -8,11 +8,14 @@ static void ThdFn(void *args)
 
 Mitsubishi_FX3U_32M::Mitsubishi_FX3U_32M(stPLCConf * conf)
 	: m_bStop(false)
+	, m_fn(nullptr)
+	, m_pUser(nullptr)
 {
 	WLogInfo("%s make", __FUNCTION__);
 	port = conf->uPort;
 	host = conf->szIpAddr;
 	id = conf->id;
+	interval = conf->interval * 1000;
 	mb.reset(new Modbus(host, port));
 }
 
@@ -70,30 +73,54 @@ bool Mitsubishi_FX3U_32M::ModbusInit(int id)
 	}
 }
 
+void Mitsubishi_FX3U_32M::SetEventCallback(EventMsgFn fn, void * pUser)
+{
+	m_fn = fn;
+	m_pUser = pUser;
+}
+
 
 void Mitsubishi_FX3U_32M::DoStart()
 {
 	int i = 0;
 	int IntSet[8] = { 2021,3001,3005,3003,2023,3101,3105,3103};
-	uint16_t c[8] = {0};
+	uint16_t OldValue[8] = {0};
 	uint16_t TempValue = 0;
 	bool Update = false;
+	struct Mitsubishi_FX3U_32M_Data data;
 	if (!ModbusInit(id)) //≤‚ ‘
 	{
 		WLogError("%s:%d test failure .....", __FUNCTION__, __LINE__);
 		return;
 	}
 
-	//while (!m_bStop)
-	//{
-	//	for (i = 0; i < IntSet.length(); i++)
-	//	{
-	//		TempValue =  ModbusStart(IntSet[i]);
-	//		if (TempValue != TempValue[i])
-	//		{
-	//			Update = true;
-	//		}
-	//	}
-	//	Sleep(10);
-	//}
+	while (!m_bStop)
+	{
+		for (i = 0; i < sizeof(IntSet)/sizeof(IntSet[0]); i++)
+		{
+			TempValue =  ModbusStart(IntSet[i]);
+			if (OldValue[i] != TempValue)
+			{
+				OldValue[i] = TempValue;
+				Update = true;
+			}
+		}
+		if (Update)
+		{
+			Update = false;
+			if (m_fn)
+			{
+				data.StationStatus_1 = OldValue[0];
+				data.StationOkAmount_1 = OldValue[1];
+				data.StationTotalAmount_1 = OldValue[2];
+				data.StationNgAmount_1 = OldValue[3];
+				data.StationStatus_2 = OldValue[4];
+				data.StationOkAmount_2 = OldValue[5];
+				data.StationTotalAmount_2 = OldValue[6];
+				data.StationNgAmount_2 = OldValue[7];
+				m_fn(eEVENT_MITSUBISHI_FX3U_32M, (void *)&data, m_pUser);
+			}
+		}
+		Sleep(interval);
+	}
 }
