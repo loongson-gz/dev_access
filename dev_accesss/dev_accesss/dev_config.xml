@@ -4,6 +4,8 @@
 			<title>dev1</title>
 			<ip>192.168.1.102</ip>
 			<port>502</port>
+			<!--设备ID -->
+			<id>1</id>
 			<!--设备类型 -->
 			<devtype>0</devtype>
 			<!-- 操作间隔 单位为：秒 -->
@@ -13,6 +15,8 @@
 			<title>dev1</title>
 			<ip>192.168.100.10</ip>
 			<port>502</port>
+			<!--设备ID -->
+			<id>2</id>
 			<!--设备类型 -->
 			<devtype>1</devtype>
 			<!-- 操作间隔 单位为：秒 -->
