@@ -4,6 +4,7 @@
 #include "common.h"
 #include "dev_factory.h"
 #include "config_helper.h"
+#include "mes_svr.h"
 
 typedef vector<PlcBase *> TPlcObjLst;
 typedef vector<SqlBase *> TSqlObjLst;
@@ -22,6 +23,7 @@ private:
 	ConfigHelper *m_config;
 	TSqlObjLst m_sqlObjLst;
 	TPlcObjLst m_plcObjLst;
+	MesSvr m_mesSvr;
 
 };
 

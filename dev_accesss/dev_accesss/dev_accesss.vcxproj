@@ -94,6 +94,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)3rd\poco_1.9.0\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -162,6 +163,7 @@
     <ClCompile Include="src\dev_manager.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\mc_acsii.cpp" />
+    <ClCompile Include="src\mes_svr.cpp" />
     <ClCompile Include="src\microplan.cpp" />
     <ClCompile Include="src\mitsubishi_q02uccpu.cpp" />
     <ClCompile Include="src\modbus.cpp" />
@@ -190,6 +192,7 @@
     <ClInclude Include="include\dev_manager.h" />
     <ClInclude Include="include\error_code.h" />
     <ClInclude Include="include\mc_acsii.h" />
+    <ClInclude Include="include\mes_svr.h" />
     <ClInclude Include="include\microplan.h" />
     <ClInclude Include="include\mitsubishi_q02uccpu.h" />
     <ClInclude Include="include\modbus.h" />

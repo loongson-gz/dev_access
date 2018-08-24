@@ -6,23 +6,23 @@
 //PLC通信协议模式
 enum PLCMODE
 {
-	eMODBUS,
-	eMC_ACSII,
-	eMC_BINARY
+	eMODBUS = 0,			//modbus tcp 
+	eMC_ACSII ,				//MC acsii 
+	eMC_BINARY				//MC 二进制
 };
 
 //数据库类型
 enum SQLTYPE
 {
-	eSQL_SERVER,
-	eORCALE,
-	eMYSQL
+	eSQL_SERVER = 0,		// sql server
+	eORACLE,				// oracle
+	eMYSQL					// mysql
 };
 
 //PLC设备类型
 enum PLCDEVTYPE
 {
-	eXINJIE_XC3_32T_E = 0,				//信捷
+	eXINJIE_XC3_32T_E = 0,			//信捷
 	eMITSUBISHI_Q02UCCPU,			//三菱Q02UCCPU
 	eMITSUBISHI_Q03UDVCPU,			//三菱Q03UDVCPU
 	eMITSUBISHI_FX3U_32M,			//三菱FX3U-32M
@@ -32,7 +32,7 @@ enum PLCDEVTYPE
 //SQL设备类型
 enum SQLDEVTYPE
 {
-	eMICROPLAN = 0,				//迈克普兰
+	eMICROPLAN = 0,					//迈克普兰
 };
 
 //plc 配置
