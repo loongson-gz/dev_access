@@ -88,16 +88,17 @@ int DbHelper::InsertData(const char * key, const char *val)
 	try
 	{
 		Poco::Data::Statement mysql(*m_ses);
-		string strKey = GBKToUTF8(key);// GBKToUTF8("ç±»æ³¡æ²«æ¶ˆé˜²è½¦");
-		string strFactoryName = GBKToUTF8("ä¸‡å®¶ä¹_é¡ºå¾·");
-		string strWorkshopName = GBKToUTF8("ç¶å…·è½¦é—´");
-		string strProDLineName = GBKToUTF8("ç¶å…·");
+		string strKey = GBKToUTF8(key);// GBKToUTF8("ÀàÅİÄ­Ïû·À³µ");
+		string strVal = GBKToUTF8(val);
+		string strFactoryName = GBKToUTF8("Íò¼ÒÀÖ_Ë³µÂ");
+		string strWorkshopName = GBKToUTF8("Ôî¾ß³µ¼ä");
+		string strProDLineName = GBKToUTF8("Ôî¾ß");
 
 
  		stringstream ss;
 		ss << "INSERT INTO TB_DEVICECJJL  VALUES (RAWTOHEX(sys_guid()), NULL, NULL, NULL, sysdate, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL,"
 			<< "'" << strKey << "' ,"
-			<< "'" << val << "',"
+			<< "'" << strVal << "',"
 			<< "NULL,"
 			<< "'" << strFactoryName << "' ,"
 			<< "NULL,"
@@ -109,7 +110,7 @@ int DbHelper::InsertData(const char * key, const char *val)
 		string str = ss.str();
 		mysql << str.c_str();
 
-		//mysql << "INSERT INTO TB_DEVICECJJL  VALUES (RAWTOHEX(sys_guid()), NULL, NULL, NULL, sysdate, NULL, NULL, NULL, NULL, NULL, NULL, 'æ–°å»º', NULL, NULL, '1å·å·¥ä½', '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL);";
+		//mysql << "INSERT INTO TB_DEVICECJJL  VALUES (RAWTOHEX(sys_guid()), NULL, NULL, NULL, sysdate, NULL, NULL, NULL, NULL, NULL, NULL, 'ĞÂ½¨', NULL, NULL, '1ºÅ¹¤Î»', '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL);";
 
 		mysql.execute();
 	}

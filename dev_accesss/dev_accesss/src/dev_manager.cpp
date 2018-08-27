@@ -23,6 +23,7 @@ int DevManager::Start()
 		WLogError("config init err ...............");
 		return ret;
 	}
+	m_mesSvr.Start();
 
 	TSQLLst sqlLst = m_config->GetSqlLst();
 	for (auto it = sqlLst.begin(); it != sqlLst.end(); ++it)
@@ -52,7 +53,7 @@ int DevManager::Start()
 		m_plcObjLst.push_back(obj);
 	}
 
-	m_mesSvr.Start();
+
 	return 0;
 }
 
