@@ -141,15 +141,16 @@ void Mitsubishi_FX3U_32M::DoStart()
 					data.StationOkAmount_2 = OldValue[5];
 					data.StationTotalAmount_2 = OldValue[6];
 					data.StationNgAmount_2 = OldValue[7];
-					cout << "1号工站状态 = " << OldValue[0] << endl;
-					cout << "1号工站OK数量 = " << OldValue[1] << endl;
-					cout << "1号工站测试总数量 = " << OldValue[2] << endl;
-					cout << "1号工站NG数量 = " << OldValue[3] << endl;
-					cout << "2号工站状态 = " << OldValue[4] << endl;
-					cout << "2号工站OK数量 = " << OldValue[5] << endl;
-					cout << "2号工站测试总数量 = " << OldValue[6] << endl;
-					cout << "2号工站NG数量 = " << OldValue[7] << endl;
-					cout << data.Timestamp << endl;
+					WLogDebug("1号工站状态 = %d", OldValue[0]);
+					WLogDebug("1号工站OK数量 = %d", OldValue[1]);
+					WLogDebug("1号工站NG数量 = %d", OldValue[3]);
+					WLogDebug("1号工站测试总数量 = %d", OldValue[2]);
+
+					WLogDebug("2号工站状态 = %d", OldValue[4]);
+					WLogDebug("2号工站OK数量 = %d", OldValue[5]);
+					WLogDebug("2号工站NG数量 = %d", OldValue[7]);
+					WLogDebug("2号工站测试总数量 = %d", OldValue[6]);
+
 					m_fn(eEVENT_MITSUBISHI_FX3U_32M, (void *)&data, m_pUser);
 				}
 			}

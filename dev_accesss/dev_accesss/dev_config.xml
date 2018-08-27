@@ -2,14 +2,14 @@
 	<plc>
 		<dev>
 			<title>dev1</title>
-			<ip>192.168.1.112</ip>
+			<ip>192.168.1.109</ip>
 			<port>502</port>
 			<!--设备ID -->
 			<id>1</id>
 			<!--设备类型 -->
 			<devtype>0</devtype>
 			<!-- 操作间隔 单位为：秒 -->
-			<interval>30</interval>
+			<interval>3</interval>
 		</dev>
 		<dev>
 			<title>dev1</title>

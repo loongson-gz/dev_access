@@ -5,18 +5,8 @@
 
 #include "modbus.h"
 #include "modbus_exception.h"
+#include "common.h"
 
-//#include <winsock2.h>
-//#include <WS2tcpip.h> 
-//#pragma comment(lib,"ws2_32.lib") 
-
-//Modbus::Modbus()
-//{
-//}
-//
-//Modbus::~Modbus()
-//{
-//}
 
 /**
 * Main Constructor of Modbus Object
@@ -65,12 +55,14 @@ void Modbus::ModbusSetSlaveId(int id) {
 * @return   If A Connection Is Successfully Built
 */
 bool Modbus::ModbusConnect() {
-	if (HOST == "" || PORT == 0) {
-		std::cout << "Missing Host and Port" << std::endl;
+	if (HOST == "" || PORT == 0) 
+	{
+		WLogDebug("Missing Host and Port");
 		return false;
 	}
-	else {
-		std::cout << "Found Proper Host " << HOST << " and Port " << PORT << std::endl;
+	else 
+	{
+		WLogDebug("Found Proper Host %s and Port %d", HOST.c_str(), PORT);
 	}
 
 	if (InitSocket())
@@ -78,12 +70,12 @@ bool Modbus::ModbusConnect() {
 		_socket = Connect(HOST.c_str(), PORT, SOCK_STREAM);
 		if (_socket == -1)
 		{
-			std::cout << "Cannot Connecte to the " << HOST.c_str()<< std::endl;
+			WLogDebug("Cannot Connecte to the %s", HOST.c_str());
 			return false;
 		}
 		else
 		{
-			std::cout << "Connected to the " << HOST.c_str() <<" successful" << std::endl;
+			WLogDebug("Connected to the %s successful", HOST.c_str());
 		}
 	}
 	else
@@ -91,7 +83,6 @@ bool Modbus::ModbusConnect() {
 		return false;
 	}
 
-	std::cout << "Connected" << std::endl;
 	_connected = true;
 	return true;
 }
@@ -102,7 +93,7 @@ bool Modbus::ModbusConnect() {
 */
 void Modbus::ModbusClose() {
 	Close(_socket);
-	std::cout << "Socket Closed" << std::endl;
+	WLogDebug("Socket Closed");
 }
 
 
@@ -206,8 +197,10 @@ void Modbus::ModbusRead(int address, int amount, int func)
 * @param buffer     Buffer to Store Data
 */
 void Modbus::ModbusReadHoldingRegisters(int address, int amount, uint16_t *buffer) {
-	if (_connected) {
-		if (amount > 65535 || address > 65535) {
+	if (_connected) 
+	{
+		if (amount > 65535 || address > 65535) 
+		{
 			throw ModbusAmountException();
 		}
 		ModbusRead(address, amount, READ_REGS);
@@ -217,19 +210,23 @@ void Modbus::ModbusReadHoldingRegisters(int address, int amount, uint16_t *buffe
 		{
 			throw ModbusConnectException();
 		}
-		try {
+		try 
+		{
 			ModbusErrorHandle(to_rec, READ_REGS);
-			for (int i = 0; i < amount; i++) {
+			for (int i = 0; i < amount; i++) 
+			{
 				buffer[i] = ((uint16_t)to_rec[9 + 2 * i]) << 8;
 				buffer[i] += (uint16_t)to_rec[10 + 2 * i];
 			}
 		}
-		catch (exception &e) {
+		catch (exception &e) 
+		{
 			cout << e.what() << endl;
 			throw e;
 		}
 	}
-	else {
+	else 
+	{
 		throw ModbusConnectException();
 	}
 }
@@ -243,26 +240,36 @@ void Modbus::ModbusReadHoldingRegisters(int address, int amount, uint16_t *buffe
 * @param buffer      Buffer to Store Data
 */
 void Modbus::ModbusReadInputRegisters(int address, int amount, uint16_t *buffer) {
-	if (_connected) {
-		if (amount > 65535 || address > 65535) {
+	if (_connected) 
+	{
+		if (amount > 65535 || address > 65535) 
+		{
 			throw ModbusAmountException();
 		}
 		ModbusRead(address, amount, READ_INPUT_REGS);
 		uint8_t to_rec[MAX_MSG_LENGTH] = {0};
 		ssize_t k = ModbusReceive(to_rec);
-		try {
+		if (k < 0)
+		{
+			throw ModbusConnectException();
+		}
+		try 
+		{
 			ModbusErrorHandle(to_rec, READ_INPUT_REGS);
-			for (int i = 0; i < amount; i++) {
+			for (int i = 0; i < amount; i++) 
+			{
 				buffer[i] = ((uint16_t)to_rec[9 + 2 * i]) << 8;
 				buffer[i] += (uint16_t)to_rec[10 + 2 * i];
 			}
 		}
-		catch (exception &e) {
+		catch (exception &e) 
+		{
 			cout << e.what() << endl;
 			throw e;
 		}
 	}
-	else {
+	else 
+	{
 		throw ModbusConnectException();
 	}
 }
@@ -275,25 +282,35 @@ void Modbus::ModbusReadInputRegisters(int address, int amount, uint16_t *buffer)
 * @param buffer      Buffers to Store Data
 */
 void Modbus::ModbusReadCoils(int address, int amount, bool *buffer) {
-	if (_connected) {
-		if (amount > 2040 || address > 65535) {
+	if (_connected) 
+	{
+		if (amount > 2040 || address > 65535) 
+		{
 			throw ModbusAmountException();
 		}
 		ModbusRead(address, amount, READ_COILS);
 		uint8_t to_rec[MAX_MSG_LENGTH] = {0};
 		ssize_t k = ModbusReceive(to_rec);
-		try {
+		if (k < 0)
+		{
+			throw ModbusConnectException();
+		}
+		try 
+		{
 			ModbusErrorHandle(to_rec, READ_COILS);
-			for (int i = 0; i < amount; i++) {
+			for (int i = 0; i < amount; i++) 
+			{
 				buffer[i] = (bool)((to_rec[9 + i / 8] >> (i % 8)) & 1);
 			}
 		}
-		catch (exception &e) {
+		catch (exception &e) 
+		{
 			cout << e.what() << endl;
 			throw e;
 		}
 	}
-	else {
+	else 
+	{
 		throw ModbusConnectException();
 	}
 }
@@ -308,25 +325,35 @@ void Modbus::ModbusReadCoils(int address, int amount, bool *buffer) {
 * @param buffer    Buffer to store Data
 */
 void Modbus::ModbusReadInputBits(int address, int amount, bool* buffer) {
-	if (_connected) {
-		if (amount > 2040 || address > 65535) {
+	if (_connected) 
+	{
+		if (amount > 2040 || address > 65535) 
+		{
 			throw ModbusAmountException();
 		}
 		ModbusRead(address, amount, READ_INPUT_BITS);
 		uint8_t to_rec[MAX_MSG_LENGTH] = {0};
 		ssize_t k = ModbusReceive(to_rec);
-		try {
+		if (k < 0)
+		{
+			throw ModbusConnectException();
+		}
+		try 
+		{
 			ModbusErrorHandle(to_rec, READ_INPUT_BITS);
-			for (int i = 0; i < amount; i++) {
+			for (int i = 0; i < amount; i++) 
+			{
 				buffer[i] = (bool)((to_rec[9 + i / 8] >> (i % 8)) & 1);
 			}
 		}
-		catch (exception &e) {
+		catch (exception &e) 
+		{
 			cout << e.what() << endl;;
 			throw e;
 		}
 	}
-	else {
+	else 
+	{
 		throw ModbusConnectException();
 	}
 }
@@ -338,23 +365,32 @@ void Modbus::ModbusReadInputBits(int address, int amount, bool* buffer) {
 * @param to_write   Value to Write to Coil
 */
 void Modbus::ModbusWriteCoil(int address, bool to_write) {
-	if (_connected) {
-		if (address > 65535) {
+	if (_connected) 
+	{
+		if (address > 65535) 
+		{
 			throw ModbusAmountException();
 		}
 		int value = to_write * 0xFF00;
 		ModbusWrite(address, 1, WRITE_COIL, (uint16_t *)&value);
 		uint8_t to_rec[MAX_MSG_LENGTH] = {0};
 		ssize_t k = ModbusReceive(to_rec);
-		try {
+		if (k < 0)
+		{
+			throw ModbusConnectException();
+		}
+		try 
+		{
 			ModbusErrorHandle(to_rec, WRITE_COIL);
 		}
-		catch (exception &e) {
+		catch (exception &e) 
+		{
 			cout << e.what() << endl;
 			throw e;
 		}
 	}
-	else {
+	else 
+	{
 		throw ModbusConnectException();
 	}
 }
@@ -367,22 +403,35 @@ void Modbus::ModbusWriteCoil(int address, bool to_write) {
 * @param value     Value to Write to Register
 */
 void Modbus::ModbusWriteRegister(int address, uint16_t value) {
-	if (_connected) {
-		if (address > 65535) {
+	if (_connected) 
+	{
+		if (address > 65535) 
+		{
 			throw ModbusAmountException();
 		}
 		ModbusWrite(address, 1, WRITE_REG, &value);
 		uint8_t to_rec[MAX_MSG_LENGTH] = {0};
 		ssize_t k = ModbusReceive(to_rec);
-		try {
+		if (k < 0)
+		{
+			throw ModbusConnectException();
+		}
+		if (k < 0)
+		{
+			throw ModbusConnectException();
+		}
+		try 
+		{
 			ModbusErrorHandle(to_rec, WRITE_COIL);
 		}
-		catch (exception &e) {
+		catch (exception &e) 
+		{
 			cout << e.what() << endl;
 			throw e;
 		}
 	}
-	else {
+	else 
+	{
 		throw ModbusConnectException();
 	}
 }
@@ -395,27 +444,37 @@ void Modbus::ModbusWriteRegister(int address, uint16_t value) {
 * @param value    Values to Write
 */
 void Modbus::ModbusWriteCoils(int address, int amount, bool *value) {
-	if (_connected) {
-		if (address > 65535 || amount > 65535) {
+	if (_connected) 
+	{
+		if (address > 65535 || amount > 65535) 
+		{
 			throw ModbusAmountException();
 		}
 		uint16_t *temp = new uint16_t[amount];
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 4; i++) 
+		{
 			temp[i] = (uint16_t)value[i];
 		}
 		ModbusWrite(address, amount, WRITE_COILS, temp);
 		delete[] temp;
 		uint8_t to_rec[MAX_MSG_LENGTH] = {0};
 		ssize_t k = ModbusReceive(to_rec);
-		try {
+		if (k < 0)
+		{
+			throw ModbusConnectException();
+		}
+		try 
+		{
 			ModbusErrorHandle(to_rec, WRITE_COILS);
 		}
-		catch (exception &e) {
+		catch (exception &e) 
+		{
 			cout << e.what() << endl;
 			throw e;
 		}
 	}
-	else {
+	else 
+	{
 		throw ModbusConnectException();
 	}
 }
@@ -430,22 +489,31 @@ void Modbus::ModbusWriteCoils(int address, int amount, bool *value) {
 * @param value   Values to Write
 */
 void Modbus::ModbusWriteRegisters(int address, int amount, uint16_t *value) {
-	if (_connected) {
-		if (address > 65535 || amount > 65535) {
+	if (_connected) 
+	{
+		if (address > 65535 || amount > 65535) 
+		{
 			throw ModbusAmountException();
 		}
 		ModbusWrite(address, amount, WRITE_REGS, value);
 		uint8_t to_rec[MAX_MSG_LENGTH] = {0};
 		ssize_t k = ModbusReceive(to_rec);
-		try {
+		if (k < 0)
+		{
+			throw ModbusConnectException();
+		}
+		try 
+		{
 			ModbusErrorHandle(to_rec, WRITE_REGS);
 		}
-		catch (exception &e) {
+		catch (exception &e) 
+		{
 			cout << e.what() << endl;
 			throw e;
 		}
 	}
-	else {
+	else 
+	{
 		throw ModbusConnectException();
 	}
 }
@@ -457,10 +525,10 @@ void Modbus::ModbusWriteRegisters(int address, int amount, uint16_t *value) {
 * @param length  Length of the Request
 * @return        Size of the request
 */
-ssize_t Modbus::ModbusSend(uint8_t *to_send, int length) {
+ssize_t Modbus::ModbusSend(uint8_t *to_send, int length) 
+{
 	_msg_id++;
 	return Send(_socket, (char *)to_send, (size_t)length);
-	//return SendWithTimeout(_socket, (char *)to_send, (size_t)length, 3);
 }
 
 
@@ -469,7 +537,8 @@ ssize_t Modbus::ModbusSend(uint8_t *to_send, int length) {
 * @param buffer Buffer to Store the Data
 * @return       Size of the Incoming Data
 */
-ssize_t Modbus::ModbusReceive(uint8_t *buffer) {
+ssize_t Modbus::ModbusReceive(uint8_t *buffer) 
+{
 	ssize_t ret = 0;
 	ret = Recv(_socket, (char *)buffer, 1024);
 	if (ret > 1024)
@@ -477,7 +546,6 @@ ssize_t Modbus::ModbusReceive(uint8_t *buffer) {
 		return -1;
 	}
 	return ret;
-	//return RecvWithTimeout(_socket, (char *)buffer, 1024, 3);
 }
 
 
@@ -487,8 +555,10 @@ ssize_t Modbus::ModbusReceive(uint8_t *buffer) {
 * @param func  Modbus Functional Code
 */
 void Modbus::ModbusErrorHandle(uint8_t *msg, int func) {
-	if (msg[7] == func + 0x80) {
-		switch (msg[8]) {
+	if (msg[7] == func + 0x80) 
+	{
+		switch (msg[8]) 
+		{
 		case EX_ILLEGAL_FUNCTION:
 			throw ModbusIllegalFunctionException();
 		case EX_ILLEGAL_ADDRESS:
