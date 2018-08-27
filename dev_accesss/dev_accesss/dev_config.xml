@@ -24,7 +24,7 @@
 		</dev>
         <dev>
 			<title>dev1</title>
-			<ip>192.168.1.102</ip>
+			<ip>192.168.43.79</ip>
 			<port>502</port>
 			<!--设备ID -->
 			<id>12</id>
