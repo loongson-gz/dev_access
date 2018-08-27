@@ -87,11 +87,17 @@ void Mitsubishi_FX3U_32M::DoStart()
 	uint16_t OldValue[8] = {0};
 	uint16_t TempValue = 0;
 	bool Update = false;
+	int unixTime;
+	time_t tick;
+	time_t now;
+	struct tm tm;
+
 	struct Mitsubishi_FX3U_32M_Data data;
-	if (!ModbusInit(id)) //测试
+	while (!ModbusInit(id)) //测试
 	{
-		WLogError("%s:%d test failure .....", __FUNCTION__, __LINE__);
-		return;
+		WLogError("%s:%d ModbusInit failure .....", __FUNCTION__, __LINE__);
+		Sleep(5000);
+		continue;
 	}
 
 	while (!m_bStop)
@@ -110,6 +116,11 @@ void Mitsubishi_FX3U_32M::DoStart()
 			Update = false;
 			if (m_fn)
 			{
+				unixTime = (int)time(&now);
+				tick = (time_t)unixTime;
+				tm = *localtime(&tick);
+				strftime(data.Timestamp, sizeof(data.Timestamp), "%Y-%m-%d %H:%M:%S", &tm);
+				sprintf(data.DevInfo, host, "@", port);
 				data.StationStatus_1 = OldValue[0];
 				data.StationOkAmount_1 = OldValue[1];
 				data.StationTotalAmount_1 = OldValue[2];
@@ -126,6 +137,7 @@ void Mitsubishi_FX3U_32M::DoStart()
 				cout << "2号工站OK数量 = " << OldValue[5] << endl;
 				cout << "2号工站测试总数量 = " << OldValue[6] << endl;
 				cout << "2号工站NG数量 = " << OldValue[7] << endl;
+				cout << data.Timestamp << endl;
 				m_fn(eEVENT_MITSUBISHI_FX3U_32M, (void *)&data, m_pUser);
 			}
 		}

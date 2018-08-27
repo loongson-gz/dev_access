@@ -6,6 +6,7 @@
 
 
 struct Mitsubishi_FX3U_32M_Data {
+	char DevInfo[64];
 	uint16_t StationStatus_1;
 	uint16_t StationOkAmount_1;
 	uint16_t StationTotalAmount_1;
@@ -14,6 +15,7 @@ struct Mitsubishi_FX3U_32M_Data {
 	uint16_t StationOkAmount_2;
 	uint16_t StationTotalAmount_2;
 	uint16_t StationNgAmount_2;
+	char Timestamp[64];
 };
 
 class Mitsubishi_FX3U_32M : public PlcBase {
