@@ -14,6 +14,7 @@ XinJieXc3::XinJieXc3(stPLCConf * conf)
 	port = conf->uPort;
 	host = conf->szIpAddr;
 	id = conf->id;
+	interval = conf->interval * 1000;
 	mb.reset(new Modbus(host, port));
 }
 
@@ -40,23 +41,74 @@ int XinJieXc3::Stop()
 	return 0;
 }
 
+void XinJieXc3::SetEventCallback(EventMsgFn fn, void * pUser)
+{
+	m_fn = fn;
+	m_pUser = pUser;
+}
+
+
 void XinJieXc3::DoStart()
 {
-	volatile int i = 0;
-	int IntSet[10] = { 0,1,2,3,4,5,6,7,8,9 };
-	if (!ModbusInit(2)) //≤‚ ‘
+	int i = 0;
+	int IntSet[8] = { 2020,3000,3004,3002,2022,3100,3104,3102 };
+	uint16_t OldValue[8] = { 0 };
+	uint16_t TempValue = 0;
+	bool Update = false;
+	int unixTime;
+	time_t tick;
+	time_t now;
+	struct tm tm;
+
+	struct XinJieXc3_Data data;
+	while (true)
 	{
-		WLogError("%s:%d test failure .....", __FUNCTION__, __LINE__);
-		return ;
-	}
-	while (!m_bStop)
-	{
-		cout << "[" << i << "]  " << ModbusStart(3001) << endl;
-		if (i++ == 99)
+		while (!ModbusInit(id)) //≤‚ ‘
 		{
-			i = 0;
+			WLogError("%s:%d ModbusInit failure .....", __FUNCTION__, __LINE__);
+			Sleep(5000);
 		}
-		Sleep(10);
+
+
+		while (!m_bStop)
+		{
+			for (i = 0; i < sizeof(IntSet) / sizeof(IntSet[0]); i++)
+			{
+				try
+				{
+					TempValue = ModbusStart(IntSet[i]);
+				}
+				catch (const std::exception& e)
+				{
+					cout << e.what() << endl;
+					m_bStop = true;
+					break;
+				}
+
+				if (OldValue[i] != TempValue)
+				{
+					OldValue[i] = TempValue;
+					Update = true;
+				}
+			}
+			if (Update)
+			{
+				Update = false;
+				if (m_fn)
+				{
+					unixTime = (int)time(&now);
+					tick = (time_t)unixTime;
+					tm = *localtime(&tick);
+					strftime(data.Timestamp, sizeof(data.Timestamp), "%Y-%m-%d %H:%M:%S", &tm);
+					sprintf(data.DevInfo, host, "@", port);
+
+					m_fn(eEVENT_MITSUBISHI_FX3U_32M, (void *)&data, m_pUser);
+				}
+			}
+			Sleep(interval);
+		}
+		m_bStop = false;
+		memset(OldValue, 0, sizeof(OldValue));
 	}
 }
 
