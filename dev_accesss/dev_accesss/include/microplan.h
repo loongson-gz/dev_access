@@ -13,7 +13,6 @@ public:
 	int Stop();
 
 private:
-	DbHelper m_db;
 };
 
 #endif

@@ -92,7 +92,7 @@ void Mitsubishi_FX3U_32M::DoStart()
 	time_t now;
 	struct tm tm;
 
-	struct Mitsubishi_FX3U_32M_Data data;
+	stMitsubishi_FX3U_32M_Data data;
 	while (true)
 	{
 		while (!ModbusInit(id)) //≤‚ ‘
@@ -112,6 +112,7 @@ void Mitsubishi_FX3U_32M::DoStart()
 				}
 				catch (const std::exception& e)
 				{
+					WLogInfo("%s:%d %s",__FUNCTION__, __LINE__, e.what());
 					m_bStop = true;
 					break;
 				}

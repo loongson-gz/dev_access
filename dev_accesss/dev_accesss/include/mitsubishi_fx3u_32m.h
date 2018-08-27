@@ -5,7 +5,7 @@
 #include "plc_base.h"
 
 
-struct Mitsubishi_FX3U_32M_Data {
+typedef struct stMitsubishi_FX3U_32M_Data_t {
 	char DevInfo[64];
 	uint16_t StationStatus_1;
 	uint16_t StationOkAmount_1;
@@ -16,7 +16,7 @@ struct Mitsubishi_FX3U_32M_Data {
 	uint16_t StationTotalAmount_2;
 	uint16_t StationNgAmount_2;
 	char Timestamp[64];
-};
+}stMitsubishi_FX3U_32M_Data;
 
 class Mitsubishi_FX3U_32M : public PlcBase {
 

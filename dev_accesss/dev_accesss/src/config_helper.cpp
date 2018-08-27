@@ -90,7 +90,7 @@ int ConfigHelper::ParseConf(const char *file)
 	for (; pSqlDev != NULL; pSqlDev = pSqlDev->NextSiblingElement("dev"))
 	{
 		string strTitle, strDbType, strIp, strPort;
-		string strUser, strPwd, strDbname, strDevType, strInterval;
+		string strUser, strPwd, strDbname, strDns, strDevType, strInterval;
 		_xmlGetFirstElement(pSqlDev, "title", strTitle);
 		_xmlGetFirstElement(pSqlDev, "dbtype", strDbType);
 		_xmlGetFirstElement(pSqlDev, "ip", strIp);
@@ -98,6 +98,7 @@ int ConfigHelper::ParseConf(const char *file)
 		_xmlGetFirstElement(pSqlDev, "user", strUser);
 		_xmlGetFirstElement(pSqlDev, "pwd", strPwd);
 		_xmlGetFirstElement(pSqlDev, "dbname", strDbname);
+		_xmlGetFirstElement(pSqlDev, "dns", strDns);
 		_xmlGetFirstElement(pSqlDev, "devtype", strDevType);
 		_xmlGetFirstElement(pSqlDev, "interval", strInterval);
 
@@ -108,6 +109,7 @@ int ConfigHelper::ParseConf(const char *file)
 		strncpy(conf.szUser, strUser.c_str(), sizeof(conf.szUser));
 		strncpy(conf.szPwd, strPwd.c_str(), sizeof(conf.szPwd));
 		strncpy(conf.szDbName, strDbname.c_str(), sizeof(conf.szDbName));
+		strncpy(conf.szDnsName, strDns.c_str(), sizeof(conf.szDnsName));
 		conf.devType = (SQLDEVTYPE)atoi(strDevType.c_str());
 		conf.interval = atoi(strInterval.c_str());
 
@@ -121,19 +123,21 @@ int ConfigHelper::ParseConf(const char *file)
 		return ERR_ERROR;
 	}
 	string strDbType, strIp, strPort;
-	string strUser, strPwd, strDbname;
+	string strUser, strPwd, strDbname, strDns;
 	_xmlGetFirstElement(svrElm, "dbtype", strDbType);
 	_xmlGetFirstElement(svrElm, "ip", strIp);
 	_xmlGetFirstElement(svrElm, "port", strPort);
 	_xmlGetFirstElement(svrElm, "user", strUser);
 	_xmlGetFirstElement(svrElm, "pwd", strPwd);
 	_xmlGetFirstElement(svrElm, "dbname", strDbname);
+	_xmlGetFirstElement(svrElm, "dns", strDns);
 
 	strncpy(m_svrConf.szIpAddr, strIp.c_str(), sizeof(m_svrConf.szIpAddr));
 	m_svrConf.uPort = atoi(strPort.c_str());
 	strncpy(m_svrConf.szUser, strUser.c_str(), sizeof(m_svrConf.szUser));
 	strncpy(m_svrConf.szPwd, strPwd.c_str(), sizeof(m_svrConf.szPwd));
 	strncpy(m_svrConf.szDbName, strDbname.c_str(), sizeof(m_svrConf.szDbName));
+	strncpy(m_svrConf.szDnsName, strDns.c_str(), sizeof(m_svrConf.szDnsName));
 
 	return 0;
 }

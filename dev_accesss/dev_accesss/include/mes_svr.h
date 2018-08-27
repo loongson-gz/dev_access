@@ -2,6 +2,7 @@
 #define __MES_SVR_H__
 
 #include "common.h"
+#include "dbhelper.h"
 
 class MesSvr {
 public:
@@ -13,11 +14,12 @@ public:
 	int Start();
 	int Stop();
 
-	int InsertToSvr(const char * sql);
+	int InsertToSvr(const char *key, const char *val);
 private:
 	int Init();
 
 	stSQLConf m_conf;
+	DbHelper *m_db;
 };
 
 #endif // !__MES_SVR_H__

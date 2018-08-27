@@ -16,6 +16,7 @@ MesSvr * MesSvr::GetInstance()
 
 int MesSvr::Start()
 {
+	Init();
 	return 0;
 }
 
@@ -24,14 +25,16 @@ int MesSvr::Stop()
 	return 0;
 }
 
-int MesSvr::InsertToSvr(const char * sql)
+int MesSvr::InsertToSvr(const char *key, const char *val)
 {
+	m_db->InsertData(key, val);
 	return 0;
 }
 
 int MesSvr::Init()
 {
 	m_conf = ConfigHelper::GetInstance()->GetSqlConf();
-
+	m_db = new DbHelper(m_conf.szUser, m_conf.szPwd, m_conf.szDbName, m_conf.szDnsName);
+	m_db->ConnectToSvr();
 	return 0;
 }

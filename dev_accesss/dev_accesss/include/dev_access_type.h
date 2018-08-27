@@ -64,6 +64,7 @@ typedef struct _stSQLConf
 	char szUser[256];		//用户名
 	char szPwd[256];		//密码
 	char szDbName[256];		//数据库名
+	char szDnsName[256];	//数据库数据源名称
 	SQLDEVTYPE devType;		//设备类型
 	int interval;			//与设备交互的操作间隔
 }stSQLConf;

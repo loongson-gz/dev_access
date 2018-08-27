@@ -91,4 +91,33 @@ void DevManager::EventMsg(EVENTTYPE iEvtType, void * pData, void * pUser)
 void DevManager::DoEventProcess(EVENTTYPE iEvtType, void * pData)
 {
 	WLogDebug("====================EvtType:%d", iEvtType);
+	switch (iEvtType)
+	{
+	case eEVENT_MITSUBISHI_FX3U_32M:
+	{
+		char *pSt[11] = {"待机中",
+			"气密气缸上升",
+			"气密气缸下降",
+			"测试开始",
+			"测试NG",
+			"测试OK",
+			"上升到位",
+			"下降到位",
+			"出板放行",
+			"出板通过",
+			"下降到位等待测试"};
+
+		stMitsubishi_FX3U_32M_Data *data = (stMitsubishi_FX3U_32M_Data *)(pData);
+		m_mesSvr.InsertToSvr("1号工位状态", pSt[data->StationStatus_1]);
+		m_mesSvr.InsertToSvr("1号工位OK数量", std::to_string(data->StationOkAmount_1).c_str());
+		m_mesSvr.InsertToSvr("1号工位总测数量", std::to_string(data->StationTotalAmount_1).c_str());
+		m_mesSvr.InsertToSvr("1号工位NG数量", std::to_string(data->StationNgAmount_1).c_str());
+		m_mesSvr.InsertToSvr("2号工位状态", pSt[data->StationStatus_2]);
+		m_mesSvr.InsertToSvr("2号工位OK数量", std::to_string(data->StationOkAmount_2).c_str());
+		m_mesSvr.InsertToSvr("2号工位总测数量", std::to_string(data->StationTotalAmount_2).c_str());
+		m_mesSvr.InsertToSvr("2号工位NG数量", std::to_string(data->StationNgAmount_2).c_str());
+		break;
+	}
+		
+	}
 }
