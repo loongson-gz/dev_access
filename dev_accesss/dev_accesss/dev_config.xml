@@ -45,6 +45,8 @@
 			<pwd>sa</pwd>
 			<!-- 数据库名 -->
 			<dbname>result</dbname>
+			<!-- 数据库 数据源名称-->
+			<dns>oracle_wjl_mes</dns>
 			<!-- 设备类型 -->
 			<devtype>0</devtype>
 			<!-- 操作间隔 单位为：秒 -->
@@ -60,6 +62,8 @@
 			<pwd>qwer1234</pwd>
 			<!-- 数据库名 -->
 			<dbname>wjlwmsst</dbname>
+			<!-- 数据库 数据源名称-->
+			<dns>oracle_wjl_mes</dns>
 			<!-- 设备类型 -->
 			<devtype>1</devtype>
 			<!-- 操作间隔 单位为：秒 -->
@@ -75,5 +79,7 @@
 		<pwd>qwer1234</pwd>
 		<!-- 数据库名 -->
 		<dbname>wjlmesst</dbname>
+		<!-- 数据库 数据源名称-->
+		<dns>oracle_wjl_mes</dns>
 	</svr>
 </root>
