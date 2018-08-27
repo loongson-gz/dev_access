@@ -24,10 +24,10 @@
 		</dev>
         <dev>
 			<title>dev1</title>
-			<ip>192.168.43.79</ip>
+			<ip>192.168.103.232</ip>
 			<port>502</port>
 			<!--设备ID -->
-			<id>12</id>
+			<id>1</id>
 			<!--设备类型 -->
 			<devtype>3</devtype>
 			<!-- 操作间隔 单位为：秒 -->

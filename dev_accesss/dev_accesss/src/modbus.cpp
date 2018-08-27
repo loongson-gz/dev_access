@@ -78,6 +78,10 @@ bool Modbus::ModbusConnect() {
 			std::cout << "Cannot Connecte to the " << HOST.c_str()<< std::endl;
 			return false;
 		}
+		else
+		{
+			std::cout << "Connected to the " << HOST.c_str() <<" successful" << std::endl;
+		}
 	}
 	else
 	{
@@ -206,6 +210,10 @@ void Modbus::ModbusReadHoldingRegisters(int address, int amount, uint16_t *buffe
 		ModbusRead(address, amount, READ_REGS);
 		uint8_t to_rec[MAX_MSG_LENGTH] = {0};
 		ssize_t k = ModbusReceive(to_rec);
+		if (k < 0)
+		{
+			throw ModbusConnectException();
+		}
 		try {
 			ModbusErrorHandle(to_rec, READ_REGS);
 			for (int i = 0; i < amount; i++) {
@@ -448,7 +456,8 @@ void Modbus::ModbusWriteRegisters(int address, int amount, uint16_t *value) {
 */
 ssize_t Modbus::ModbusSend(uint8_t *to_send, int length) {
 	_msg_id++;
-	return send(_socket, (char *)to_send, (size_t)length, 0);
+	return Send(_socket, (char *)to_send, (size_t)length);
+	//return SendWithTimeout(_socket, (char *)to_send, (size_t)length, 3);
 }
 
 
@@ -458,7 +467,14 @@ ssize_t Modbus::ModbusSend(uint8_t *to_send, int length) {
 * @return       Size of the Incoming Data
 */
 ssize_t Modbus::ModbusReceive(uint8_t *buffer) {
-	return recv(_socket, (char *)buffer, 1024, 0);
+	ssize_t ret = 0;
+	ret = Recv(_socket, (char *)buffer, 1024);
+	if (ret > 1024)
+	{
+		return -1;
+	}
+	return ret;
+	//return RecvWithTimeout(_socket, (char *)buffer, 1024, 3);
 }
 
 

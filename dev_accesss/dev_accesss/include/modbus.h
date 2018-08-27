@@ -13,7 +13,7 @@
 
 #define MAX_MSG_LENGTH 260
 using namespace std;
-typedef unsigned long ssize_t;
+typedef  long ssize_t;
 typedef unsigned char uint8_t;
 
 //Function Code
