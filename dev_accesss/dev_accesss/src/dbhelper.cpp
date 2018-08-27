@@ -69,17 +69,19 @@ int DbHelper::ConnectToSvr()
 {
 	//m_pool = new Poco::Data::SessionPool("ODBC", "UID=jmuser;PWD=qwer1234;DATABASE=wjlwmsst;dsn=wjl_local_wms");
 //	m_pool = new Poco::Data::SessionPool("ODBC", "UID=jmuser;PWD=qwer1234;DATABASE=wjlwmsst;dsn=oracle_wjl_mes");
-	m_pool = new Poco::Data::SessionPool("ODBC", m_url);
-	//m_pool = new Poco::Data::SessionPool("ODBC", "dsn=dsn_mysql");
-	if (!m_pool)
+	try
 	{
-		return -1;
+		m_pool = new Poco::Data::SessionPool("ODBC", m_url);
+		//m_pool = new Poco::Data::SessionPool("ODBC", "dsn=dsn_mysql");
+
+		m_ses = new Poco::Data::Session(m_pool->get());
 	}
-	m_ses = new Poco::Data::Session(m_pool->get());
-	if (!m_ses)
+	catch (const std::exception& e)
 	{
-		return -1;
+		WLogInfo("%s:%d %s", __FUNCTION__, __LINE__, e.what());
 	}
+
+
 	return 0;
 }
 

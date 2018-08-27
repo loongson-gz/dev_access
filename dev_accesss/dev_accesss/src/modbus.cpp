@@ -24,12 +24,15 @@
 * @param port Port for Connection
 * @return     A Modbus Object
 */
-Modbus::Modbus(string host, uint16_t port) {
-	HOST = host;
-	PORT = port;
-	_slaveid = 1;
-	_msg_id = 1;
-	_connected = false;
+Modbus::Modbus(string host, uint16_t port)
+	:_socket(-1)
+	,_server()
+	,HOST(host)
+	,PORT(port)
+	,_slaveid(1)
+	,_msg_id(1)
+	,_connected(false)
+{
 }
 
 /**
@@ -38,7 +41,7 @@ Modbus::Modbus(string host, uint16_t port) {
 * @return      A Modbus Object
 */
 Modbus::Modbus(string host) {
-	Modbus(host, 502);
+	this->Modbus::Modbus(host, 502);
 }
 
 
