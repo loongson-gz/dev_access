@@ -6,16 +6,16 @@ static void ThdFn(void *args)
 	This->DoStart();
 }
 
-Mitsubishi_FX3U_32M::Mitsubishi_FX3U_32M(stPLCConf * conf)
+Mitsubishi_FX3U_32M::Mitsubishi_FX3U_32M(stPLCConf conf)
 	: m_bStop(false)
 	, m_fn(nullptr)
 	, m_pUser(nullptr)
 {
 	WLogInfo("%s make", __FUNCTION__);
-	port = conf->uPort;
-	host = conf->szIpAddr;
-	id = conf->id;
-	interval = conf->interval * 1000;
+	port = conf.uPort;
+	host = conf.szIpAddr;
+	id = conf.id;
+	interval = conf.interval * 1000;
 	mb.reset(new Modbus(host, port));
 }
 

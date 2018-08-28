@@ -17,7 +17,7 @@ struct XinJieXc3_Data {
 
 class XinJieXc3 : public PlcBase {
 public:
-	XinJieXc3(stPLCConf *conf);
+	XinJieXc3(stPLCConf conf);
 	~XinJieXc3();
 
 	int Start();

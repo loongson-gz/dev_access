@@ -1,6 +1,6 @@
 #include "mitsubishi_q02uccpu.h"
 
-Mitsubishi_Q02UUCPU::Mitsubishi_Q02UUCPU(stPLCConf * conf)
+Mitsubishi_Q02UUCPU::Mitsubishi_Q02UUCPU(stPLCConf conf)
 {
 	WLogInfo("%s make", __FUNCTION__);
 

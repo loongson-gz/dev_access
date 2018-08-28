@@ -1,6 +1,6 @@
 #include "microplan.h"
 
-MicroPlan::MicroPlan(stSQLConf *conf)
+MicroPlan::MicroPlan(stSQLConf conf)
 {
 	WLogInfo("%s make", __FUNCTION__);
 

@@ -21,7 +21,7 @@ typedef struct stMitsubishi_FX3U_32M_Data_t {
 class Mitsubishi_FX3U_32M : public PlcBase {
 
 public:
-	Mitsubishi_FX3U_32M(stPLCConf * conf);
+	Mitsubishi_FX3U_32M(stPLCConf conf);
 	~Mitsubishi_FX3U_32M();
 
 	int Start();

@@ -7,14 +7,14 @@ static void ThdFn(void *args)
 	This->DoStart();
 }
 
-XinJieXc3::XinJieXc3(stPLCConf * conf)
+XinJieXc3::XinJieXc3(stPLCConf conf)
 	: m_bStop(false)
 {
 	WLogInfo("%s make", __FUNCTION__);
-	port = conf->uPort;
-	host = conf->szIpAddr;
-	id = conf->id;
-	interval = conf->interval * 1000;
+	port = conf.uPort;
+	host = conf.szIpAddr;
+	id = conf.id;
+	interval = conf.interval * 1000;
 	mb.reset(new Modbus(host, port));
 }
 

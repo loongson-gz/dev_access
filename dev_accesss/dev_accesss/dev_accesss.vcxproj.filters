@@ -111,6 +111,12 @@
     <ClCompile Include="src\mitsubishi_fx3u_32m.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\mc_data_type.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mitsubishi_q03udvcpu.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\common.h">
@@ -188,9 +194,6 @@
     <ClInclude Include="include\mitsubishi_q02uccpu.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="include\modbus_exception.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -201,6 +204,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\mitsubishi_fx3u_32m.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mc_data_type.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mitsubishi_q03udvcpu.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\version.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

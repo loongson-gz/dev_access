@@ -7,7 +7,7 @@
 
 class Mitsubishi_Q02UUCPU : public PlcBase {
 public:
-	Mitsubishi_Q02UUCPU(stPLCConf * conf);
+	Mitsubishi_Q02UUCPU(stPLCConf conf);
 	~Mitsubishi_Q02UUCPU();
 
 	int Start();

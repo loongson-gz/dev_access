@@ -1,9 +1,12 @@
 #include "dev_manager.h"
 #include "config_helper.h"
+#include "version.h"
 
 DevManager::DevManager()
 {
 	WLogInit("./log", "dev_", 5, 128, 1000, true);
+	WLogInfo("version:%d.%d.%s", VER_MAJOR, VER_MINOR, VER_REVISION);
+
 	WLogInfo("%s make", __FUNCTION__);
 
 	m_config = ConfigHelper::GetInstance();
@@ -130,14 +133,6 @@ void DevManager::DoEventProcess(EVENTTYPE iEvtType, void * pData)
 		m_mesSvr.InsertToSvr("气密性2号工程总测数量", (int)(data->StationTotalAmount_2));
 		m_mesSvr.InsertToSvr("气密性2号工程NG数量", (int)(data->StationNgAmount_2));
 
-		//m_mesSvr.InsertToSvr("1号工位状态", pSt[data->StationStatus_1]);
-		//m_mesSvr.InsertToSvr("1号工位OK数量", std::to_string(data->StationOkAmount_1).c_str());
-		//m_mesSvr.InsertToSvr("1号工位总测数量", std::to_string(data->StationTotalAmount_1).c_str());
-		//m_mesSvr.InsertToSvr("1号工位NG数量", std::to_string(data->StationNgAmount_1).c_str());
-		//m_mesSvr.InsertToSvr("2号工位状态", pSt[data->StationStatus_2]);
-		//m_mesSvr.InsertToSvr("2号工位OK数量", std::to_string(data->StationOkAmount_2).c_str());
-		//m_mesSvr.InsertToSvr("2号工位总测数量", std::to_string(data->StationTotalAmount_2).c_str());
-		//m_mesSvr.InsertToSvr("2号工位NG数量", std::to_string(data->StationNgAmount_2).c_str());
 		break;
 	}
 		

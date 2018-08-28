@@ -7,7 +7,7 @@
 
 class MicroPlan : public SqlBase{
 public:
-	MicroPlan(stSQLConf *conf);
+	MicroPlan(stSQLConf conf);
 	~MicroPlan();
 	int Start();
 	int Stop();
