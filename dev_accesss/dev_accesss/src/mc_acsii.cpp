@@ -30,7 +30,7 @@ int McAcsii::Init()
 	return 0;
 }
 
-int McAcsii::Read(const char *addr, uint16_t length, string & val)
+int McAcsii::Read(const char *addr, uint16_t length, string &val)
 {
 	int ret = BuildReadCmd(addr, length);
 	if (ret < 0)
@@ -38,7 +38,13 @@ int McAcsii::Read(const char *addr, uint16_t length, string & val)
 		return ret;
 	}
 
-	ret = SendAndRecv(m_plcReadCmd, sizeof(m_plcReadCmd), val);
+	string str;
+	ret = SendAndRecv(m_plcReadCmd, sizeof(m_plcReadCmd), str);
+	if (ret < 0)
+	{
+		return ret;
+	}
+	ret = ParseReadResult(str, val);
 	return ret;
 }
 
@@ -232,8 +238,17 @@ int McAcsii::Write(const char *addr, const char *val, string &strRet)
 	{
 		return ret;
 	}
-	ret = SendAndRecv(m_pPlcWriteCmd, m_iWriteLen, strRet);
-	return 0;
+	
+	string str;
+	ret = SendAndRecv(m_pPlcWriteCmd, m_iWriteLen, str);
+	if (ret < 0)
+	{
+		return ret;
+	}
+
+	ret = ParseWriteResult(str, strRet);
+
+	return ret;
 }
 
 int McAcsii::BuildWriteCmd(const char *addr, const char *val)
@@ -404,6 +419,67 @@ int McAcsii::SendAndRecv(const char *pData, int len, string & val)
 
 	WLogInfo("read:%s", buf);
 	val = string(buf);
+	return 0;
+}
+
+int McAcsii::ParseWriteResult(const string & str, string & val)
+{
+	string ret = str.substr(18, 4);
+	if (atoi(ret.c_str()) != 0)
+	{
+		return -1;
+	}
+	return 0;
+}
+
+int McAcsii::ParseReadResult(const string & str, string & val)
+{
+	string ret = str.substr(18, 4);
+	if (atoi(ret.c_str()) == 0)
+	{
+		if (m_McDataTypePtr->GetDataType() == 0x01)
+		{
+			int iLen = str.length() - 22;
+			char *buf = new char[iLen+1];
+			memset(buf, 0, iLen+1);
+			for (size_t i = 22, j=0; i < str.length(); i++, j++)
+			{
+				if (str.c_str()[i] == 0x30)
+				{
+					buf[j] = 0x00;
+				}
+				else
+				{
+					buf[j] = 0x01;
+
+				}
+			}
+			val = str.substr(0, 22);
+			val.append(buf);
+			delete[] buf;
+		}
+		else
+		{
+			int iLen = str.length();
+			char *buf = new char[iLen + 1];
+			memset(buf, 0, iLen + 1);
+			for (size_t i = 0; i < str.length()/2; i++)
+			{
+				string tmp = str.substr(i*4+22, 4);
+				int val;
+				sscanf_s(tmp.c_str(), "%x", &val);
+				string strVal = std::to_string(val);
+				strncpy(buf+i*2, strVal.c_str(), 2);
+			}
+			val = string(buf);
+			delete[] buf;
+		}
+	}
+	else
+	{
+		return -1;
+	}
+
 	return 0;
 }
 

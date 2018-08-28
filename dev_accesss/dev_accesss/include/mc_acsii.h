@@ -27,6 +27,9 @@ private:
 	int DoBuildWriteCmd(const char *addr, const char *val);
 	int SendAndRecv(const char *pData, int len, string & val);
 
+	int ParseWriteResult(const string &str, string &val);
+	int ParseReadResult(const string &str, string &val);
+
 
 	string m_ipaddr;
 	uint16_t m_port;
