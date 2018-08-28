@@ -6,36 +6,6 @@
 
 using namespace Poco::Data::Keywords;
 
-string GBKToUTF8(const std::string& strGBK)
-{
-	string strOutUTF8 = "";
-	WCHAR * str1;
-	int n = MultiByteToWideChar(CP_ACP, 0, strGBK.c_str(), -1, NULL, 0);
-	str1 = new WCHAR[n];
-	MultiByteToWideChar(CP_ACP, 0, strGBK.c_str(), -1, str1, n);
-	n = WideCharToMultiByte(CP_UTF8, 0, str1, -1, NULL, 0, NULL, NULL);
-	char * str2 = new char[n];
-	WideCharToMultiByte(CP_UTF8, 0, str1, -1, str2, n, NULL, NULL);
-	strOutUTF8 = str2;
-	delete[]str1;
-	str1 = NULL;
-	delete[]str2;
-	str2 = NULL;
-	return strOutUTF8;
-}
-
-string GetTime()
-{
-	time_t timep;
-	struct tm *p;
-	time(&timep);
-	p = localtime(&timep);
-
-	char buf[128] = { 0 };
-	snprintf(buf, sizeof(buf), "%d-%02d-%02d %02d:%02d:%02d", 1900 + p->tm_year, 1 + p->tm_mon, p->tm_mday, p->tm_hour, p->tm_min, p->tm_sec);
-
-	return string(buf);
-}
 
 //DbHelper::DbHelper()
 //{
@@ -43,7 +13,8 @@ string GetTime()
 
 DbHelper::DbHelper(const char * usr, const char * pwd, const char * database, const char * dsn)
 	: m_pool(nullptr)
-	,m_ses(nullptr)
+	, m_ses(nullptr)
+	, m_bConnect(false)
 
 {
 	m_url.append("UID=");
@@ -79,41 +50,26 @@ int DbHelper::ConnectToSvr()
 	catch (const std::exception& e)
 	{
 		WLogInfo("%s:%d %s", __FUNCTION__, __LINE__, e.what());
+		m_bConnect = false;
 	}
 
-
+	m_bConnect = true;
 	return 0;
 }
 
-int DbHelper::InsertData(const char * key, const char *val)
+int DbHelper::InsertData(const char *szSql)
 {
+	if (!m_bConnect || !m_ses)
+	{
+		return -1;
+	}
+
 	try
 	{
 		Poco::Data::Statement mysql(*m_ses);
-		string strKey = GBKToUTF8(key);// GBKToUTF8("类泡沫消防车");
-		string strVal = GBKToUTF8(val);
-		string strFactoryName = GBKToUTF8("万家乐_顺德");
-		string strWorkshopName = GBKToUTF8("灶具车间");
-		string strProDLineName = GBKToUTF8("灶具");
-
-
- 		stringstream ss;
-		ss << "INSERT INTO TB_DEVICECJJL  VALUES (RAWTOHEX(sys_guid()), NULL, NULL, NULL, sysdate, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL,"
-			<< "'" << strKey << "' ,"
-			<< "'" << strVal << "',"
-			<< "NULL,"
-			<< "'" << strFactoryName << "' ,"
-			<< "NULL,"
-			<< "'" << strWorkshopName << "' ,"
-			<< "NULL,"
-			<< "'" << strProDLineName << "' ,"
-			<< "'" << GetTime() << "' );";
-
-		string str = ss.str();
-		mysql << str.c_str();
+		mysql << szSql;
 
 		//mysql << "INSERT INTO TB_DEVICECJJL  VALUES (RAWTOHEX(sys_guid()), NULL, NULL, NULL, sysdate, NULL, NULL, NULL, NULL, NULL, NULL, '新建', NULL, NULL, '1号工位', '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL);";
-
 		mysql.execute();
 	}
 	catch (std::exception* e)

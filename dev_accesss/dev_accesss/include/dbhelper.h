@@ -14,13 +14,14 @@ public:
 	~DbHelper();
 
 	int ConnectToSvr();
-	int InsertData(const char * key, const char *val);
+	int InsertData(const char *szSql);
 	//void TestFn();
 private:
 	Poco::Data::SessionPool *m_pool;
 	Poco::Data::Session *m_ses;
 
 	string m_url;
+	bool m_bConnect;
 };
 
 #endif

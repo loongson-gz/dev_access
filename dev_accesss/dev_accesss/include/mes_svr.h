@@ -15,6 +15,7 @@ public:
 	int Stop();
 
 	int InsertToSvr(const char *key, const char *val);
+	int InsertToSvr(const char *key, int val);
 private:
 	int Init();
 

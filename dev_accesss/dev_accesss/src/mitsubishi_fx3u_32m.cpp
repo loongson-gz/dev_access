@@ -128,28 +128,31 @@ void Mitsubishi_FX3U_32M::DoStart()
 				Update = false;
 				if (m_fn)
 				{
+					WLogInfo("*********************************************");
+					WLogInfo("1号工站状态 = %d", OldValue[0]);
+					WLogInfo("1号工站OK数量 = %d", OldValue[1]);
+					WLogInfo("1号工站NG数量 = %d", OldValue[3]);
+					WLogInfo("1号工站测试总数量 = %d", OldValue[2]);
+
+					WLogInfo("2号工站状态 = %d", OldValue[4]);
+					WLogInfo("2号工站OK数量 = %d", OldValue[5]);
+					WLogInfo("2号工站NG数量 = %d", OldValue[7]);
+					WLogInfo("2号工站测试总数量 = %d", OldValue[6]);
+
 					unixTime = (int)time(&now);
 					tick = (time_t)unixTime;
 					tm = *localtime(&tick);
 					strftime(data.Timestamp, sizeof(data.Timestamp), "%Y-%m-%d %H:%M:%S", &tm);
 					sprintf(data.DevInfo, host, "@", port);
-					data.StationStatus_1 = OldValue[0];
+					data.StationStatus_1 = OldValue[0] % 20;
 					data.StationOkAmount_1 = OldValue[1];
 					data.StationTotalAmount_1 = OldValue[2];
 					data.StationNgAmount_1 = OldValue[3];
-					data.StationStatus_2 = OldValue[4];
+					data.StationStatus_2 = OldValue[4] % 20;
 					data.StationOkAmount_2 = OldValue[5];
 					data.StationTotalAmount_2 = OldValue[6];
 					data.StationNgAmount_2 = OldValue[7];
-					WLogDebug("1号工站状态 = %d", OldValue[0]);
-					WLogDebug("1号工站OK数量 = %d", OldValue[1]);
-					WLogDebug("1号工站NG数量 = %d", OldValue[3]);
-					WLogDebug("1号工站测试总数量 = %d", OldValue[2]);
-
-					WLogDebug("2号工站状态 = %d", OldValue[4]);
-					WLogDebug("2号工站OK数量 = %d", OldValue[5]);
-					WLogDebug("2号工站NG数量 = %d", OldValue[7]);
-					WLogDebug("2号工站测试总数量 = %d", OldValue[6]);
+	
 
 					m_fn(eEVENT_MITSUBISHI_FX3U_32M, (void *)&data, m_pUser);
 				}

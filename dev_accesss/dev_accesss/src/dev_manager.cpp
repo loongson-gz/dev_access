@@ -96,7 +96,7 @@ void DevManager::DoEventProcess(EVENTTYPE iEvtType, void * pData)
 	{
 	case eEVENT_MITSUBISHI_FX3U_32M:
 	{
-		char *pSt[11] = {"待机中",
+		char *pSt[20] = {"待机中",
 			"气密气缸上升",
 			"气密气缸下降",
 			"测试开始",
@@ -106,17 +106,38 @@ void DevManager::DoEventProcess(EVENTTYPE iEvtType, void * pData)
 			"下降到位",
 			"出板放行",
 			"出板通过",
-			"下降到位等待测试"};
+			"下降到位等待测试",
+			"待机中1"
+			"待机中2",
+			"待机中3",
+			"待机中4",
+			"待机中5",
+			"待机中6",
+			"待机中7",
+			"待机中8"
+		};
 
 		stMitsubishi_FX3U_32M_Data *data = (stMitsubishi_FX3U_32M_Data *)(pData);
-		m_mesSvr.InsertToSvr("1号工位状态", pSt[data->StationStatus_1]);
-		m_mesSvr.InsertToSvr("1号工位OK数量", std::to_string(data->StationOkAmount_1).c_str());
-		m_mesSvr.InsertToSvr("1号工位总测数量", std::to_string(data->StationTotalAmount_1).c_str());
-		m_mesSvr.InsertToSvr("1号工位NG数量", std::to_string(data->StationNgAmount_1).c_str());
-		m_mesSvr.InsertToSvr("2号工位状态", pSt[data->StationStatus_2]);
-		m_mesSvr.InsertToSvr("2号工位OK数量", std::to_string(data->StationOkAmount_2).c_str());
-		m_mesSvr.InsertToSvr("2号工位总测数量", std::to_string(data->StationTotalAmount_2).c_str());
-		m_mesSvr.InsertToSvr("2号工位NG数量", std::to_string(data->StationNgAmount_2).c_str());
+		m_mesSvr.InsertToSvr("气密性1号工程状态", pSt[data->StationStatus_1]);
+		//m_mesSvr.InsertToSvr("1号工位状态", (int)(data->StationStatus_1));
+		m_mesSvr.InsertToSvr("气密性1号工程OK数量", (int)(data->StationOkAmount_1));
+		m_mesSvr.InsertToSvr("气密性1号工程总测数量", (int)(data->StationTotalAmount_1));
+		m_mesSvr.InsertToSvr("气密性1号工程NG数量", (int)(data->StationNgAmount_1));
+		
+		m_mesSvr.InsertToSvr("气密性2号工程状态", pSt[data->StationStatus_2]);
+		//m_mesSvr.InsertToSvr("2号工位状态", (int)(data->StationStatus_2));
+		m_mesSvr.InsertToSvr("气密性2号工程OK数量", (int)(data->StationOkAmount_2));
+		m_mesSvr.InsertToSvr("气密性2号工程总测数量", (int)(data->StationTotalAmount_2));
+		m_mesSvr.InsertToSvr("气密性2号工程NG数量", (int)(data->StationNgAmount_2));
+
+		//m_mesSvr.InsertToSvr("1号工位状态", pSt[data->StationStatus_1]);
+		//m_mesSvr.InsertToSvr("1号工位OK数量", std::to_string(data->StationOkAmount_1).c_str());
+		//m_mesSvr.InsertToSvr("1号工位总测数量", std::to_string(data->StationTotalAmount_1).c_str());
+		//m_mesSvr.InsertToSvr("1号工位NG数量", std::to_string(data->StationNgAmount_1).c_str());
+		//m_mesSvr.InsertToSvr("2号工位状态", pSt[data->StationStatus_2]);
+		//m_mesSvr.InsertToSvr("2号工位OK数量", std::to_string(data->StationOkAmount_2).c_str());
+		//m_mesSvr.InsertToSvr("2号工位总测数量", std::to_string(data->StationTotalAmount_2).c_str());
+		//m_mesSvr.InsertToSvr("2号工位NG数量", std::to_string(data->StationNgAmount_2).c_str());
 		break;
 	}
 		
