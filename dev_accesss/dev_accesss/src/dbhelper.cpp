@@ -66,6 +66,11 @@ int DbHelper::InsertData(const char *szSql)
 
 	try
 	{
+		if (!m_ses)
+		{
+			return -1;
+		}
+
 		Poco::Data::Statement mysql(*m_ses);
 		mysql << szSql;
 
