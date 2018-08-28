@@ -20,8 +20,14 @@ int Mitsubishi_Q03UDVCPU::Init()
 {
 	m_pMcAcsii = new McAcsii(m_conf.szIpAddr, m_conf.uPort);
 	m_pMcAcsii->Init();
+#if 0
 	string val;
 	m_pMcAcsii->Read("D1220", 10, val);
+	m_pMcAcsii->Write("M100", "12", val);
+	m_pMcAcsii->Write("M100", "123", val);
+	m_pMcAcsii->Write("M100", "12345", val);
+#endif
+
 	return 0;
 }
 
