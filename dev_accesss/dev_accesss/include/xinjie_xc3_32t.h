@@ -6,11 +6,11 @@
 
 
 typedef struct XinJieXc3_TestItemData {
-	char ItemName[8];
-	char ItemValue1[8];
-	char ItemValue2[8];
-	char ItemResult[8];
-	char ItemResultCode[8];
+	char ItemName[10];
+	char ItemValue1[10];
+	char ItemValue2[10];
+	char ItemResult[10];
+	char ItemResultCode[10];
 }stXinJieXc3_TestItemData;
 
 
@@ -37,7 +37,7 @@ public:
 	void DoStart();
 	uint16_t ModbusStart(int address);
 	bool ModbusInit(int id);
-	bool GetTestResults(int BaseAddress, uint8_t result[][8]);
+	bool GetTestResults(int BaseAddress, uint8_t result[][10]);
 
 	bool GetProductUniqueIdentifier(int BaseAddress, char * result);
 

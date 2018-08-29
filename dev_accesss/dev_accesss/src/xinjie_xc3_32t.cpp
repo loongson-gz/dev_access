@@ -53,7 +53,7 @@ void XinJieXc3::DoStart()
 	int i = 0;
 	int IntSet[4] = { 200,300,400,500 };
 	uint16_t Results[32] = {0};
-	uint8_t results[6][8] = {0};
+	uint8_t results[6][10] = {0};
 	bool Update = false;
 	int unixTime;
 	time_t tick;
@@ -85,21 +85,22 @@ void XinJieXc3::DoStart()
 			}
 			
 			WLogInfo("%s", data.UniquelyIdentifies);
-			if(strcmp(OldUniquelyIdentifies, data.UniquelyIdentifies) && strlen(data.UniquelyIdentifies) != 0)
+			//if(strcmp(OldUniquelyIdentifies, data.UniquelyIdentifies) && strlen(data.UniquelyIdentifies) != 0)
+			if(true)
 			{
 				Update = true;
 				memcpy(OldUniquelyIdentifies, data.UniquelyIdentifies, sizeof(OldUniquelyIdentifies));
-
 				try
 				{
 					for (i = 0; i < sizeof(IntSet) / sizeof(IntSet[0]); i++)
 					{
+						memset(results, 0, sizeof(results));
 						GetTestResults(IntSet[i], results);
-						sprintf(data.Results[i].ItemName, "%s", (char *)results[0]);
-						sprintf(data.Results[i].ItemValue1, "%s", (char *)results[1]);
-						sprintf(data.Results[i].ItemValue2, "%s", (char *)results[2]);
-						sprintf(data.Results[i].ItemResult, "%s", (char *)results[3]);
-						sprintf(data.Results[i].ItemResultCode, "%s", (char *)results[4]);
+						snprintf(data.Results[i].ItemName, sizeof(results[0]), "%s", (char *)results[0]);
+						snprintf(data.Results[i].ItemValue1, sizeof(results[1]), "%s", (char *)results[1]);
+						snprintf(data.Results[i].ItemValue2, sizeof(results[2]), "%s", (char *)results[2]);
+						snprintf(data.Results[i].ItemResult, sizeof(results[3]), "%s", (char *)results[3]);
+						snprintf(data.Results[i].ItemResultCode, sizeof(results[4]), "%s", (char *)results[4]);
 						Sleep(100);
 
 						WLogInfo("%s", data.Results[i].ItemName);
@@ -130,7 +131,9 @@ void XinJieXc3::DoStart()
 					sprintf(data.DevInfo, host, "@", port);
 
 					m_fn(eEVENT_XINJIE_XC3_32T_E, (void *)&data, m_pUser);
+					memset(&data, 0, sizeof(data));
 				}
+				
 			}
 			Sleep(interval);
 		}
@@ -171,7 +174,7 @@ bool XinJieXc3::ModbusInit(int id)
 }
 
 
-bool XinJieXc3::GetTestResults(int BaseAddress, uint8_t result[][8])
+bool XinJieXc3::GetTestResults(int BaseAddress, uint8_t result[][10])
 {
 	uint16_t Results[32];
 	uint8_t *TestResults;
