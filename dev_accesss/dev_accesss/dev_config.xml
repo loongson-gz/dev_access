@@ -2,12 +2,12 @@
 	<plc>
 		<dev>
 			<title>dev1</title>
-			<ip>192.168.1.112</ip>
-			<port>502</port>
+			<ip>192.168.104.141</ip>
+			<port>3000</port>
 			<!--设备ID -->
-			<id>1</id>
-			<!--设备类型 -->
-			<devtype>0</devtype>
+			<id>0</id>
+			<!--设备类型 0:信捷 1:三菱Q02UCCPU 2:三菱Q03UDVCPU 3:三菱FX3U-32M-->
+			<devtype>1</devtype>
 			<!-- 操作间隔 单位为：秒 -->
 			<interval>30</interval>
 		</dev>
@@ -16,11 +16,11 @@
 			<ip>192.168.103.82</ip>
 			<port>4806</port>
 			<!--设备ID -->
-			<id>2</id>
+			<id>0</id>
 			<!--设备类型 -->
 			<devtype>2</devtype>
 			<!-- 操作间隔 单位为：秒 -->
-			<interval>20</interval>
+			<interval>10</interval>
 		</dev>
         <dev>
 			<title>dev3</title>
@@ -31,7 +31,7 @@
 			<!--设备类型 -->
 			<devtype>3</devtype>
 			<!-- 操作间隔 单位为：秒 -->
-			<interval>3</interval>
+			<interval>120</interval>
 		</dev>
 	</plc>
 	<sql>

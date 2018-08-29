@@ -1,3 +1,4 @@
+#include "SocketAPI/SocketAPI.h"
 #include "dev_manager.h"
 #include "config_helper.h"
 #include "version.h"
@@ -8,6 +9,7 @@ DevManager::DevManager()
 	WLogInfo("version:%d.%d.%s", VER_MAJOR, VER_MINOR, VER_REVISION);
 
 	WLogInfo("%s make", __FUNCTION__);
+	InitSocket();
 
 	m_config = ConfigHelper::GetInstance();
 }
@@ -15,6 +17,7 @@ DevManager::DevManager()
 DevManager::~DevManager()
 {
 	WLogInfo("%s free", __FUNCTION__);
+	FreeSocket();
 }
 
 int DevManager::Start()
@@ -94,11 +97,21 @@ void DevManager::EventMsg(EVENTTYPE iEvtType, void * pData, void * pUser)
 
 void DevManager::DoEventProcess(EVENTTYPE iEvtType, void * pData)
 {
-	WLogDebug("====================EvtType:%d", iEvtType);
 	switch (iEvtType)
 	{
+	case eEVENT_XINJIE_XC3_32T_E:
+		WLogInfo("==================== eEVENT_XINJIE_XC3_32T_E EvtType:%d", iEvtType);
+		break;
+	case eMITSUBISHI_Q02UCCPU:
+		WLogInfo("==================== eMITSUBISHI_Q02UCCPU EvtType:%d", iEvtType);
+		break;
+	case eEVENT_MITSUBISHI_Q03UDVCPU:
+		WLogInfo("==================== eEVENT_MITSUBISHI_Q03UDVCPU EvtType:%d", iEvtType);
+		break;
 	case eEVENT_MITSUBISHI_FX3U_32M:
 	{
+		WLogInfo("==================== eEVENT_MITSUBISHI_FX3U_32M EvtType:%d", iEvtType);
+
 		char *pSt[20] = {"待机中",
 			"气密气缸上升",
 			"气密气缸下降",
@@ -135,6 +148,8 @@ void DevManager::DoEventProcess(EVENTTYPE iEvtType, void * pData)
 
 		break;
 	}
-		
+	default:
+		WLogInfo("====================unknow EvtType:%d", iEvtType);
+		break;
 	}
 }
