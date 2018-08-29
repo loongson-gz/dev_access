@@ -64,11 +64,22 @@ void Mitsubishi_Q02UUCPU::DoStart()
 {
 	while (!m_bStop)
 	{
+#if 0
+		m_pMcAcsii->Write("D511", 360);
+		m_pMcAcsii->Write("D511", 1);
+		m_pMcAcsii->Write("D511", 2);
+		m_pMcAcsii->Write("D511", 10);
+		m_pMcAcsii->Write("D511", 11);
+
+		//m_pMcAcsii->Read("D511", 2, strRet);		//读int 类型的为 2个字节
+		//cout << strRet << endl;
+#endif
+
 		char *pAddr[5] = {
 			"Y181" ,
 			"Y183" ,
 			"D7001" ,
-			"D3500" ,
+			"D3501" ,
 			NULL
 		};
 
@@ -83,8 +94,14 @@ void Mitsubishi_Q02UUCPU::DoStart()
 		int a[4] = {0};
 		for (size_t i = 0; i < 4; i++)
 		{
+			int len = 1;
+			if (i > 1)
+			{
+				len = 2;
+			}
+
 			string val;
-			m_pMcAcsii->Read(pAddr[i], 2, val);		//读int 类型的为 2个字节
+			m_pMcAcsii->Read(pAddr[i], len, val);		//读int 类型的为 2个字节, 位类型的为1个字节
 			int cnt;
 			sscanf_s(val.c_str(), "%x", &cnt);
 			WLogInfo("%s-->[%s]:([%s] %d)", pName[i], pAddr[i], val.c_str(), cnt);

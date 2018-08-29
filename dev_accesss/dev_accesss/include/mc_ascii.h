@@ -17,17 +17,22 @@ public:
 	//val: 值
 	int Read(const char *addr, uint16_t length, string &val);
 
+	//写入字符串
 	//addr: 地址
 	//val: 值
-	int Write(const char *addr, const char *val, string &strRet);
+	int Write(const char *addr, const char *val);
+
+	//写入数字
+	int Write(const char *addr, int val);
 private:
+	int DoWrite(const char *addr, const char *val);
 	int AnalysisAddress(const char *addr);
 	int BuildReadCmd(const char *addr, uint16_t length);
 	int BuildWriteCmd(const char *addr, const char *val);
 	int DoBuildWriteCmd(const char *addr, const char *val);
 	int SendAndRecv(const char *pData, int len, string & val);
 
-	int ParseWriteResult(const string &str, string &val);
+	int ParseWriteResult(const string &str);
 	int ParseReadResult(const string &str, string &val);
 
 
