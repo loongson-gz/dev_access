@@ -152,7 +152,6 @@ void Mitsubishi_FX3U_32M::DoStart()
 					data.StationOkAmount_2 = OldValue[5];
 					data.StationTotalAmount_2 = OldValue[6];
 					data.StationNgAmount_2 = OldValue[7];
-	
 
 					m_fn(eEVENT_MITSUBISHI_FX3U_32M, (void *)&data, m_pUser);
 				}

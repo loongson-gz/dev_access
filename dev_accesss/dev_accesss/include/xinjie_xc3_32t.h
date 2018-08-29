@@ -4,15 +4,26 @@
 #include "common.h"
 #include "plc_base.h"
 
-struct XinJieXc3_Data {
+
+typedef struct XinJieXc3_TestItemData {
+	char ItemName[10];
+	char ItemValue1[10];
+	char ItemValue2[10];
+	char ItemResult[10];
+	char ItemResultCode[10];
+}stXinJieXc3_TestItemData;
+
+
+typedef struct XinJieXc3_Data {
 	char DevInfo[64];
-	long UniquelyIdentifies;
-	uint16_t CompressiveStrength;
-	uint16_t LeakageCurrent;
-	uint16_t GroundingResistance;
-	uint16_t InsulationResistance;
+	char UniquelyIdentifies[64];
 	char Timestamp[64];
-};
+	//stXinJieXc3_TestItemData CompressiveStrength;
+	//stXinJieXc3_TestItemData LeakageCurrent;
+	//stXinJieXc3_TestItemData GroundingResistance;
+	//stXinJieXc3_TestItemData InsulationResistance;
+	stXinJieXc3_TestItemData Results[4];
+}stXinJieXc3_Data;
 
 
 class XinJieXc3 : public PlcBase {
@@ -26,7 +37,10 @@ public:
 	void DoStart();
 	uint16_t ModbusStart(int address);
 	bool ModbusInit(int id);
-	bool GetCompressiveStrength(uint16_t read_holding_regs);
+	bool GetTestResults(int BaseAddress, uint8_t result[][10]);
+
+	bool GetProductUniqueIdentifier(int BaseAddress, char * result);
+
 
 private:
 	int port;
