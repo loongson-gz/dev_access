@@ -26,7 +26,7 @@ Mitsubishi_Q02UUCPU::~Mitsubishi_Q02UUCPU()
 
 int Mitsubishi_Q02UUCPU::Init()
 {
-	m_pMcAcsii = new McAcsii(m_conf.szIpAddr, m_conf.uPort);
+	m_pMcAcsii = new McAscii(m_conf.szIpAddr, m_conf.uPort);
 	int ret = m_pMcAcsii->Init();
 	if (ret != 0)
 	{

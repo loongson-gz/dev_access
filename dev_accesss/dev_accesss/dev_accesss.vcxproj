@@ -180,7 +180,7 @@ xcopy /y $(ProjectDir)dev_config.xml $(OutDir)</Command>
     <ClCompile Include="src\dev_manager.cpp" />
     <ClCompile Include="src\huaxi.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\mc_acsii.cpp" />
+    <ClCompile Include="src\mc_ascii.cpp" />
     <ClCompile Include="src\mc_data_type.cpp" />
     <ClCompile Include="src\mes_svr.cpp" />
     <ClCompile Include="src\microplan.cpp" />
@@ -214,7 +214,7 @@ xcopy /y $(ProjectDir)dev_config.xml $(OutDir)</Command>
     <ClInclude Include="include\dev_manager.h" />
     <ClInclude Include="include\error_code.h" />
     <ClInclude Include="include\huaxi.h" />
-    <ClInclude Include="include\mc_acsii.h" />
+    <ClInclude Include="include\mc_ascii.h" />
     <ClInclude Include="include\mc_data_type.h" />
     <ClInclude Include="include\mes_svr.h" />
     <ClInclude Include="include\microplan.h" />

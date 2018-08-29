@@ -3,7 +3,7 @@
 
 #include "common.h"
 #include "plc_base.h"
-#include "mc_acsii.h"
+#include "mc_ascii.h"
 
 typedef struct stMitsubishi_Q02UUCPU_Data_
 {
@@ -33,7 +33,7 @@ private:
 	EventMsgFn m_fn;
 	void *m_pUser;
 
-	McAcsii *m_pMcAcsii;
+	McAscii *m_pMcAcsii;
 
 	stPLCConf m_conf;
 };

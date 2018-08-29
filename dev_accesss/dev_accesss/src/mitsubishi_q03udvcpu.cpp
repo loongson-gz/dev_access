@@ -25,7 +25,7 @@ Mitsubishi_Q03UDVCPU::~Mitsubishi_Q03UDVCPU()
 
 int Mitsubishi_Q03UDVCPU::Init()
 {
-	m_pMcAcsii = new McAcsii(m_conf.szIpAddr, m_conf.uPort);
+	m_pMcAcsii = new McAscii(m_conf.szIpAddr, m_conf.uPort);
 	int ret = m_pMcAcsii->Init();
 	if (ret != 0)
 	{
@@ -94,10 +94,14 @@ void Mitsubishi_Q03UDVCPU::DoStart()
 		{
 			string val;
 			m_pMcAcsii->Read(pAddr[i], 2, val);		//读int 类型的为 2个字节
-			int cnt;
-			sscanf_s(val.c_str(), "%x", &cnt);
-			WLogInfo("%s-->[%s]:([%s] %d)", pName[i], pAddr[i], val.c_str(), cnt);
-			a[i] = cnt;
+			if (!val.empty())
+			{
+				int cnt = 0;
+				sscanf_s(val.c_str(), "%x", &cnt);
+				WLogInfo("%s-->[%s]:([%s] %d)", pName[i], pAddr[i], val.c_str(), cnt);
+				a[i] = cnt;
+			}
+			
 		}
 
 		if (m_fn)

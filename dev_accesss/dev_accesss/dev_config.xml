@@ -14,7 +14,7 @@
 		<dev>
 			<title>dev1</title>
 			<ip>192.168.104.141</ip>
-			<port>3000</port>
+			<port>3002</port>
 			<!--设备ID -->
 			<id>0</id>
 			<!--设备类型 0:信捷 1:三菱Q02UCCPU 2:三菱Q03UDVCPU 3:三菱FX3U-32M-->

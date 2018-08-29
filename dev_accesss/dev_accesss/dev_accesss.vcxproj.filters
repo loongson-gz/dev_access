@@ -84,9 +84,6 @@
     <ClCompile Include="src\dev_factory.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\mc_acsii.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="src\microplan.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -121,6 +118,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\mondial.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mc_ascii.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -179,9 +179,6 @@
     <ClInclude Include="include\error_code.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\mc_acsii.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="include\microplan.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -225,6 +222,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\mondial.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mc_ascii.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

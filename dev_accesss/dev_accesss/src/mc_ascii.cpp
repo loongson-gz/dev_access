@@ -1,8 +1,8 @@
 #include "SocketAPI\SocketAPI.h"
-#include "mc_acsii.h"
+#include "mc_ascii.h"
 
 
-McAcsii::McAcsii(const char * ip, uint16_t port)
+McAscii::McAscii(const char * ip, uint16_t port)
 	: m_ipaddr(ip)
 	, m_port(port)
 	, m_sockfd(-1)
@@ -10,7 +10,7 @@ McAcsii::McAcsii(const char * ip, uint16_t port)
 {
 }
 
-McAcsii::~McAcsii()
+McAscii::~McAscii()
 {
 	if (m_pPlcWriteCmd)
 	{
@@ -19,7 +19,7 @@ McAcsii::~McAcsii()
 	}
 }
 
-int McAcsii::Init()
+int McAscii::Init()
 {
 	m_sockfd = Connect(m_ipaddr.c_str(), m_port, SOCK_STREAM);
 	if (m_sockfd < 0)
@@ -31,7 +31,7 @@ int McAcsii::Init()
 	return 0;
 }
 
-int McAcsii::Read(const char *addr, uint16_t length, string &val)
+int McAscii::Read(const char *addr, uint16_t length, string &val)
 {
 	int ret = BuildReadCmd(addr, length);
 	if (ret < 0)
@@ -49,7 +49,7 @@ int McAcsii::Read(const char *addr, uint16_t length, string &val)
 	return ret;
 }
 
-int McAcsii::BuildReadCmd(const char *addr, uint16_t length)
+int McAscii::BuildReadCmd(const char *addr, uint16_t length)
 {
 	int len = AnalysisAddress(addr);
 	if (len < 0)
@@ -118,7 +118,7 @@ int McAcsii::BuildReadCmd(const char *addr, uint16_t length)
 	return 0;
 }
 
-int McAcsii::AnalysisAddress(const char *addr)
+int McAscii::AnalysisAddress(const char *addr)
 {
 	int len = -1;
 	char type = addr[0];
@@ -232,7 +232,7 @@ int McAcsii::AnalysisAddress(const char *addr)
 	return len;
 }
 
-int McAcsii::Write(const char *addr, const char *val, string &strRet)
+int McAscii::Write(const char *addr, const char *val, string &strRet)
 {
 	int ret = BuildWriteCmd(addr, val);
 	if (ret < 0)
@@ -252,7 +252,7 @@ int McAcsii::Write(const char *addr, const char *val, string &strRet)
 	return ret;
 }
 
-int McAcsii::BuildWriteCmd(const char *addr, const char *val)
+int McAscii::BuildWriteCmd(const char *addr, const char *val)
 {
 	int len = AnalysisAddress(addr);
 	if (len < 0)
@@ -303,7 +303,7 @@ int McAcsii::BuildWriteCmd(const char *addr, const char *val)
 	return ret;
 }
 
-int McAcsii::DoBuildWriteCmd(const char *addr, const char *val)
+int McAscii::DoBuildWriteCmd(const char *addr, const char *val)
 {
 	int len = AnalysisAddress(addr);
 	if (len < 0)
@@ -401,7 +401,7 @@ int McAcsii::DoBuildWriteCmd(const char *addr, const char *val)
 	return 0;
 }
 
-int McAcsii::SendAndRecv(const char *pData, int len, string & val)
+int McAscii::SendAndRecv(const char *pData, int len, string & val)
 {
 	WLogInfo("send:%s", pData);
 	int ret = SendWithTimeout(m_sockfd, pData, len);
@@ -423,7 +423,7 @@ int McAcsii::SendAndRecv(const char *pData, int len, string & val)
 	return 0;
 }
 
-int McAcsii::ParseWriteResult(const string & str, string & val)
+int McAscii::ParseWriteResult(const string & str, string & val)
 {
 	string ret = str.substr(18, 4);
 	if (atoi(ret.c_str()) != 0)
@@ -433,7 +433,7 @@ int McAcsii::ParseWriteResult(const string & str, string & val)
 	return 0;
 }
 
-int McAcsii::ParseReadResult(const string & str, string & val)
+int McAscii::ParseReadResult(const string & str, string & val)
 {
 	string ret = str.substr(18, 4);
 	if (atoi(ret.c_str()) == 0)
@@ -467,7 +467,7 @@ int McAcsii::ParseReadResult(const string & str, string & val)
 			for (size_t i = 0; i < iLen / 2; i++)
 			{
 				string tmp = str.substr(i*4+22, 4);
-				int ival;
+				int ival = 0;
 				sscanf_s(tmp.c_str(), "%x", &ival);
 				char temp[5] = {0};
 				if (ival != 0)

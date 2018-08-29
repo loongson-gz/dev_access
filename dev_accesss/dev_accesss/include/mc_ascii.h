@@ -5,10 +5,10 @@
 #include "mc_data_type.h"
 
 
-class McAcsii {
+class McAscii {
 public:
-	McAcsii(const char * ip, uint16_t port);
-	~McAcsii();
+	McAscii(const char * ip, uint16_t port);
+	~McAscii();
 
 	int Init();
 
