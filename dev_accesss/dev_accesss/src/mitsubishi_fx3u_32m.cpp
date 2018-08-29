@@ -15,7 +15,7 @@ Mitsubishi_FX3U_32M::Mitsubishi_FX3U_32M(stPLCConf conf)
 	port = conf.uPort;
 	host = conf.szIpAddr;
 	id = conf.id;
-	interval = conf.interval * 1000;
+	interval = conf.interval;
 	mb.reset(new Modbus(host, port));
 }
 
@@ -157,7 +157,7 @@ void Mitsubishi_FX3U_32M::DoStart()
 					m_fn(eEVENT_MITSUBISHI_FX3U_32M, (void *)&data, m_pUser);
 				}
 			}
-			Sleep(interval);
+			this_thread::sleep_for(chrono::seconds(interval));
 		}
 		m_bStop = false;
 		memset(OldValue, 0, sizeof(OldValue));

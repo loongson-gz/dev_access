@@ -111,6 +111,12 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)3rd\poco_1.9.0\libx64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y $(SolutionDir)3rd\poco_1.9.0\binx64\PocoDatad.dll $(OutDir)
+xcopy /y $(SolutionDir)3rd\poco_1.9.0\binx64\PocoDataODBCd.dll $(OutDir)
+xcopy /y $(SolutionDir)3rd\poco_1.9.0\binx64\PocoFoundationd.dll $(OutDir)
+xcopy /y $(ProjectDir)dev_config.xml $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -148,6 +154,12 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)3rd\poco_1.9.0\libx64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y $(SolutionDir)3rd\poco_1.9.0\binx64\PocoData.dll $(OutDir)
+xcopy /y $(SolutionDir)3rd\poco_1.9.0\binx64\PocoDataODBC.dll $(OutDir)
+xcopy /y $(SolutionDir)3rd\poco_1.9.0\binx64\PocoFoundation.dll $(OutDir)
+xcopy /y $(ProjectDir)dev_config.xml $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\common\Locker\RWLock.cpp" />
