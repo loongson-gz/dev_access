@@ -24,6 +24,7 @@ int McAcsii::Init()
 	m_sockfd = Connect(m_ipaddr.c_str(), m_port, SOCK_STREAM);
 	if (m_sockfd < 0)
 	{
+		WLogError("%s:%d connect err.", m_ipaddr.c_str(), m_port);
 		return -1;
 	}
 	SetSocketNBlock(m_sockfd, true);
@@ -466,9 +467,14 @@ int McAcsii::ParseReadResult(const string & str, string & val)
 			for (size_t i = 0; i < iLen / 2; i++)
 			{
 				string tmp = str.substr(i*4+22, 4);
-				char val[4] = { 0 };
-				snprintf(val, sizeof(val), "%x", atoi(tmp.c_str()));
-				strncpy(buf+i*2, val, 2);
+				int ival;
+				sscanf_s(tmp.c_str(), "%x", &ival);
+				char temp[5] = {0};
+				if (ival != 0)
+				{
+					snprintf(temp, sizeof(temp), "%x", ival);
+				}
+				strncpy(buf+i*4, temp, strlen(temp));
 			}
 			val = string(buf);
 			delete[] buf;
