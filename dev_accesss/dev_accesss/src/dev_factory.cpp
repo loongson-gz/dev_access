@@ -50,6 +50,12 @@ SqlBase * DevFactory::CreateSqlDev(stSQLConf *conf)
 	case eMICROPLAN:
 		dev = new MicroPlan(*conf);
 		break;
+	case eMONDIAL:
+		dev = new Mondial(*conf);
+		break;
+	case eHUAXI:
+		dev = new HuaXi(*conf);
+		break;
 	default:
 		break;
 	}

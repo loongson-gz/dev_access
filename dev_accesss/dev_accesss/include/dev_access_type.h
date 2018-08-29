@@ -16,7 +16,8 @@ enum SQLTYPE
 {
 	eSQL_SERVER = 0,		// sql server
 	eORACLE,				// oracle
-	eMYSQL					// mysql
+	eMYSQL,					// mysql
+	eACCESS					// access
 };
 
 //PLC设备类型
@@ -32,7 +33,10 @@ enum PLCDEVTYPE
 //SQL设备类型
 enum SQLDEVTYPE
 {
-	eMICROPLAN = 0,					//迈克普兰
+	eMONDIAL = 0,				//梦地
+	eHUAXI ,					//铧禧
+	eMICROPLAN 					//迈克普兰
+
 };
 
 //事件类型
@@ -42,8 +46,9 @@ enum EVENTTYPE
 	eEVENT_MITSUBISHI_Q02UCCPU ,
 	eEVENT_MITSUBISHI_Q03UDVCPU ,
 	eEVENT_MITSUBISHI_FX3U_32M ,
-	eEVENT_XINJIE_XC3_32T_E,
-
+	eEVENT_MICROPLAN ,
+	eEVENT_MONDIAL ,
+	eEVENT_HUAXI
 };
 
 //plc 配置

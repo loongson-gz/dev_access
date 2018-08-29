@@ -84,7 +84,7 @@ void XinJieXc3::DoStart()
 				break;
 			}
 			
-			WLogInfo("%s", data.UniquelyIdentifies);
+			WLogInfo("UniquelyIdentifies: %s", data.UniquelyIdentifies);
 			//if(strcmp(OldUniquelyIdentifies, data.UniquelyIdentifies) && strlen(data.UniquelyIdentifies) != 0)
 			if(true)
 			{
@@ -180,7 +180,6 @@ bool XinJieXc3::GetTestResults(int BaseAddress, uint8_t result[][10])
 	uint8_t *TestResults;
 	int i = 0, j = 0;
 	int a = 0;
-	char tmp[16];
 	try
 	{
 		mb->ModbusReadHoldingRegisters(BaseAddress, 32, Results);

@@ -178,6 +178,7 @@ xcopy /y $(ProjectDir)dev_config.xml $(OutDir)</Command>
     <ClCompile Include="src\dbhelper.cpp" />
     <ClCompile Include="src\dev_factory.cpp" />
     <ClCompile Include="src\dev_manager.cpp" />
+    <ClCompile Include="src\huaxi.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\mc_acsii.cpp" />
     <ClCompile Include="src\mc_data_type.cpp" />
@@ -187,6 +188,7 @@ xcopy /y $(ProjectDir)dev_config.xml $(OutDir)</Command>
     <ClCompile Include="src\mitsubishi_q02uccpu.cpp" />
     <ClCompile Include="src\mitsubishi_q03udvcpu.cpp" />
     <ClCompile Include="src\modbus.cpp" />
+    <ClCompile Include="src\mondial.cpp" />
     <ClCompile Include="src\plc_base.cpp" />
     <ClCompile Include="src\sql_base.cpp" />
     <ClCompile Include="src\xinjie_xc3_32t.cpp" />
@@ -211,6 +213,7 @@ xcopy /y $(ProjectDir)dev_config.xml $(OutDir)</Command>
     <ClInclude Include="include\dev_factory.h" />
     <ClInclude Include="include\dev_manager.h" />
     <ClInclude Include="include\error_code.h" />
+    <ClInclude Include="include\huaxi.h" />
     <ClInclude Include="include\mc_acsii.h" />
     <ClInclude Include="include\mc_data_type.h" />
     <ClInclude Include="include\mes_svr.h" />
@@ -220,6 +223,7 @@ xcopy /y $(ProjectDir)dev_config.xml $(OutDir)</Command>
     <ClInclude Include="include\mitsubishi_q03udvcpu.h" />
     <ClInclude Include="include\modbus.h" />
     <ClInclude Include="include\modbus_exception.h" />
+    <ClInclude Include="include\mondial.h" />
     <ClInclude Include="include\plc_base.h" />
     <ClInclude Include="include\sql_base.h" />
     <ClInclude Include="include\version.h" />

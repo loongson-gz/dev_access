@@ -7,8 +7,11 @@
 #include "xinjie_xc3_32t.h"
 #include "mitsubishi_q02uccpu.h"
 #include "mitsubishi_q03udvcpu.h"
-#include "microplan.h"
 #include "mitsubishi_fx3u_32m.h"
+
+#include "microplan.h"
+#include "mondial.h"
+#include "huaxi.h"
 
 class DevFactory
 {

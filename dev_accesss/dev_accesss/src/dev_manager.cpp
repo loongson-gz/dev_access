@@ -148,6 +148,15 @@ void DevManager::DoEventProcess(EVENTTYPE iEvtType, void * pData)
 
 		break;
 	}
+	case eEVENT_MICROPLAN:
+		WLogInfo("==================== eEVENT_MICROPLAN EvtType:%d", iEvtType);
+		break;
+	case eEVENT_MONDIAL:
+		WLogInfo("==================== eEVENT_MONDIAL EvtType:%d", iEvtType);
+		break;
+	case eEVENT_HUAXI:
+		WLogInfo("==================== eEVENT_HUAXI EvtType:%d", iEvtType);
+		break;
 	default:
 		WLogInfo("====================unknow EvtType:%d", iEvtType);
 		break;
