@@ -100,14 +100,79 @@ void DevManager::DoEventProcess(EVENTTYPE iEvtType, void * pData)
 	switch (iEvtType)
 	{
 	case eEVENT_XINJIE_XC3_32T_E:
+	{
 		WLogInfo("==================== eEVENT_XINJIE_XC3_32T_E EvtType:%d", iEvtType);
+
+		m_mesSvr.SetDepartmentAndProLineCode("RSCJ001", "RSCX001");
+		m_mesSvr.SetWorkShopAndProDLine("热水车间", "热水");
+		m_mesSvr.SetTitleAndCode("RS1808300100001", "电气检测");
+
+		stXinJieXc3_Data *data = (stXinJieXc3_Data *)(pData);
+		int i = 0;
+		m_mesSvr.InsertToSvr("产品条码", data->UniquelyIdentifies);
+		for (size_t i = 0; i < 4; i++)
+		{
+			m_mesSvr.InsertToSvr(data->Results[i].ItemName, data->Results[i].ItemValue1);
+		}
+		
 		break;
+	}
 	case eMITSUBISHI_Q02UCCPU:
+	{
 		WLogInfo("==================== eMITSUBISHI_Q02UCCPU EvtType:%d", iEvtType);
+		char *pName[4] = {
+			"设备状态",
+			"倍速链延时停止锁存时间",
+			"产品计数",
+			"生产节拍"
+		};
+
+		m_mesSvr.SetDepartmentAndProLineCode("RSCJ001", "RSCX001");
+		m_mesSvr.SetWorkShopAndProDLine("热水车间", "热水");
+		m_mesSvr.SetTitleAndCode("RS1808300100002", "线体控制");
+
+		stMitsubishi_Q02UUCPU_Data *data = (stMitsubishi_Q02UUCPU_Data *)(pData);
+		int i = 0;
+		m_mesSvr.InsertToSvr(pName[i++], data->iDeviceStatus);
+		m_mesSvr.InsertToSvr(pName[i++], data->iStopTime);
+		m_mesSvr.InsertToSvr(pName[i++], data->iProductCount);
+		m_mesSvr.InsertToSvr(pName[i++], data->iProductBeats);
 		break;
+	}
+		
 	case eEVENT_MITSUBISHI_Q03UDVCPU:
+	{
 		WLogInfo("==================== eEVENT_MITSUBISHI_Q03UDVCPU EvtType:%d", iEvtType);
+		char *pName[9] = {
+			"生产时间",
+			"投入产量",
+			"完成产量",
+			"气密检测 NG数量",
+			"试火房1 NG数量",
+			"试火房2 NG数量",
+			"返修1 OK数量",
+			"返修2 OK数量",
+			"返修3 OK数量",
+		};
+		
+		m_mesSvr.SetDepartmentAndProLineCode("ZJCJ001", "ZJCX001");
+		m_mesSvr.SetWorkShopAndProDLine("灶具车间", "灶具");
+		m_mesSvr.SetTitleAndCode("ZJ1808300100002", "线体控制");
+
+		stMitsubishi_Q03UDVCPU_Data *data = (stMitsubishi_Q03UDVCPU_Data *)(pData);
+		int i = 0;
+		m_mesSvr.InsertToSvr(pName[i++], data->iProductionTime);
+		m_mesSvr.InsertToSvr(pName[i++], data->iCountOfInput);
+		m_mesSvr.InsertToSvr(pName[i++], data->iCountOfFinishedOutput);
+		m_mesSvr.InsertToSvr(pName[i++], data->iCountOfAirNg);
+		m_mesSvr.InsertToSvr(pName[i++], data->iCountOfTestFireNg_1);
+		m_mesSvr.InsertToSvr(pName[i++], data->iCountOfTestFireNg_2);
+		m_mesSvr.InsertToSvr(pName[i++], data->iCountOfRepair_1);
+		m_mesSvr.InsertToSvr(pName[i++], data->iCountOfRepair_2);
+		m_mesSvr.InsertToSvr(pName[i++], data->iCountOfRepair_3);
+
 		break;
+	}
 	case eEVENT_MITSUBISHI_FX3U_32M:
 	{
 		WLogInfo("==================== eEVENT_MITSUBISHI_FX3U_32M EvtType:%d", iEvtType);

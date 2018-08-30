@@ -113,6 +113,7 @@ void Mitsubishi_Q02UUCPU::DoStart()
 			int cnt;
 			sscanf_s(val.c_str(), "%x", &cnt);
 			WLogInfo("%s-->[%s]:([%s] %d)", pName[i], pAddr[i], val.c_str(), cnt);
+			a[i] = cnt;
 		}
 		if (m_fn)
 		{
