@@ -14,7 +14,7 @@ public:
 	int Start();
 	int Stop();
 
-	void SetTitleAndCode(const char *code, const char *name);
+	void SetDevTitleAndCode(const char *code, const char *name);
 	void SetWorkShopAndProDLine(const char *workshopName, const char *proDLineName);
 	void SetDepartmentAndProLineCode(const char *departmentCode, const char *productLineCode);
 
@@ -25,8 +25,8 @@ private:
 
 	stSQLConf m_conf;
 	DbHelper *m_db;
-	string m_strCode;
-	string m_strName;
+	string m_strDevCode;
+	string m_strDevName;
 	string m_strWorkshopName;
 	string m_strProDLineName;
 	string m_strDepartmentCode;

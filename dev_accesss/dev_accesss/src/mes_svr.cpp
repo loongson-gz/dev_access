@@ -57,10 +57,10 @@ int MesSvr::Stop()
 	return 0;
 }
 
-void MesSvr::SetTitleAndCode(const char *code, const char *name)
+void MesSvr::SetDevTitleAndCode(const char *code, const char *name)
 {
-	m_strCode = code;
-	m_strName = GBKToUTF8(name);
+	m_strDevCode = code;
+	m_strDevName = GBKToUTF8(name);
 }
 
 void MesSvr::SetWorkShopAndProDLine(const char * workshopName, const char * proDLineName)
@@ -84,15 +84,17 @@ int MesSvr::InsertToSvr(const char *key, const char *val)
 	string strProDLineName = GBKToUTF8("Ôî¾ß");
 
 	stringstream ss;
-	ss << "INSERT INTO TB_DEVICECJJL  VALUES (RAWTOHEX(sys_guid()), NULL, NULL, NULL, sysdate, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL,"
+	ss << "INSERT INTO TB_DEVICECJJL  VALUES (RAWTOHEX(sys_guid()), NULL, NULL, NULL, sysdate, NULL, NULL, NULL, NULL, NULL, NULL, '',"
+		<< "'" << m_strDevCode << "' ,"
+		<< "'" << m_strDevName << "' ,"
 		<< "'" << strKey << "' ,"
 		<< "'" << strVal << "',"
-		<< "NULL,"
+		<< "'GC001',"
 		<< "'" << strFactoryName << "' ,"
-		<< "NULL,"
-		<< "'" << strWorkshopName << "' ,"
-		<< "NULL,"
-		<< "'" << strProDLineName << "' ,"
+		<< "'" << m_strDepartmentCode << "' ,"
+		<< "'" << m_strWorkshopName << "' ,"
+		<< "'" << m_strProductLineCode << "' ,"
+		<< "'" << m_strProDLineName << "' ,"
 		<< "'" << GetTime() << "' );";
 
 	string str = ss.str();
@@ -110,15 +112,17 @@ int MesSvr::InsertToSvr(const char *key, int val)
 	string strProDLineName = GBKToUTF8("Ôî¾ß");
 
 	stringstream ss;
-	ss << "INSERT INTO TB_DEVICECJJL  VALUES (RAWTOHEX(sys_guid()), NULL, NULL, NULL, sysdate, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL,"
+	ss << "INSERT INTO TB_DEVICECJJL  VALUES (RAWTOHEX(sys_guid()), NULL, NULL, NULL, sysdate, NULL, NULL, NULL, NULL, NULL, NULL, '',"
+		<< "'" << m_strDevCode << "' ,"
+		<< "'" << m_strDevName << "' ,"
 		<< "'" << strKey << "' ,"
 		<< "'" << val << "',"
-		<< "NULL,"
+		<< "'GC001',"
 		<< "'" << strFactoryName << "' ,"
-		<< "NULL,"
-		<< "'" << strWorkshopName << "' ,"
-		<< "NULL,"
-		<< "'" << strProDLineName << "' ,"
+		<< "'" << m_strDepartmentCode << "' ,"
+		<< "'" << m_strWorkshopName << "' ,"
+		<< "'" << m_strProductLineCode << "' ,"
+		<< "'" << m_strProDLineName << "' ,"
 		<< "'" << GetTime() << "' );";
 
 	string str = ss.str();

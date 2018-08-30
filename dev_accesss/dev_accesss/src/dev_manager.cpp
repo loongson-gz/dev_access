@@ -105,7 +105,7 @@ void DevManager::DoEventProcess(EVENTTYPE iEvtType, void * pData)
 
 		m_mesSvr.SetDepartmentAndProLineCode("RSCJ001", "RSCX001");
 		m_mesSvr.SetWorkShopAndProDLine("热水车间", "热水");
-		m_mesSvr.SetTitleAndCode("RS1808300100001", "电气检测");
+		m_mesSvr.SetDevTitleAndCode("RS1808300100001", "电气检测");
 
 		stXinJieXc3_Data *data = (stXinJieXc3_Data *)(pData);
 		int i = 0;
@@ -129,7 +129,7 @@ void DevManager::DoEventProcess(EVENTTYPE iEvtType, void * pData)
 
 		m_mesSvr.SetDepartmentAndProLineCode("RSCJ001", "RSCX001");
 		m_mesSvr.SetWorkShopAndProDLine("热水车间", "热水");
-		m_mesSvr.SetTitleAndCode("RS1808300100002", "线体控制");
+		m_mesSvr.SetDevTitleAndCode("RS1808300100002", "线体控制");
 
 		stMitsubishi_Q02UUCPU_Data *data = (stMitsubishi_Q02UUCPU_Data *)(pData);
 		int i = 0;
@@ -157,7 +157,7 @@ void DevManager::DoEventProcess(EVENTTYPE iEvtType, void * pData)
 		
 		m_mesSvr.SetDepartmentAndProLineCode("ZJCJ001", "ZJCX001");
 		m_mesSvr.SetWorkShopAndProDLine("灶具车间", "灶具");
-		m_mesSvr.SetTitleAndCode("ZJ1808300100002", "线体控制");
+		m_mesSvr.SetDevTitleAndCode("ZJ1808300100002", "线体控制");
 
 		stMitsubishi_Q03UDVCPU_Data *data = (stMitsubishi_Q03UDVCPU_Data *)(pData);
 		int i = 0;
@@ -200,7 +200,7 @@ void DevManager::DoEventProcess(EVENTTYPE iEvtType, void * pData)
 
 		m_mesSvr.SetDepartmentAndProLineCode("ZJCJ001", "ZJCX001");
 		m_mesSvr.SetWorkShopAndProDLine("灶具车间", "灶具");
-		m_mesSvr.SetTitleAndCode("ZJ1808300100001", "气密性检测");
+		m_mesSvr.SetDevTitleAndCode("ZJ1808300100001", "气密性检测");
 
 		stMitsubishi_FX3U_32M_Data *data = (stMitsubishi_FX3U_32M_Data *)(pData);
 		m_mesSvr.InsertToSvr("气密性1号工程状态", pSt[data->StationStatus_1]);
