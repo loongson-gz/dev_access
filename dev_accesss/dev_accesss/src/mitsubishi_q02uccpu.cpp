@@ -66,13 +66,21 @@ void Mitsubishi_Q02UUCPU::DoStart()
 	{
 #if 0
 		m_pMcAcsii->Write("D511", 360);
-		m_pMcAcsii->Write("D511", 1);
-		m_pMcAcsii->Write("D511", 2);
-		m_pMcAcsii->Write("D511", 10);
-		m_pMcAcsii->Write("D511", 11);
+		string val;
+		m_pMcAcsii->Read("D511", 2, val);
+		cout << "D511 360:" << val << endl;
 
-		//m_pMcAcsii->Read("D511", 2, strRet);		//读int 类型的为 2个字节
-		//cout << strRet << endl;
+		m_pMcAcsii->Write("D511", 361);
+		m_pMcAcsii->Read("D511", 2, val);
+		cout << "D511 361:" << val << endl;
+
+		m_pMcAcsii->Write("D530", 460);
+		m_pMcAcsii->Read("D530", 2, val);
+		cout << "D530 460:" << val << endl;
+
+		m_pMcAcsii->Write("D530", 461);
+		m_pMcAcsii->Read("D530", 2, val);
+		cout << "D530 461:" << val << endl;
 #endif
 
 		char *pAddr[5] = {

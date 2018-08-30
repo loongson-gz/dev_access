@@ -57,6 +57,24 @@ int MesSvr::Stop()
 	return 0;
 }
 
+void MesSvr::SetTitleAndCode(const char *code, const char *name)
+{
+	m_strCode = code;
+	m_strName = GBKToUTF8(name);
+}
+
+void MesSvr::SetWorkShopAndProDLine(const char * workshopName, const char * proDLineName)
+{
+	m_strWorkshopName = GBKToUTF8(workshopName);
+	m_strProDLineName = GBKToUTF8(proDLineName);
+}
+
+void MesSvr::SetDepartmentAndProLineCode(const char * departmentCode, const char * productLineCode)
+{
+	m_strDepartmentCode = departmentCode;
+	m_strProductLineCode = productLineCode;
+}
+
 int MesSvr::InsertToSvr(const char *key, const char *val)
 {
 	string strKey = GBKToUTF8(key);// GBKToUTF8("ÀàÅÝÄ­Ïû·À³µ");

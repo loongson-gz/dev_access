@@ -133,6 +133,10 @@ void DevManager::DoEventProcess(EVENTTYPE iEvtType, void * pData)
 			"待机中8"
 		};
 
+		m_mesSvr.SetDepartmentAndProLineCode("ZJCJ001", "ZJCX001");
+		m_mesSvr.SetWorkShopAndProDLine("灶具车间", "灶具");
+		m_mesSvr.SetTitleAndCode("ZJ1808300100001", "气密性检测");
+
 		stMitsubishi_FX3U_32M_Data *data = (stMitsubishi_FX3U_32M_Data *)(pData);
 		m_mesSvr.InsertToSvr("气密性1号工程状态", pSt[data->StationStatus_1]);
 		//m_mesSvr.InsertToSvr("1号工位状态", (int)(data->StationStatus_1));
