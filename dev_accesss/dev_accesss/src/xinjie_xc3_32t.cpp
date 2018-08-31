@@ -269,11 +269,11 @@ bool XinJieXc3::GetTestResults(int BaseAddress, uint8_t result[][10])
 
 bool XinJieXc3::GetProductUniqueIdentifier(int BaseAddress, char *result)
 {
-	uint16_t Results[32] = {0};
+	unsigned char Results[64] = { 0 };
 	try
 	{
-		m_mbPtr->ModbusReadHoldingRegisters(BaseAddress, 32, Results);
-		sprintf(result, "%s", (char *)Results); //仅ASCII有效
+		m_mbPtr->ModbusReadHoldingRegisters(BaseAddress, 32, (uint16_t*)Results);
+		sprintf(result, "%s", (char *)&Results[1]); //仅ASCII有效
 		return true;
 	}
 	catch (const std::exception& e)
