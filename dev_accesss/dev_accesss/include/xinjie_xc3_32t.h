@@ -41,6 +41,8 @@ public:
 
 	bool GetProductUniqueIdentifier(int BaseAddress, char * result);
 
+	void GetScanStatus();
+
 
 private:
 	int port;
@@ -49,8 +51,9 @@ private:
 	int interval;
 	ModbusPtr mb;
 	thread m_th;
+	thread m_th2;
 	bool m_bStop;
-
+	bool mScanStatus;
 	EventMsgFn m_fn;
 	void *m_pUser;
 };

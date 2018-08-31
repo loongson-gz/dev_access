@@ -7,6 +7,12 @@ static void ThdFn(void *args)
 	This->DoStart();
 }
 
+static void ThdFn2(void *args)
+{
+	XinJieXc3 *This = static_cast<XinJieXc3 *>(args);
+	This->GetScanStatus();
+}
+
 XinJieXc3::XinJieXc3(stPLCConf conf)
 	: m_bStop(false)
 {
@@ -14,6 +20,7 @@ XinJieXc3::XinJieXc3(stPLCConf conf)
 	port = conf.uPort;
 	host = conf.szIpAddr;
 	id = conf.id;
+	mScanStatus = true;
 	interval = conf.interval * 1000;
 	mb.reset(new Modbus(host, port));
 }
@@ -27,6 +34,7 @@ int XinJieXc3::Start()
 {
 	DEBUG_WHERE;
 	m_th = thread(ThdFn, this);
+	m_th2 = thread(ThdFn2, this);
 	return 0;
 }
 
@@ -37,6 +45,12 @@ int XinJieXc3::Stop()
 	{
 		m_th.join();
 	}
+
+	if (m_th2.joinable())
+	{
+		m_th2.join();
+	}
+
 	mb->ModbusClose();
 	return 0;
 }
@@ -55,6 +69,9 @@ void XinJieXc3::DoStart()
 	uint16_t Results[32] = {0};
 	uint8_t results[6][10] = {0};
 	bool Update = false;
+	bool TestFinish = false;
+	int FinishCount = 0;
+	int TimeoutCount = 0;
 	int unixTime;
 	time_t tick;
 	time_t now;
@@ -73,6 +90,7 @@ void XinJieXc3::DoStart()
 
 		while (!m_bStop)
 		{
+			//获取产品唯一码
 			try
 			{
 				GetProductUniqueIdentifier(100, data.UniquelyIdentifies);
@@ -80,34 +98,72 @@ void XinJieXc3::DoStart()
 			catch (const std::exception& e)
 			{
 				WLogInfo("%s:%d %s", __FUNCTION__, __LINE__, e.what());
+				Sleep(3000);
 				m_bStop = true;
 				break;
 			}
 			
-			WLogInfo("UniquelyIdentifies: %s", data.UniquelyIdentifies);
-			//if(strcmp(OldUniquelyIdentifies, data.UniquelyIdentifies) && strlen(data.UniquelyIdentifies) != 0)
-			if(true)
+			
+			if(strcmp(OldUniquelyIdentifies, data.UniquelyIdentifies) && strlen(data.UniquelyIdentifies) != 0)
 			{
-				Update = true;
+				WLogInfo("热水线产品唯一标识码： %s", data.UniquelyIdentifies);
+				TestFinish = false;
 				memcpy(OldUniquelyIdentifies, data.UniquelyIdentifies, sizeof(OldUniquelyIdentifies));
 				try
 				{
-					for (i = 0; i < sizeof(IntSet) / sizeof(IntSet[0]); i++)
+					while (!TestFinish)
 					{
-						memset(results, 0, sizeof(results));
-						GetTestResults(IntSet[i], results);
-						snprintf(data.Results[i].ItemName, sizeof(results[0]), "%s", (char *)results[0]);
-						snprintf(data.Results[i].ItemValue1, sizeof(results[1]), "%s", (char *)results[1]);
-						snprintf(data.Results[i].ItemValue2, sizeof(results[2]), "%s", (char *)results[2]);
-						snprintf(data.Results[i].ItemResult, sizeof(results[3]), "%s", (char *)results[3]);
-						snprintf(data.Results[i].ItemResultCode, sizeof(results[4]), "%s", (char *)results[4]);
-						Sleep(100);
+						//循环读取四个测试项结果
+						for (i = 0; i < sizeof(IntSet) / sizeof(IntSet[0]); i++)
+						{
+							memset(results, 0, sizeof(results));
+							GetTestResults(IntSet[i], results);
+							snprintf(data.Results[i].ItemName, sizeof(results[0]), "%s", (char *)results[0]);
+							snprintf(data.Results[i].ItemValue1, sizeof(results[1]), "%s", (char *)results[1]);
+							snprintf(data.Results[i].ItemValue2, sizeof(results[2]), "%s", (char *)results[2]);
+							snprintf(data.Results[i].ItemResult, sizeof(results[3]), "%s", (char *)results[3]);
+							snprintf(data.Results[i].ItemResultCode, sizeof(results[4]), "%s", (char *)results[4]);
+							Sleep(100);
 
-						WLogInfo("%s", data.Results[i].ItemName);
-						WLogInfo("%s", data.Results[i].ItemValue1);
-						WLogInfo("%s", data.Results[i].ItemValue2);
-						WLogInfo("%s", data.Results[i].ItemResult);
-						WLogInfo("%s", data.Results[i].ItemResultCode);
+						}
+
+						//判断四项结果是否完整
+						for (i = 0; i < sizeof(IntSet) / sizeof(IntSet[0]); i++)
+						{
+							if (!strcmp(data.Results[i].ItemResult, "notTest"))
+							{
+								WLogInfo("安规测试进行中...");
+								Sleep(1000);
+								TimeoutCount++;
+								if (TimeoutCount > 60)		//一分钟超时
+								{
+									TestFinish = true;
+								}
+								FinishCount = 0;
+								break;
+							}
+							else
+							{
+								FinishCount++;
+							}
+						}
+
+						//测试完成标志
+						if (FinishCount == 4)
+						{
+							for (i = 0; i < sizeof(IntSet) / sizeof(IntSet[0]); i++)
+							{
+								WLogInfo("测试项：%s", data.Results[i].ItemName);
+								WLogInfo("测试值：%s", data.Results[i].ItemValue1);
+								WLogInfo("测试值：%s", data.Results[i].ItemValue2);
+								WLogInfo("测试结果：%s", data.Results[i].ItemResult);
+								WLogInfo("结果代码：%s", data.Results[i].ItemResultCode);
+								WLogInfo("========================");
+							}
+							TestFinish = true;
+							FinishCount = 0;
+							Update = true;
+						}
 					}
 				}
 				catch (const std::exception& e)
@@ -116,9 +172,10 @@ void XinJieXc3::DoStart()
 					m_bStop = true;
 					break;
 				}
-
 			}
 
+
+			//上报数据更新
 			if (Update)
 			{
 				Update = false;
@@ -129,11 +186,9 @@ void XinJieXc3::DoStart()
 					tm = *localtime(&tick);
 					strftime(data.Timestamp, sizeof(data.Timestamp), "%Y-%m-%d %H:%M:%S", &tm);
 					sprintf(data.DevInfo, host, "@", port);
-
 					m_fn(eEVENT_XINJIE_XC3_32T_E, (void *)&data, m_pUser);
 					memset(&data, 0, sizeof(data));
 				}
-				
 			}
 			Sleep(interval);
 		}
@@ -226,4 +281,23 @@ bool XinJieXc3::GetProductUniqueIdentifier(int BaseAddress, char *result)
 		throw e;
 	}
 	return false;
+}
+
+
+void XinJieXc3::GetScanStatus()
+{
+
+	while (true)
+	{
+		try
+		{
+			mb->ModbusReadCoils(18437, 1, &mScanStatus);
+		}
+		catch (const std::exception& e)
+		{
+			cout << e.what() << endl;
+		}
+		Sleep(3000);
+	}
+	
 }
