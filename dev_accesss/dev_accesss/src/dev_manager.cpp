@@ -134,9 +134,9 @@ void DevManager::DoEventProcess(EVENTTYPE iEvtType, void * pData)
 		stMitsubishi_Q02UUCPU_Data *data = (stMitsubishi_Q02UUCPU_Data *)(pData);
 		int i = 0;
 		m_mesSvr.InsertToSvr(pName[i++], data->iDeviceStatus);
-		m_mesSvr.InsertToSvr(pName[i++], data->iStopTime);
+		m_mesSvr.InsertToSvr(pName[i++], std::to_string(data->fStopTime).c_str());
 		m_mesSvr.InsertToSvr(pName[i++], data->iProductCount);
-		m_mesSvr.InsertToSvr(pName[i++], data->iProductBeats);
+		m_mesSvr.InsertToSvr(pName[i++], to_string(data->fProductBeats).c_str());
 		break;
 	}
 		

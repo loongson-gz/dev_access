@@ -8,9 +8,9 @@
 typedef struct stMitsubishi_Q02UUCPU_Data_
 {
 	uint32_t iDeviceStatus;						//"设备状态",
-	uint32_t iStopTime;							//"倍速链延时停止锁存时间"
+	float fStopTime;							//"倍速链延时停止锁存时间"
 	uint32_t iProductCount;						//"产品计数"
-	uint32_t iProductBeats;						//"生产节拍"
+	float fProductBeats;						//"生产节拍"
 }stMitsubishi_Q02UUCPU_Data;
 
 class Mitsubishi_Q02UUCPU : public PlcBase {

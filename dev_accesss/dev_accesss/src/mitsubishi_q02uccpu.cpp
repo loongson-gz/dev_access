@@ -85,7 +85,7 @@ void Mitsubishi_Q02UUCPU::DoStart()
 
 		char *pAddr[5] = {
 			"Y181" ,
-			"Y183" ,
+			"D3498" ,
 			"D7001" ,
 			"D3501" ,
 			NULL
@@ -103,7 +103,7 @@ void Mitsubishi_Q02UUCPU::DoStart()
 		for (size_t i = 0; i < 4; i++)
 		{
 			int len = 1;
-			if (i > 1)
+			if (i > 0)
 			{
 				len = 2;
 			}
@@ -119,9 +119,9 @@ void Mitsubishi_Q02UUCPU::DoStart()
 		{
 			stMitsubishi_Q02UUCPU_Data data;
 			data.iDeviceStatus = a[0];
-			data.iStopTime = a[1];
+			data.fStopTime = a[1] * 1.0 * 100 / 1000;   //取值单位是 100ms ，现转换为s
 			data.iProductCount = a[2];
-			data.iProductBeats = a[3];
+			data.fProductBeats = a[3] * 1.0 * 100 / 1000;
 
 			m_fn(eEVENT_MITSUBISHI_Q02UCCPU, (void *)&data, m_pUser);
 		}

@@ -45,11 +45,11 @@ public:
 
 
 private:
-	int port;
-	char *host;
-	unsigned char id;
-	int interval;
-	ModbusPtr mb;
+	int m_uPort;
+	string m_strHost;
+	unsigned char m_id;
+	int m_interval;
+	ModbusPtr m_mbPtr;
 	thread m_th;
 	thread m_th2;
 	bool m_bStop;

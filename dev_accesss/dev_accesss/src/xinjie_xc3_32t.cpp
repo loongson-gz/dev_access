@@ -17,12 +17,12 @@ XinJieXc3::XinJieXc3(stPLCConf conf)
 	: m_bStop(false)
 {
 	WLogInfo("%s make", __FUNCTION__);
-	port = conf.uPort;
-	host = conf.szIpAddr;
-	id = conf.id;
+	m_uPort = conf.uPort;
+	m_strHost = conf.szIpAddr;
+	m_id = conf.id;
 	mScanStatus = true;
-	interval = conf.interval * 1000;
-	mb.reset(new Modbus(host, port));
+	m_interval = conf.interval * 1000;
+	m_mbPtr.reset(new Modbus(m_strHost, m_uPort));
 }
 
 XinJieXc3::~XinJieXc3()
@@ -51,7 +51,7 @@ int XinJieXc3::Stop()
 		m_th2.join();
 	}
 
-	mb->ModbusClose();
+	m_mbPtr->ModbusClose();
 	return 0;
 }
 
@@ -81,7 +81,7 @@ void XinJieXc3::DoStart()
 	stXinJieXc3_Data data;
 	while (true)
 	{
-		while (!ModbusInit(id)) //²âÊÔ
+		while (!ModbusInit(m_id)) //²âÊÔ
 		{
 			WLogError("%s:%d ModbusInit failure .....", __FUNCTION__, __LINE__);
 			Sleep(5000);
@@ -185,12 +185,12 @@ void XinJieXc3::DoStart()
 					tick = (time_t)unixTime;
 					tm = *localtime(&tick);
 					strftime(data.Timestamp, sizeof(data.Timestamp), "%Y-%m-%d %H:%M:%S", &tm);
-					sprintf(data.DevInfo, host, "@", port);
+					snprintf(data.DevInfo, sizeof(data.DevInfo), "%s@%d", m_strHost.c_str(), m_uPort);
 					m_fn(eEVENT_XINJIE_XC3_32T_E, (void *)&data, m_pUser);
 					memset(&data, 0, sizeof(data));
 				}
 			}
-			Sleep(interval);
+			this_thread::sleep_for(chrono::seconds(m_interval));
 		}
 		m_bStop = false;
 		memset(OldUniquelyIdentifies, 0, sizeof(OldUniquelyIdentifies));
@@ -203,7 +203,7 @@ uint16_t XinJieXc3::ModbusStart(int address)
 	uint16_t read_holding_regs = 0;
 	try
 	{
-		mb->ModbusReadHoldingRegisters(address, 1, &read_holding_regs);
+		m_mbPtr->ModbusReadHoldingRegisters(address, 1, &read_holding_regs);
 	}
 	catch (const std::exception& e)
 	{
@@ -217,8 +217,8 @@ uint16_t XinJieXc3::ModbusStart(int address)
 
 bool XinJieXc3::ModbusInit(int id)
 {
-	mb->ModbusSetSlaveId(id);  
-	if (mb->ModbusConnect())
+	m_mbPtr->ModbusSetSlaveId(id);  
+	if (m_mbPtr->ModbusConnect())
 	{
 		return true;
 	}
@@ -237,7 +237,7 @@ bool XinJieXc3::GetTestResults(int BaseAddress, uint8_t result[][10])
 	int a = 0;
 	try
 	{
-		mb->ModbusReadHoldingRegisters(BaseAddress, 32, Results);
+		m_mbPtr->ModbusReadHoldingRegisters(BaseAddress, 32, Results);
 		TestResults = (uint8_t *)Results;
 
 		for (i = 0, j = 0; i < 64; i++)
@@ -272,7 +272,7 @@ bool XinJieXc3::GetProductUniqueIdentifier(int BaseAddress, char *result)
 	uint16_t Results[32] = {0};
 	try
 	{
-		mb->ModbusReadHoldingRegisters(BaseAddress, 32, Results);
+		m_mbPtr->ModbusReadHoldingRegisters(BaseAddress, 32, Results);
 		sprintf(result, "%s", (char *)Results); //½öASCIIÓÐÐ§
 		return true;
 	}
@@ -291,7 +291,7 @@ void XinJieXc3::GetScanStatus()
 	{
 		try
 		{
-			mb->ModbusReadCoils(18437, 1, &mScanStatus);
+			m_mbPtr->ModbusReadCoils(18437, 1, &mScanStatus);
 		}
 		catch (const std::exception& e)
 		{
