@@ -77,64 +77,87 @@ void MesSvr::SetDepartmentAndProLineCode(const char * departmentCode, const char
 
 int MesSvr::InsertToSvr(const char *key, const char *val)
 {
-	string strKey = GBKToUTF8(key);// GBKToUTF8("类泡沫消防车");
-	string strVal = GBKToUTF8(val);
-	string strFactoryName = GBKToUTF8("万家乐_顺德");
-	string strWorkshopName = GBKToUTF8("灶具车间");
-	string strProDLineName = GBKToUTF8("灶具");
+	try {
+		string strKey = GBKToUTF8(key);// GBKToUTF8("类泡沫消防车");
+		string strVal = GBKToUTF8(val);
+		string strFactoryName = GBKToUTF8("万家乐_顺德");
 
-	stringstream ss;
-	ss << "INSERT INTO TB_DEVICECJJL  VALUES (RAWTOHEX(sys_guid()), NULL, NULL, NULL, sysdate, NULL, NULL, NULL, NULL, NULL, NULL, '',"
-		<< "'" << m_strDevCode << "' ,"
-		<< "'" << m_strDevName << "' ,"
-		<< "'" << strKey << "' ,"
-		<< "'" << strVal << "',"
-		<< "'GC001',"
-		<< "'" << strFactoryName << "' ,"
-		<< "'" << m_strDepartmentCode << "' ,"
-		<< "'" << m_strWorkshopName << "' ,"
-		<< "'" << m_strProductLineCode << "' ,"
-		<< "'" << m_strProDLineName << "' ,"
-		<< "'" << GetTime() << "' );";
+		stringstream ss;
+		ss << "INSERT INTO TB_DEVICECJJL  VALUES (RAWTOHEX(sys_guid()), NULL, NULL, NULL, sysdate, NULL, NULL, NULL, NULL, NULL, NULL, '',"
+			<< "'" << m_strDevCode << "' ,"
+			<< "'" << m_strDevName << "' ,"
+			<< "'" << strKey << "' ,"
+			<< "'" << strVal << "',"
+			<< "'GC001',"
+			<< "'" << strFactoryName << "' ,"
+			<< "'" << m_strDepartmentCode << "' ,"
+			<< "'" << m_strWorkshopName << "' ,"
+			<< "'" << m_strProductLineCode << "' ,"
+			<< "'" << m_strProDLineName << "' ,"
+			<< "'" << GetTime() << "' );";
 
-	string str = ss.str();
+		string str = ss.str();
 
-	m_db->InsertData(str.c_str());
+		m_db->InsertData(str.c_str());
+	}
+	catch (const std::exception& e)
+	{
+		WLogError("%s:%s", __FUNCTION__, e.what());
+		return -1;
+	}
+
 	return 0;
 }
 
 int MesSvr::InsertToSvr(const char *key, int val)
 {
-	string strKey = GBKToUTF8(key);// GBKToUTF8("类泡沫消防车");
-	//string strVal = GBKToUTF8(val);
-	string strFactoryName = GBKToUTF8("万家乐_顺德");
-	string strWorkshopName = GBKToUTF8("灶具车间");
-	string strProDLineName = GBKToUTF8("灶具");
+	try {
+		string strKey = GBKToUTF8(key);// GBKToUTF8("类泡沫消防车");
+									   //string strVal = GBKToUTF8(val);
+		string strFactoryName = GBKToUTF8("万家乐_顺德");
 
-	stringstream ss;
-	ss << "INSERT INTO TB_DEVICECJJL  VALUES (RAWTOHEX(sys_guid()), NULL, NULL, NULL, sysdate, NULL, NULL, NULL, NULL, NULL, NULL, '',"
-		<< "'" << m_strDevCode << "' ,"
-		<< "'" << m_strDevName << "' ,"
-		<< "'" << strKey << "' ,"
-		<< "'" << val << "',"
-		<< "'GC001',"
-		<< "'" << strFactoryName << "' ,"
-		<< "'" << m_strDepartmentCode << "' ,"
-		<< "'" << m_strWorkshopName << "' ,"
-		<< "'" << m_strProductLineCode << "' ,"
-		<< "'" << m_strProDLineName << "' ,"
-		<< "'" << GetTime() << "' );";
+		stringstream ss;
+		ss << "INSERT INTO TB_DEVICECJJL  VALUES (RAWTOHEX(sys_guid()), NULL, NULL, NULL, sysdate, NULL, NULL, NULL, NULL, NULL, NULL, '',"
+			<< "'" << m_strDevCode << "' ,"
+			<< "'" << m_strDevName << "' ,"
+			<< "'" << strKey << "' ,"
+			<< "'" << val << "',"
+			<< "'GC001',"
+			<< "'" << strFactoryName << "' ,"
+			<< "'" << m_strDepartmentCode << "' ,"
+			<< "'" << m_strWorkshopName << "' ,"
+			<< "'" << m_strProductLineCode << "' ,"
+			<< "'" << m_strProDLineName << "' ,"
+			<< "'" << GetTime() << "' );";
 
-	string str = ss.str();
+		string str = ss.str();
 
-	m_db->InsertData(str.c_str());
+		m_db->InsertData(str.c_str());
+	}
+	catch (const std::exception& e)
+	{
+		WLogError("%s:%s", __FUNCTION__, e.what());
+		return -1;
+	}
+
 	return 0;
 }
 
 int MesSvr::Init()
 {
-	m_conf = ConfigHelper::GetInstance()->GetSqlConf();
-	m_db = new DbHelper(m_conf.szUser, m_conf.szPwd, m_conf.szDbName, m_conf.szDnsName);
-	m_db->ConnectToSvr();
+	try {
+		m_conf = ConfigHelper::GetInstance()->GetSqlConf();
+		m_db = new DbHelper(m_conf.szUser, m_conf.szPwd, m_conf.szDbName, m_conf.szDnsName);
+		int ret = m_db->ConnectToSvr();
+		if (ret != 0)
+		{
+			return -1;
+		}
+	}
+	catch (const std::exception& e)
+	{
+		WLogError("%s:%s", __FUNCTION__, e.what());
+		return -1;
+	}
 	return 0;
 }

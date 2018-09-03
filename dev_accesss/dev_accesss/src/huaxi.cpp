@@ -9,6 +9,10 @@ static void ThdFn(void *args)
 
 HuaXi::HuaXi(stSQLConf conf)
 	: m_conf(conf)
+	, m_bStop(false)
+	, m_pClient(nullptr)
+	, m_pUser(nullptr)
+	, m_fn(nullptr)
 {
 	WLogInfo("%s make", __FUNCTION__);
 
@@ -22,14 +26,22 @@ HuaXi::~HuaXi()
 
 int HuaXi::Init()
 {
-	m_pDbHelper = new DbHelper(m_conf.szUser, m_conf.szPwd, m_conf.szDbName, m_conf.szDnsName);
-	int ret = m_pDbHelper->ConnectToSvr();
-	if (ret != 0)
-	{
-		return ret;
-	}
+	try {
+		m_pClient = new HuaXiClient(m_conf);
+		int ret = m_pClient->Init();
+		if (ret != 0)
+		{
+			return ret;
+		}
 
-	m_th = thread(ThdFn, this);
+		m_th = thread(ThdFn, this);
+	}
+	catch (std::exception e)
+	{
+		WLogInfo("%s:%s",__FUNCTION__, e.what());
+		return -1;
+	}
+	
 
 	return 0;
 }
@@ -60,12 +72,31 @@ void HuaXi::DoStart()
 {
 	while (!m_bStop)
 	{
-
-		if (m_fn)
+		THuaXiSQLDataLst data;
+		m_pClient->GetData(data);
+		for (int i=0; i<data.size(); i++)
 		{
-			stHuaXiData data;
-			m_fn(eEVENT_HUAXI, (void *)&data, m_pUser);
+			stHuaXiSQLData tmp = data.at(i);
+			stHuaXiData res;
+			res.szProductBarCode = tmp.szProductBarCode;
+			res.szLeakage = tmp.szLeakage;
+			if (tmp.szUserDate.empty())
+			{
+				res.iCheckResult = tmp.iAutoCheckResult % 2;
+				res.szCheckDate = tmp.szAutoCheckDate;
+			}
+			else
+			{
+				res.iCheckResult = tmp.iUserCheckResult % 2;
+				res.szCheckDate = tmp.szUserDate;
+			}
+
+			if (m_fn)
+			{
+				m_fn(eEVENT_HUAXI, (void *)&res, m_pUser);
+			}
 		}
+
 
 		this_thread::sleep_for(chrono::seconds(m_conf.interval));
 	}

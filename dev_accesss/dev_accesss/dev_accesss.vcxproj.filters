@@ -123,6 +123,12 @@
     <ClCompile Include="src\mc_ascii.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\huaxi_client.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mondial_client.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\common.h">
@@ -225,6 +231,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\mc_ascii.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\huaxi_client.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mondial_client.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

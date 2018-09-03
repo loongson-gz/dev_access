@@ -9,6 +9,10 @@ static void ThdFn(void *args)
 
 Mondial::Mondial(stSQLConf conf)
 	: m_conf(conf)
+	, m_bStop(false)
+	, m_pClient(nullptr)
+	, m_pUser(nullptr)
+	, m_fn(nullptr)
 {
 	WLogInfo("%s make", __FUNCTION__);
 
@@ -16,20 +20,31 @@ Mondial::Mondial(stSQLConf conf)
 
 Mondial::~Mondial()
 {
+	if (m_pClient)
+	{
+		delete m_pClient;
+	}
 	WLogInfo("%s free", __FUNCTION__);
 
 }
 
 int Mondial::Init()
 {
-	m_pDbHelper = new DbHelper(m_conf.szUser, m_conf.szPwd, m_conf.szDbName, m_conf.szDnsName);
-	int ret = m_pDbHelper->ConnectToSvr();
-	if (ret != 0)
-	{
-		return ret;
-	}
+	try {
+		m_pClient = new MondialClient(m_conf);
+		int ret = m_pClient->Init();
+		if (ret != 0)
+		{
+			return ret;
+		}
 
-	m_th = thread(ThdFn, this);
+		m_th = thread(ThdFn, this);
+	}
+	catch (const std::exception& e)
+	{
+		WLogInfo("%s:%s", __FUNCTION__, e.what());
+		return -1;
+	}
 
 	return 0;
 }
@@ -60,10 +75,11 @@ void Mondial::DoStart()
 {
 	while (!m_bStop)
 	{
-
+		stMondialData data;
+		memset(&data, 0, sizeof(data));
+		m_pClient->GetData(data);
 		if (m_fn)
 		{
-			stMondialData data;
 			m_fn(eEVENT_MONDIAL, (void *)&data, m_pUser);
 		}
 

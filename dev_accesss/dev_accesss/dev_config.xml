@@ -51,13 +51,13 @@
 			<!-- 数据类型：0:sql server 1: oracle 2:mysql 3:access-->
 			<dbtype>0</dbtype>
 			<ip>192.168.104.147</ip>
-			<port></port>
-			<user>root</user>
-			<pwd>sa</pwd>
+			<port>1433</port>
+			<user>sa</user>
+			<pwd>lc000.net</pwd>
 			<!-- 数据库名 -->
-			<dbname>result</dbname>
+			<dbname>macroDB</dbname>
 			<!-- 数据库 数据源名称-->
-			<dns>oracle_wjl_mes</dns>
+			<dns>huaxi_macrodb</dns>
 			<!-- 设备类型 0:梦地 1:铧禧 2:迈克普兰-->
 			<devtype>1</devtype>
 			<!-- 操作间隔 单位为：秒 -->
@@ -76,7 +76,7 @@
 			<!-- 数据库 数据源名称-->
 			<dns>oracle_wjl_mes</dns>
 			<!-- 设备类型 -->
-			<devtype>1</devtype>
+			<devtype>2</devtype>
 			<!-- 操作间隔 单位为：秒 -->
 			<interval>30</interval>
 		</dev>

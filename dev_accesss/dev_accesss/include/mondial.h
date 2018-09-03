@@ -3,12 +3,7 @@
 
 #include "common.h"
 #include "sql_base.h"
-#include "dbhelper.h"
-
-typedef struct stMondialData_
-{
-
-}stMondialData;
+#include "mondial_client.h"
 
 class Mondial : public SqlBase{
 public:
@@ -30,7 +25,7 @@ private:
 	EventMsgFn m_fn;
 	void *m_pUser;
 
-	DbHelper *m_pDbHelper;
+	MondialClient *m_pClient;
 
 	stSQLConf m_conf;
 };

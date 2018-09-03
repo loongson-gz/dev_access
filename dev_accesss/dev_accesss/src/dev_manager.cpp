@@ -224,8 +224,30 @@ void DevManager::DoEventProcess(EVENTTYPE iEvtType, void * pData)
 		WLogInfo("==================== eEVENT_MONDIAL EvtType:%d", iEvtType);
 		break;
 	case eEVENT_HUAXI:
+	{
 		WLogInfo("==================== eEVENT_HUAXI EvtType:%d", iEvtType);
+		char *pName[4] = {
+			"产品条码",
+			"泄漏量",
+			"是否合格",
+			"检测时间"
+		};
+
+		char *pRet[2] = {"不合格", "合格"};
+
+		m_mesSvr.SetDepartmentAndProLineCode("RSCJ001", "RSCX001");
+		m_mesSvr.SetWorkShopAndProDLine("热水车间", "热水");
+		m_mesSvr.SetDevTitleAndCode("RS1808300100003", "气密性检测");
+		stHuaXiData *data = (stHuaXiData *)(pData);
+		int i = 0;
+		m_mesSvr.InsertToSvr(pName[i++], data->szProductBarCode.c_str());
+		m_mesSvr.InsertToSvr(pName[i++], data->szLeakage.c_str());
+		m_mesSvr.InsertToSvr(pName[i++], pRet[data->iCheckResult]);
+		m_mesSvr.InsertToSvr(pName[i++], data->szCheckDate.c_str());
+
 		break;
+	}
+	
 	default:
 		WLogInfo("====================unknow EvtType:%d", iEvtType);
 		break;

@@ -3,12 +3,7 @@
 
 #include "common.h"
 #include "sql_base.h"
-#include "dbhelper.h"
-
-typedef struct stHuaXiData_
-{
-
-}stHuaXiData;
+#include "huaxi_client.h"
 
 class HuaXi : public SqlBase{
 public:
@@ -29,10 +24,9 @@ private:
 
 	EventMsgFn m_fn;
 	void *m_pUser;
-
-	DbHelper *m_pDbHelper;
-
 	stSQLConf m_conf;
+
+	HuaXiClient *m_pClient;
 };
 
 #endif
