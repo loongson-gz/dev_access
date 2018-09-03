@@ -21,6 +21,9 @@ public:
 	int Init();
 	int GetData(THuaXiSQLDataLst &data);
 private:
+	struct tm *MyGetLocalTime();
+	struct tm *SubSecond(struct tm *p, int sec);
+
 	DbHelper *m_pDbHelper;
 
 	stSQLConf m_conf;

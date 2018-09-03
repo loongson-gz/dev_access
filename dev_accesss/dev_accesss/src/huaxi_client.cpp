@@ -38,11 +38,64 @@ int HuaXiClient::Init()
 	return 0;
 }
 
+tm *HuaXiClient::MyGetLocalTime()
+{
+	time_t timep;
+	struct tm *p;
+	time(&timep);
+	p = localtime(&timep);
+	return p;
+}
+
+tm * HuaXiClient::SubSecond(tm * p, int sec)
+{
+	if (p->tm_sec >= sec)
+	{
+		p->tm_sec -= sec;
+	}
+	else
+	{
+		p->tm_sec += 60 - sec;
+		if (p->tm_min >= 1)
+		{
+			p->tm_min -= 1;
+		}
+		else
+		{
+			p->tm_min += 60 - 1;
+			if (p->tm_hour >= 1)
+			{
+				p->tm_hour -= 1;
+			}
+			else
+			{
+				p->tm_hour += 24 - 1;
+			}
+		}
+	}
+
+	return p;
+}
+
 int HuaXiClient::GetData(THuaXiSQLDataLst &data)
 {
 	try {
+		tm *p = MyGetLocalTime();
+		char buf[128] = { 0 };
+		snprintf(buf, sizeof(buf), "%d-%02d-%02d %02d:%02d:%02d", 1900 + p->tm_year, 1 + p->tm_mon, p->tm_mday, p->tm_hour, p->tm_min, p->tm_sec);
+		string strEndTime = buf;
+
+		p = SubSecond(p, m_conf.interval);
+		snprintf(buf, sizeof(buf), "%d-%02d-%02d %02d:%02d:%02d", 1900 + p->tm_year, 1 + p->tm_mon, p->tm_mday, p->tm_hour, p->tm_min, p->tm_sec);
+		string strBeginTime = buf;
+
+
 		stringstream ss;
-		ss << "select ProductBarcode, ResultFlag, Leakage, AutoCheckResult, AutoCheckDate, UserCheckResult, UserDate, [Second] from ProductCheck  where AutoCheckDate >= '2018-09-01 14:00:00' and AutoCheckDate <= '2018-09-01 14:10:05'";
+		ss << "select ProductBarcode, ResultFlag, Leakage, AutoCheckResult, AutoCheckDate, UserCheckResult, UserDate, [Second] from ProductCheck"
+		<< " where AutoCheckDate >="
+		<< "'" << strBeginTime << "'"
+		<< " and AutoCheckDate <="
+		<< "'" << strEndTime << "'";
 
 		string str = ss.str();
 		int ret = m_pDbHelper->GetData(str.c_str(), data);
@@ -60,4 +113,5 @@ int HuaXiClient::GetData(THuaXiSQLDataLst &data)
 	
 	return 0;
 }
+
 

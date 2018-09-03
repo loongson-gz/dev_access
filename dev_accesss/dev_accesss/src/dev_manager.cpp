@@ -127,13 +127,15 @@ void DevManager::DoEventProcess(EVENTTYPE iEvtType, void * pData)
 			"生产节拍"
 		};
 
+		char *pRunState[2] = {"运行中", "停止"};
+
 		m_mesSvr.SetDepartmentAndProLineCode("RSCJ001", "RSCX001");
 		m_mesSvr.SetWorkShopAndProDLine("热水车间", "热水");
 		m_mesSvr.SetDevTitleAndCode("RS1808300100002", "线体控制");
 
 		stMitsubishi_Q02UUCPU_Data *data = (stMitsubishi_Q02UUCPU_Data *)(pData);
 		int i = 0;
-		m_mesSvr.InsertToSvr(pName[i++], data->iDeviceStatus);
+		m_mesSvr.InsertToSvr(pName[i++], pRunState[data->iDeviceStatus]);
 		m_mesSvr.InsertToSvr(pName[i++], std::to_string(data->fStopTime).c_str());
 		m_mesSvr.InsertToSvr(pName[i++], data->iProductCount);
 		m_mesSvr.InsertToSvr(pName[i++], to_string(data->fProductBeats).c_str());
@@ -229,7 +231,7 @@ void DevManager::DoEventProcess(EVENTTYPE iEvtType, void * pData)
 		char *pName[4] = {
 			"产品条码",
 			"泄漏量",
-			"是否合格",
+			"结果判定",
 			"检测时间"
 		};
 

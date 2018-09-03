@@ -118,7 +118,7 @@ void Mitsubishi_Q02UUCPU::DoStart()
 		if (m_fn)
 		{
 			stMitsubishi_Q02UUCPU_Data data;
-			data.iDeviceStatus = a[0];
+			data.iDeviceStatus = a[0] % 2;
 			data.fStopTime = a[1] * 1.0 * 100 / 1000;   //取值单位是 100ms ，现转换为s
 			data.iProductCount = a[2];
 			data.fProductBeats = a[3] * 1.0 * 100 / 1000;
