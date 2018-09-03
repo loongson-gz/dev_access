@@ -81,7 +81,7 @@ void XinJieXc3::DoStart()
 	stXinJieXc3_Data data;
 	while (true)
 	{
-		while (!ModbusInit(m_id)) //测试
+		while (!ModbusInit(m_id)) 
 		{
 			WLogError("%s:%d ModbusInit failure .....", __FUNCTION__, __LINE__);
 			Sleep(5000);
@@ -90,6 +90,7 @@ void XinJieXc3::DoStart()
 
 		while (!m_bStop)
 		{
+			memset(&data, 0, sizeof(data));
 			//获取产品唯一码
 			try
 			{
@@ -269,11 +270,11 @@ bool XinJieXc3::GetTestResults(int BaseAddress, uint8_t result[][10])
 
 bool XinJieXc3::GetProductUniqueIdentifier(int BaseAddress, char *result)
 {
-	uint16_t Results[32] = {0};
+	unsigned char Results[64] = { 0 };
 	try
 	{
-		m_mbPtr->ModbusReadHoldingRegisters(BaseAddress, 32, Results);
-		sprintf(result, "%s", (char *)Results); //仅ASCII有效
+		m_mbPtr->ModbusReadHoldingRegisters(BaseAddress, 32, (uint16_t*)Results);
+		sprintf(result, "%s", (char *)&Results[1]); //仅ASCII有效
 		return true;
 	}
 	catch (const std::exception& e)
@@ -295,7 +296,7 @@ void XinJieXc3::GetScanStatus()
 		}
 		catch (const std::exception& e)
 		{
-			cout << e.what() << endl;
+			WLogError("%s:%d %s", __FUNCTION__, __LINE__, e.what());
 		}
 		Sleep(3000);
 	}
