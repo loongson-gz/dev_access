@@ -95,7 +95,8 @@ void Mitsubishi_FX3U_32M::DoStart()
 	stMitsubishi_FX3U_32M_Data data;
 	while (true)
 	{
-		while (!ModbusInit(id)) //≤‚ ‘
+		memset(&data, 0, sizeof(data));
+		while (!ModbusInit(id)) 
 		{
 			WLogError("%s:%d ModbusInit failure .....", __FUNCTION__, __LINE__);
 			Sleep(5000);
