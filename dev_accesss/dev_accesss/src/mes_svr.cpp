@@ -80,7 +80,7 @@ int MesSvr::InsertToSvr(const char *key, const char *val)
 	try {
 		string strKey = GBKToUTF8(key);// GBKToUTF8("类泡沫消防车");
 		string strVal = GBKToUTF8(val);
-		string strFactoryName = GBKToUTF8("万家乐_顺德");
+		string strFactoryName = GBKToUTF8("燃气具");
 
 		stringstream ss;
 		ss << "INSERT INTO TB_DEVICECJJL  VALUES (RAWTOHEX(sys_guid()), NULL, NULL, NULL, sysdate, NULL, NULL, NULL, NULL, NULL, NULL, '',"
@@ -88,7 +88,7 @@ int MesSvr::InsertToSvr(const char *key, const char *val)
 			<< "'" << m_strDevName << "' ,"
 			<< "'" << strKey << "' ,"
 			<< "'" << strVal << "',"
-			<< "'GC001',"
+			<< "'0007',"
 			<< "'" << strFactoryName << "' ,"
 			<< "'" << m_strDepartmentCode << "' ,"
 			<< "'" << m_strWorkshopName << "' ,"
@@ -114,7 +114,7 @@ int MesSvr::InsertToSvr(const char *key, int val)
 	try {
 		string strKey = GBKToUTF8(key);// GBKToUTF8("类泡沫消防车");
 									   //string strVal = GBKToUTF8(val);
-		string strFactoryName = GBKToUTF8("万家乐_顺德");
+		string strFactoryName = GBKToUTF8("燃气具");
 
 		stringstream ss;
 		ss << "INSERT INTO TB_DEVICECJJL  VALUES (RAWTOHEX(sys_guid()), NULL, NULL, NULL, sysdate, NULL, NULL, NULL, NULL, NULL, NULL, '',"
@@ -122,7 +122,7 @@ int MesSvr::InsertToSvr(const char *key, int val)
 			<< "'" << m_strDevName << "' ,"
 			<< "'" << strKey << "' ,"
 			<< "'" << val << "',"
-			<< "'GC001',"
+			<< "'0007',"
 			<< "'" << strFactoryName << "' ,"
 			<< "'" << m_strDepartmentCode << "' ,"
 			<< "'" << m_strWorkshopName << "' ,"

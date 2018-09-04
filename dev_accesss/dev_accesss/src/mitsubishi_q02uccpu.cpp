@@ -85,7 +85,7 @@ void Mitsubishi_Q02UUCPU::DoStart()
 
 		char *pAddr[5] = {
 			"Y181" ,
-			"D3498" ,
+			"D3499" ,
 			"D7001" ,
 			"D3501" ,
 			NULL
@@ -103,7 +103,7 @@ void Mitsubishi_Q02UUCPU::DoStart()
 		for (size_t i = 0; i < 4; i++)
 		{
 			int len = 1;
-			if (i > 0)
+			if (i > 1)
 			{
 				len = 2;
 			}
