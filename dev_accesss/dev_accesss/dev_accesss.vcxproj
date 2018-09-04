@@ -230,11 +230,9 @@ xcopy /y $(ProjectDir)dev_config.xml $(OutDir)</Command>
     <ClInclude Include="include\modbus.h" />
     <ClInclude Include="include\modbus_exception.h" />
     <ClInclude Include="include\mondial.h" />
-<<<<<<< Updated upstream
     <ClInclude Include="include\mondial_client.h" />
-=======
     <ClInclude Include="include\net_base.h" />
->>>>>>> Stashed changes
+
     <ClInclude Include="include\plc_base.h" />
     <ClInclude Include="include\scanner.h" />
     <ClInclude Include="include\sql_base.h" />
