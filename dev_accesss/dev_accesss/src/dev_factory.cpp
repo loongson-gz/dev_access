@@ -62,3 +62,24 @@ SqlBase * DevFactory::CreateSqlDev(stSQLConf *conf)
 
 	return  dev;
 }
+
+
+NetBase * DevFactory::CreateNetDev(stNETConf *conf)
+{
+	if (!conf)
+	{
+		return nullptr;
+	}
+
+	NetBase *dev = nullptr;
+	switch (conf->devType)
+	{
+	case eSCANNER:
+		dev = new Scanner(*conf);
+		break;
+	default:
+		break;
+	}
+
+	return dev;
+}

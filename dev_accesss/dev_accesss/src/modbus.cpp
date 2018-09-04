@@ -30,7 +30,8 @@ Modbus::Modbus(string host, uint16_t port)
 * @param host  IP Address of Host
 * @return      A Modbus Object
 */
-Modbus::Modbus(string host) {
+Modbus::Modbus(string host) 
+{
 	this->Modbus::Modbus(host, 502);
 }
 
@@ -38,7 +39,8 @@ Modbus::Modbus(string host) {
 /**
 * Destructor of Modbus Object
 */
-Modbus::~Modbus(void) {
+Modbus::~Modbus(void) 
+{
 }
 
 
@@ -46,7 +48,8 @@ Modbus::~Modbus(void) {
 * Set Slave ID
 * @param id  Id of Slave in Server to Set
 */
-void Modbus::ModbusSetSlaveId(int id) {
+void Modbus::ModbusSetSlaveId(int id) 
+{
 	_slaveid = id;
 }
 
@@ -54,7 +57,8 @@ void Modbus::ModbusSetSlaveId(int id) {
 * Build up Connection
 * @return   If A Connection Is Successfully Built
 */
-bool Modbus::ModbusConnect() {
+bool Modbus::ModbusConnect() 
+{
 	if (HOST == "" || PORT == 0) 
 	{
 		WLogDebug("Missing Host and Port");
@@ -91,7 +95,8 @@ bool Modbus::ModbusConnect() {
 /**
 * Close the Connection
 */
-void Modbus::ModbusClose() {
+void Modbus::ModbusClose() 
+{
 	Close(_socket);
 	WLogDebug("Socket Closed");
 }
@@ -103,7 +108,8 @@ void Modbus::ModbusClose() {
 * @param address   Reference Address
 * @param func      Functional Code
 */
-void Modbus::ModbusBuildRequest(uint8_t *to_send, int address, int func) {
+void Modbus::ModbusBuildRequest(uint8_t *to_send, int address, int func) 
+{
 	to_send[0] = (uint8_t)(_msg_id >> 8);
 	to_send[1] = (uint8_t)(_msg_id & 0x00FF);
 	to_send[2] = 0;
@@ -123,8 +129,10 @@ void Modbus::ModbusBuildRequest(uint8_t *to_send, int address, int func) {
 * @param func      Functional Code
 * @param value     Value to Write
 */
-void Modbus::ModbusWrite(int address, int amount, int func, uint16_t *value) {
-	if (func == WRITE_COIL || func == WRITE_REG) {
+void Modbus::ModbusWrite(int address, int amount, int func, uint16_t *value) 
+{
+	if (func == WRITE_COIL || func == WRITE_REG) 
+	{
 		uint8_t *to_send = new uint8_t[12];
 		ModbusBuildRequest(to_send, address, func);
 		to_send[5] = 6;
@@ -133,34 +141,37 @@ void Modbus::ModbusWrite(int address, int amount, int func, uint16_t *value) {
 		ModbusSend(to_send, 12);
 		delete[] to_send;
 	}
-	else if (func == WRITE_REGS) {
+	else if (func == WRITE_REGS) 
+	{
 		uint8_t *to_send = new uint8_t[13 + 2 * amount];
 		ModbusBuildRequest(to_send, address, func);
 		to_send[5] = (uint8_t)(5 + 2 * amount);
 		to_send[10] = (uint8_t)(amount >> 8);
 		to_send[11] = (uint8_t)(amount & 0x00FF);
 		to_send[12] = (uint8_t)(2 * amount);
-		for (int i = 0; i < amount; i++) {
+		for (int i = 0; i < amount; i++) 
+		{
 			to_send[13 + 2 * i] = (uint8_t)(value[i] >> 8);
 			to_send[14 + 2 * i] = (uint8_t)(value[i] & 0x00FF);
 		}
 		ModbusSend(to_send, 13 + 2 * amount);
 		delete[] to_send;
 	}
-	else if (func == WRITE_COILS) {
+	else if (func == WRITE_COILS) 
+	{
 		uint8_t *to_send = new uint8_t[14 + (amount - 1) / 8];
 		ModbusBuildRequest(to_send, address, func);
 		to_send[5] = (uint8_t)(7 + (amount - 1) / 8);
 		to_send[10] = (uint8_t)(amount >> 8);
 		to_send[11] = (uint8_t)(amount >> 8);
 		to_send[12] = (uint8_t)((amount + 7) / 8);
-		for (int i = 0; i < amount; i++) {
+		for (int i = 0; i < amount; i++) 
+		{
 			to_send[13 + (i - 1) / 8] += (uint8_t)(value[i] << (i % 8));
 		}
 		ModbusSend(to_send, 14 + (amount - 1) / 8);
 		delete[] to_send;
 	}
-	
 }
 
 
@@ -185,7 +196,7 @@ void Modbus::ModbusRead(int address, int amount, int func)
 	}
 	catch (const std::exception& e)
 	{
-		cout << e.what() << endl;
+		throw e;
 	}
 }
 
@@ -196,7 +207,8 @@ void Modbus::ModbusRead(int address, int amount, int func)
 * @param amount     Amount of Registers to Read
 * @param buffer     Buffer to Store Data
 */
-void Modbus::ModbusReadHoldingRegisters(int address, int amount, uint16_t *buffer) {
+void Modbus::ModbusReadHoldingRegisters(int address, int amount, uint16_t *buffer) 
+{
 	if (_connected) 
 	{
 		if (amount > 65535 || address > 65535) 
@@ -221,7 +233,6 @@ void Modbus::ModbusReadHoldingRegisters(int address, int amount, uint16_t *buffe
 		}
 		catch (exception &e) 
 		{
-			cout << e.what() << endl;
 			throw e;
 		}
 	}
@@ -239,7 +250,8 @@ void Modbus::ModbusReadHoldingRegisters(int address, int amount, uint16_t *buffe
 * @param amount      Amount of Registers to Read
 * @param buffer      Buffer to Store Data
 */
-void Modbus::ModbusReadInputRegisters(int address, int amount, uint16_t *buffer) {
+void Modbus::ModbusReadInputRegisters(int address, int amount, uint16_t *buffer) 
+{
 	if (_connected) 
 	{
 		if (amount > 65535 || address > 65535) 
@@ -264,7 +276,6 @@ void Modbus::ModbusReadInputRegisters(int address, int amount, uint16_t *buffer)
 		}
 		catch (exception &e) 
 		{
-			cout << e.what() << endl;
 			throw e;
 		}
 	}
@@ -281,7 +292,8 @@ void Modbus::ModbusReadInputRegisters(int address, int amount, uint16_t *buffer)
 * @param amount      Amount of Coils to Read
 * @param buffer      Buffers to Store Data
 */
-void Modbus::ModbusReadCoils(int address, int amount, bool *buffer) {
+void Modbus::ModbusReadCoils(int address, int amount, bool *buffer) 
+{
 	if (_connected) 
 	{
 		if (amount > 2040 || address > 65535) 
@@ -305,7 +317,6 @@ void Modbus::ModbusReadCoils(int address, int amount, bool *buffer) {
 		}
 		catch (exception &e) 
 		{
-			cout << e.what() << endl;
 			throw e;
 		}
 	}
@@ -324,7 +335,8 @@ void Modbus::ModbusReadCoils(int address, int amount, bool *buffer) {
 * @param amount    Amount of Bits to Read
 * @param buffer    Buffer to store Data
 */
-void Modbus::ModbusReadInputBits(int address, int amount, bool* buffer) {
+void Modbus::ModbusReadInputBits(int address, int amount, bool* buffer) 
+{
 	if (_connected) 
 	{
 		if (amount > 2040 || address > 65535) 
@@ -348,7 +360,6 @@ void Modbus::ModbusReadInputBits(int address, int amount, bool* buffer) {
 		}
 		catch (exception &e) 
 		{
-			cout << e.what() << endl;;
 			throw e;
 		}
 	}
@@ -364,7 +375,8 @@ void Modbus::ModbusReadInputBits(int address, int amount, bool* buffer) {
 * @param address    Reference Address
 * @param to_write   Value to Write to Coil
 */
-void Modbus::ModbusWriteCoil(int address, bool to_write) {
+void Modbus::ModbusWriteCoil(int address, bool to_write) 
+{
 	if (_connected) 
 	{
 		if (address > 65535) 
@@ -385,7 +397,6 @@ void Modbus::ModbusWriteCoil(int address, bool to_write) {
 		}
 		catch (exception &e) 
 		{
-			cout << e.what() << endl;
 			throw e;
 		}
 	}
@@ -402,7 +413,8 @@ void Modbus::ModbusWriteCoil(int address, bool to_write) {
 * @param address   Reference Address
 * @param value     Value to Write to Register
 */
-void Modbus::ModbusWriteRegister(int address, uint16_t value) {
+void Modbus::ModbusWriteRegister(int address, uint16_t value) 
+{
 	if (_connected) 
 	{
 		if (address > 65535) 
@@ -426,7 +438,6 @@ void Modbus::ModbusWriteRegister(int address, uint16_t value) {
 		}
 		catch (exception &e) 
 		{
-			cout << e.what() << endl;
 			throw e;
 		}
 	}
@@ -443,7 +454,8 @@ void Modbus::ModbusWriteRegister(int address, uint16_t value) {
 * @param amount   Amount of Coils to Write
 * @param value    Values to Write
 */
-void Modbus::ModbusWriteCoils(int address, int amount, bool *value) {
+void Modbus::ModbusWriteCoils(int address, int amount, bool *value) 
+{
 	if (_connected) 
 	{
 		if (address > 65535 || amount > 65535) 
@@ -469,7 +481,6 @@ void Modbus::ModbusWriteCoils(int address, int amount, bool *value) {
 		}
 		catch (exception &e) 
 		{
-			cout << e.what() << endl;
 			throw e;
 		}
 	}
@@ -488,7 +499,8 @@ void Modbus::ModbusWriteCoils(int address, int amount, bool *value) {
 * @param amount  Amount of Value to Write
 * @param value   Values to Write
 */
-void Modbus::ModbusWriteRegisters(int address, int amount, uint16_t *value) {
+void Modbus::ModbusWriteRegisters(int address, int amount, uint16_t *value) 
+{
 	if (_connected) 
 	{
 		if (address > 65535 || amount > 65535) 
@@ -508,7 +520,6 @@ void Modbus::ModbusWriteRegisters(int address, int amount, uint16_t *value) {
 		}
 		catch (exception &e) 
 		{
-			cout << e.what() << endl;
 			throw e;
 		}
 	}
@@ -554,7 +565,8 @@ ssize_t Modbus::ModbusReceive(uint8_t *buffer)
 * @param msg   Message Received from Server
 * @param func  Modbus Functional Code
 */
-void Modbus::ModbusErrorHandle(uint8_t *msg, int func) {
+void Modbus::ModbusErrorHandle(uint8_t *msg, int func) 
+{
 	if (msg[7] == func + 0x80) 
 	{
 		switch (msg[8]) 

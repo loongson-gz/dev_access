@@ -81,6 +81,17 @@
 			<interval>30</interval>
 		</dev>
 	</sql>
+    <net>
+        <dev>
+			<title>dev1</title>
+			<ip>192.168.104.199</ip>
+			<port>9999</port>
+			<!--设备类型 0:scanner-->
+			<devtype>0</devtype>
+			<!-- 操作间隔 单位为：秒 -->
+			<interval>5</interval>
+		</dev>
+    </net>
 	<svr>
 		<!-- 数据类型：0:sql server 1: orcale 2:mysql 3:access-->
 		<dbtype>1</dbtype>

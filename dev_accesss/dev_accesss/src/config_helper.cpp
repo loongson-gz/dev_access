@@ -36,6 +36,11 @@ TPLCLst ConfigHelper::GetPlcLst()
 	return m_plcLst;
 }
 
+TNETLst ConfigHelper::GetNetLst()
+{
+	return m_netLst;
+}
+
 stSQLConf ConfigHelper::GetSqlConf()
 {
 	return m_svrConf;
@@ -138,6 +143,33 @@ int ConfigHelper::ParseConf(const char *file)
 	strncpy(m_svrConf.szPwd, strPwd.c_str(), sizeof(m_svrConf.szPwd));
 	strncpy(m_svrConf.szDbName, strDbname.c_str(), sizeof(m_svrConf.szDbName));
 	strncpy(m_svrConf.szDnsName, strDns.c_str(), sizeof(m_svrConf.szDnsName));
+
+
+	TiXmlElement *netElm = root->FirstChildElement("net");
+	if (!netElm)
+	{
+		WLogError("netElm is null, file:%s", file);
+		return ERR_ERROR;
+	}
+	TiXmlElement *pNetDev = netElm->FirstChildElement("dev");
+	for (; pNetDev != NULL; pNetDev = pNetDev->NextSiblingElement("dev"))
+	{
+		string strTitle, strIp, strPort, strId, strDevType, strInterval;
+		_xmlGetFirstElement(pNetDev, "title", strTitle);
+		_xmlGetFirstElement(pNetDev, "ip", strIp);
+		_xmlGetFirstElement(pNetDev, "port", strPort);
+		_xmlGetFirstElement(pNetDev, "devtype", strDevType);
+		_xmlGetFirstElement(pNetDev, "interval", strInterval);
+
+		stNETConf conf;
+		strncpy(conf.szTitle, strTitle.c_str(), sizeof(conf.szTitle));
+		strncpy(conf.szIpAddr, strIp.c_str(), sizeof(conf.szIpAddr));
+		conf.uPort = atoi(strPort.c_str());
+		conf.devType = (PLCDEVTYPE)atoi(strDevType.c_str());
+		conf.interval = atoi(strInterval.c_str());
+
+		m_netLst.push_back(conf);
+	}
 
 	return 0;
 }

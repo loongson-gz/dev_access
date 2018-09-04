@@ -35,7 +35,6 @@ public:
 	int Stop();
 	void SetEventCallback(EventMsgFn fn, void * pUser);
 	void DoStart();
-	uint16_t ModbusStart(int address);
 	bool ModbusInit(int id);
 	bool GetTestResults(int BaseAddress, uint8_t result[][10]);
 

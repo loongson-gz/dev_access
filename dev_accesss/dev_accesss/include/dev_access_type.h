@@ -30,6 +30,15 @@ enum PLCDEVTYPE
 
 };
 
+
+//网络设备类型
+enum NETDEVTYPE
+{
+	eSCANNER = 0,			//扫码枪
+
+};
+
+
 //SQL设备类型
 enum SQLDEVTYPE
 {
@@ -48,7 +57,8 @@ enum EVENTTYPE
 	eEVENT_MITSUBISHI_FX3U_32M ,
 	eEVENT_MICROPLAN ,
 	eEVENT_MONDIAL ,
-	eEVENT_HUAXI
+	eEVENT_HUAXI,
+	eEVENT_SCANNER
 };
 
 //plc 配置
@@ -76,6 +86,17 @@ typedef struct _stSQLConf
 	SQLDEVTYPE devType;		//设备类型
 	int interval;			//与设备交互的操作间隔
 }stSQLConf;
+
+//网络设备 配置
+typedef struct _stNETConf
+{
+	char szTitle[256];		//标题
+	char szIpAddr[20];		//IP地址
+	uint16_t uPort;			//端口号
+
+	PLCDEVTYPE devType;		//设备类型
+	int interval;			//与设备交互的操作间隔
+}stNETConf;
 
 
 /*

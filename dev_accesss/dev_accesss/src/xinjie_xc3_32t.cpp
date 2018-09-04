@@ -199,21 +199,6 @@ void XinJieXc3::DoStart()
 }
 
 
-uint16_t XinJieXc3::ModbusStart(int address)
-{
-	uint16_t read_holding_regs = 0;
-	try
-	{
-		m_mbPtr->ModbusReadHoldingRegisters(address, 1, &read_holding_regs);
-	}
-	catch (const std::exception& e)
-	{
-		cout << e.what() << endl;
-	}
-	
-	return read_holding_regs;
-}
-
 
 
 bool XinJieXc3::ModbusInit(int id)
@@ -297,6 +282,8 @@ void XinJieXc3::GetScanStatus()
 		catch (const std::exception& e)
 		{
 			WLogError("%s:%d %s", __FUNCTION__, __LINE__, e.what());
+			Sleep(30000);
+			continue;
 		}
 		Sleep(3000);
 	}

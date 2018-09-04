@@ -8,6 +8,7 @@
 
 typedef vector<PlcBase *> TPlcObjLst;
 typedef vector<SqlBase *> TSqlObjLst;
+typedef vector<NetBase *> TNetObjLst;
 
 class DevManager
 {
@@ -27,6 +28,7 @@ private:
 	ConfigHelper *m_config;
 	TSqlObjLst m_sqlObjLst;
 	TPlcObjLst m_plcObjLst;
+	TNetObjLst m_netObjLst;
 	MesSvr m_mesSvr;
 
 };

@@ -59,6 +59,20 @@ int DevManager::Start()
 		m_plcObjLst.push_back(obj);
 	}
 
+	TNETLst netLst = m_config->GetNetLst();
+	for (auto it = netLst.begin(); it != netLst.end(); ++it)
+	{
+		stNETConf conf = *it;
+		NetBase *obj = m_factory.CreateNetDev(&conf);
+		if (!obj)
+		{
+			continue;
+		}
+		obj->SetEventCallback(&DevManager::EventMsg, this);
+		obj->Start();
+		m_netObjLst.push_back(obj);
+	}
+
 
 	return 0;
 }
