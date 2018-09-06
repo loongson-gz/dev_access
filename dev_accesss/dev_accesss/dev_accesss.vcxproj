@@ -43,6 +43,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>NotSet</CharacterSet>
+    <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -103,7 +104,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;WIN32;_AFXDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)3rd\poco_1.9.0\include;$(SolutionDir)common;./include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -144,7 +145,7 @@ xcopy /y $(ProjectDir)dev_config.xml $(OutDir)</Command>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_CRT_SECURE_NO_WARNINGS;_CONSOLE;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CRT_SECURE_NO_WARNINGS;_CONSOLE;WIN32;_AFXDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)3rd\poco_1.9.0\include;$(SolutionDir)common;./include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -162,18 +163,16 @@ xcopy /y $(ProjectDir)dev_config.xml $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\common\Locker\RWLock.cpp" />
     <ClCompile Include="..\common\SocketAPI\SocketAPI.cpp" />
     <ClCompile Include="..\common\StrUtilty\StringUtilty.cpp" />
-    <ClCompile Include="..\common\StrUtilty\StrUtilty.cpp" />
     <ClCompile Include="..\common\tinyxml\myXmlParse.cpp" />
     <ClCompile Include="..\common\tinyxml\SimpleXmlMaker.cpp" />
     <ClCompile Include="..\common\tinyxml\tinystr.cpp" />
     <ClCompile Include="..\common\tinyxml\tinyxml.cpp" />
     <ClCompile Include="..\common\tinyxml\tinyxmlerror.cpp" />
     <ClCompile Include="..\common\tinyxml\tinyxmlparser.cpp" />
-    <ClCompile Include="..\common\wLog\CSimpleLog.cpp" />
     <ClCompile Include="..\common\wLog\wLog.cpp" />
+    <ClCompile Include="src\access_helper.cpp" />
     <ClCompile Include="src\config_helper.cpp" />
     <ClCompile Include="src\dbhelper.cpp" />
     <ClCompile Include="src\dev_factory.cpp" />
@@ -200,17 +199,14 @@ xcopy /y $(ProjectDir)dev_config.xml $(OutDir)</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\common\Locker\internallock.h" />
-    <ClInclude Include="..\common\Locker\OSSem.h" />
-    <ClInclude Include="..\common\Locker\RWLock.h" />
     <ClInclude Include="..\common\SocketAPI\SocketAPI.h" />
     <ClInclude Include="..\common\StrUtilty\StringUtilty.h" />
-    <ClInclude Include="..\common\StrUtilty\StrUtilty.h" />
     <ClInclude Include="..\common\tinyxml\myXmlParse.h" />
     <ClInclude Include="..\common\tinyxml\SimpleXmlMaker.h" />
     <ClInclude Include="..\common\tinyxml\tinystr.h" />
     <ClInclude Include="..\common\tinyxml\tinyxml.h" />
-    <ClInclude Include="..\common\wLog\CSimpleLog.h" />
     <ClInclude Include="..\common\wLog\wLog.h" />
+    <ClInclude Include="include\access_helper.h" />
     <ClInclude Include="include\common.h" />
     <ClInclude Include="include\config_helper.h" />
     <ClInclude Include="include\dbhelper.h" />
@@ -232,7 +228,6 @@ xcopy /y $(ProjectDir)dev_config.xml $(OutDir)</Command>
     <ClInclude Include="include\mondial.h" />
     <ClInclude Include="include\mondial_client.h" />
     <ClInclude Include="include\net_base.h" />
-
     <ClInclude Include="include\plc_base.h" />
     <ClInclude Include="include\scanner.h" />
     <ClInclude Include="include\sql_base.h" />

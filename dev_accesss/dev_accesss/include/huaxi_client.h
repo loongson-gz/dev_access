@@ -1,8 +1,6 @@
 #ifndef __HUAXI_CLIENT_H__
 #define __HUAXI_CLIENT_H__
 
-#include "common.h"
-#include "sql_base.h"
 #include "dbhelper.h"
 
 typedef struct stHuaXiData_

@@ -36,13 +36,7 @@
     <ClCompile Include="src\main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\common\Locker\RWLock.cpp">
-      <Filter>common\locker</Filter>
-    </ClCompile>
     <ClCompile Include="..\common\StrUtilty\StringUtilty.cpp">
-      <Filter>common\StrUtilty</Filter>
-    </ClCompile>
-    <ClCompile Include="..\common\StrUtilty\StrUtilty.cpp">
       <Filter>common\StrUtilty</Filter>
     </ClCompile>
     <ClCompile Include="..\common\tinyxml\myXmlParse.cpp">
@@ -62,9 +56,6 @@
     </ClCompile>
     <ClCompile Include="..\common\tinyxml\tinyxmlparser.cpp">
       <Filter>common\tinyxml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\common\wLog\CSimpleLog.cpp">
-      <Filter>common\wlog</Filter>
     </ClCompile>
     <ClCompile Include="..\common\wLog\wLog.cpp">
       <Filter>common\wlog</Filter>
@@ -138,6 +129,9 @@
     <ClCompile Include="src\tcp_server.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\access_helper.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\common.h">
@@ -146,16 +140,7 @@
     <ClInclude Include="..\common\Locker\internallock.h">
       <Filter>common\locker</Filter>
     </ClInclude>
-    <ClInclude Include="..\common\Locker\OSSem.h">
-      <Filter>common\locker</Filter>
-    </ClInclude>
-    <ClInclude Include="..\common\Locker\RWLock.h">
-      <Filter>common\locker</Filter>
-    </ClInclude>
     <ClInclude Include="..\common\StrUtilty\StringUtilty.h">
-      <Filter>common\StrUtilty</Filter>
-    </ClInclude>
-    <ClInclude Include="..\common\StrUtilty\StrUtilty.h">
       <Filter>common\StrUtilty</Filter>
     </ClInclude>
     <ClInclude Include="..\common\tinyxml\myXmlParse.h">
@@ -169,9 +154,6 @@
     </ClInclude>
     <ClInclude Include="..\common\tinyxml\tinyxml.h">
       <Filter>common\tinyxml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\common\wLog\CSimpleLog.h">
-      <Filter>common\wlog</Filter>
     </ClInclude>
     <ClInclude Include="..\common\wLog\wLog.h">
       <Filter>common\wlog</Filter>
@@ -255,6 +237,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\tcp_server.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\access_helper.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -9,6 +9,8 @@
 #include <memory>
 #include <thread>
 #include <chrono>
+#include <sstream>
+
 #include "wLog\wLog.h"
 #include "dev_access_type.h"
 #include "error_code.h"

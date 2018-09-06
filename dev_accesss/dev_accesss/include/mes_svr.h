@@ -1,7 +1,6 @@
 #ifndef __MES_SVR_H__
 #define __MES_SVR_H__
 
-#include "common.h"
 #include "dbhelper.h"
 
 class MesSvr {

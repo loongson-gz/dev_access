@@ -1,6 +1,6 @@
-#include "SocketAPI/SocketAPI.h"
+#include <SDKDDKVer.h>
 #include "dev_manager.h"
-#include "config_helper.h"
+#include "SocketAPI/SocketAPI.h"
 #include "version.h"
 
 DevManager::DevManager()
@@ -237,8 +237,34 @@ void DevManager::DoEventProcess(EVENTTYPE iEvtType, void * pData)
 		WLogInfo("==================== eEVENT_MICROPLAN EvtType:%d", iEvtType);
 		break;
 	case eEVENT_MONDIAL:
+	{
 		WLogInfo("==================== eEVENT_MONDIAL EvtType:%d", iEvtType);
+		m_mesSvr.SetDepartmentAndProLineCode("CJ_00001", "CX-00007");
+		m_mesSvr.SetWorkShopAndProDLine("热水总装验证车间", "热水实验线");
+		m_mesSvr.SetDevTitleAndCode("SBXX000023", "综合检测");
+
+		char *pName[3] = {
+			"产品条码",
+			"结果判定",
+			"检测时间"
+		};
+		char *pRet[2] = { "不合格", "合格" };
+
+		stMondialData *data = (stMondialData *)(pData);
+		int i = 0;
+		m_mesSvr.InsertToSvr(pName[i++], data->rpt.strBarCode.c_str());
+		int iRes = 0;
+		int pos = 0;
+		if ((pos = data->rpt.strQuality.find("PASS")) != string::npos)
+		{
+			iRes = 1;
+		}
+		m_mesSvr.InsertToSvr(pName[i++], pRet[iRes]);
+		m_mesSvr.InsertToSvr(pName[i++], atoi(data->rpt.strTimeUsed.c_str()));
+
 		break;
+	}
+		
 	case eEVENT_HUAXI:
 	{
 		WLogInfo("==================== eEVENT_HUAXI EvtType:%d", iEvtType);

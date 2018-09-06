@@ -75,12 +75,16 @@ void Mondial::DoStart()
 {
 	while (!m_bStop)
 	{
-		stMondialData data;
-		memset(&data, 0, sizeof(data));
-		m_pClient->GetData(data);
+		TMondialDataLst dataLst;
+		dataLst.clear();
+		m_pClient->GetData(dataLst);
 		if (m_fn)
 		{
-			m_fn(eEVENT_MONDIAL, (void *)&data, m_pUser);
+			for (auto it=dataLst.begin(); it!=dataLst.end(); ++it)
+			{
+				stMondialData data = *it;
+				m_fn(eEVENT_MONDIAL, (void *)&data, m_pUser);
+			}
 		}
 
 		this_thread::sleep_for(chrono::seconds(m_conf.interval));

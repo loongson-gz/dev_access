@@ -1,9 +1,8 @@
 #ifndef __MONDIAL_H__
 #define __MONDIAL_H__
 
-#include "common.h"
-#include "sql_base.h"
 #include "mondial_client.h"
+#include "sql_base.h"
 
 class Mondial : public SqlBase{
 public:

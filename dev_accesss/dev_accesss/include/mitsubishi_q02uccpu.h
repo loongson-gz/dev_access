@@ -1,7 +1,6 @@
 #ifndef __MITSUBISHI_H__
 #define __MITSUBISHI_H__
 
-#include "common.h"
 #include "plc_base.h"
 #include "mc_ascii.h"
 

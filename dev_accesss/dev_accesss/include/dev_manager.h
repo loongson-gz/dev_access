@@ -1,10 +1,9 @@
 #ifndef __DEV_MANAGER_H__
 #define __DEV_MANAGER_H__
 
-#include "common.h"
 #include "dev_factory.h"
-#include "config_helper.h"
 #include "mes_svr.h"
+#include "config_helper.h"
 
 typedef vector<PlcBase *> TPlcObjLst;
 typedef vector<SqlBase *> TSqlObjLst;

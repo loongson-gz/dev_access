@@ -1,3 +1,4 @@
+#include <SDKDDKVer.h>
 #include "dev_manager.h"
 
 int main(int argc, char *argv[])

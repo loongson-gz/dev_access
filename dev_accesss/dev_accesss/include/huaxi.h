@@ -1,7 +1,6 @@
 #ifndef __HUAXI_H__
 #define __HUAXI_H__
 
-#include "common.h"
 #include "sql_base.h"
 #include "huaxi_client.h"
 

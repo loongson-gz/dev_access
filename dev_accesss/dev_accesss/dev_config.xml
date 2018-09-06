@@ -66,6 +66,23 @@
 		<dev>
 			<title>dev1</title>
 			<!-- 数据类型：0:sql server 1: oracle 2:mysql 3:access-->
+			<dbtype>0</dbtype>
+			<ip>192.168.104.144</ip>
+			<port>0</port>
+			<user>admin</user>
+			<pwd>admin</pwd>
+			<!-- 数据库名 -->
+			<dbname>mondial</dbname>
+			<!-- 数据库 数据源名称-->
+			<dns>mondial_1</dns>
+			<!-- 设备类型 0:梦地 1:铧禧 2:迈克普兰-->
+			<devtype>0</devtype>
+			<!-- 操作间隔 单位为：秒 -->
+			<interval>30</interval>
+		</dev>
+		<dev>
+			<title>dev1</title>
+			<!-- 数据类型：0:sql server 1: oracle 2:mysql 3:access-->
 			<dbtype>1</dbtype>
 			<ip>120.77.226.172</ip>
 			<port>1521</port>

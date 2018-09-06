@@ -1,7 +1,6 @@
 #ifndef __MITSUBISHI_Q03UDVCPU_H__
 #define __MITSUBISHI_Q03UDVCPU_H__
 
-#include "common.h"
 #include "plc_base.h"
 #include "mc_ascii.h"
 

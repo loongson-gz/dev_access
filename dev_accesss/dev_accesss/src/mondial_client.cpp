@@ -22,7 +22,7 @@ MondialClient::~MondialClient()
 int MondialClient::Init()
 {
 	try {
-		m_pDbHelper = new DbHelper(m_conf.szUser, m_conf.szPwd, m_conf.szDbName, m_conf.szDnsName);
+		m_pDbHelper = new AccessHelper(m_conf.szDnsName);
 		int ret = m_pDbHelper->ConnectToSvr();
 		if (ret != 0)
 		{
@@ -38,8 +38,29 @@ int MondialClient::Init()
 	return 0;
 }
 
-int MondialClient::GetData(stMondialData & data)
+int MondialClient::GetData(TMondialDataLst &retLst)
 {
+	string strBeginTime("20180817083735");
+	string strEndTime("20180817132529");
+	stringstream ss;
+	ss << "SELECT  TEST_TIME, BAR_CODE_1, TIME_USED, QUALITY FROM PRODUCT_RPT "
+	<< " where TEST_TIME>="
+	<< "'"<< strBeginTime << "'"
+	<< "and TEST_TIME<="
+	<< "'"<< strEndTime <<"';";
+
+	string strSql = ss.str();
+
+	TProductReportLst rptLst;
+	m_pDbHelper->GetProductReport(strSql.c_str(), rptLst);
+
+	for (auto it = rptLst.begin(); it < rptLst.end(); ++it)
+	{
+		stProductReport rpt = *it;
+		stMondialData data;
+		data.rpt = rpt;
+		retLst.push_back(data);
+	}
 	return 0;
 }
 

@@ -1,14 +1,15 @@
 #ifndef __MONDIAL_CLIENT_H__
 #define __MONDIAL_CLIENT_H__
 
-#include "common.h"
-#include "sql_base.h"
-#include "dbhelper.h"
+#include "access_helper.h"
 
 typedef struct stMondialData_
 {
-
+	stProductReport rpt;
 }stMondialData;
+
+typedef vector<stMondialData> TMondialDataLst;
+
 
 class MondialClient {
 public:
@@ -16,9 +17,9 @@ public:
 	~MondialClient();
 
 	int Init();
-	int GetData(stMondialData &data);
+	int GetData(TMondialDataLst &retLst);
 private:
-	DbHelper *m_pDbHelper;
+	AccessHelper *m_pDbHelper;
 
 	stSQLConf m_conf;
 };
