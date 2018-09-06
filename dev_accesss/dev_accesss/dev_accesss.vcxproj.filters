@@ -132,6 +132,9 @@
     <ClCompile Include="src\access_helper.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\mytime.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\common.h">
@@ -240,6 +243,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\access_helper.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mytime.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

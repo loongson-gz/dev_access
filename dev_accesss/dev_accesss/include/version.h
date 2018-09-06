@@ -10,7 +10,7 @@
 
 #define VER_MAJOR 1
 #define VER_MINOR  0
-#define VER_REVISION "7bed316"
+#define VER_REVISION "c9770b1"
 
 
 #endif //!_FTPCLIENT_VERSION_H_

@@ -190,6 +190,7 @@ xcopy /y $(ProjectDir)dev_config.xml $(OutDir)</Command>
     <ClCompile Include="src\modbus.cpp" />
     <ClCompile Include="src\mondial.cpp" />
     <ClCompile Include="src\mondial_client.cpp" />
+    <ClCompile Include="src\mytime.cpp" />
     <ClCompile Include="src\net_base.cpp" />
     <ClCompile Include="src\plc_base.cpp" />
     <ClCompile Include="src\scanner.cpp" />
@@ -227,6 +228,7 @@ xcopy /y $(ProjectDir)dev_config.xml $(OutDir)</Command>
     <ClInclude Include="include\modbus_exception.h" />
     <ClInclude Include="include\mondial.h" />
     <ClInclude Include="include\mondial_client.h" />
+    <ClInclude Include="include\mytime.h" />
     <ClInclude Include="include\net_base.h" />
     <ClInclude Include="include\plc_base.h" />
     <ClInclude Include="include\scanner.h" />

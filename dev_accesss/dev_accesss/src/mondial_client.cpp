@@ -1,4 +1,5 @@
 #include "mondial_client.h"
+#include "mytime.h"
 
 
 MondialClient::MondialClient(stSQLConf conf)
@@ -40,13 +41,17 @@ int MondialClient::Init()
 
 int MondialClient::GetData(TMondialDataLst &retLst)
 {
-	string strBeginTime("20180817083735");
-	string strEndTime("20180817132529");
+	MyTime t;
+	time_t now = t.GetTimestmap();
+	string strEndTime = t.GetTimeString1(now);
+
+	now -= m_conf.interval;
+	string strBeginTime = t.GetTimeString1(now);
 	stringstream ss;
 	ss << "SELECT  TEST_TIME, BAR_CODE_1, TIME_USED, QUALITY FROM PRODUCT_RPT "
 	<< " where TEST_TIME>="
 	<< "'"<< strBeginTime << "'"
-	<< "and TEST_TIME<="
+	<< " and TEST_TIME<="
 	<< "'"<< strEndTime <<"';";
 
 	string strSql = ss.str();
