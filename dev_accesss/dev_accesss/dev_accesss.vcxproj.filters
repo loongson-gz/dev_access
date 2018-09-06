@@ -123,12 +123,12 @@
     <ClCompile Include="src\mc_ascii.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-<<<<<<< Updated upstream
     <ClCompile Include="src\huaxi_client.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\mondial_client.cpp">
-=======
+      <Filter>源文件</Filter>
+    </ClCompile>
     <ClCompile Include="src\scanner.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -136,7 +136,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\tcp_server.cpp">
->>>>>>> Stashed changes
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -243,12 +242,12 @@
     <ClInclude Include="include\mc_ascii.h">
       <Filter>头文件</Filter>
     </ClInclude>
-<<<<<<< Updated upstream
     <ClInclude Include="include\huaxi_client.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\mondial_client.h">
-=======
+      <Filter>头文件</Filter>
+    </ClInclude>
     <ClInclude Include="include\scanner.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -256,7 +255,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\tcp_server.h">
->>>>>>> Stashed changes
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
