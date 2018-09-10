@@ -5,9 +5,7 @@
 #include "mes_svr.h"
 #include "config_helper.h"
 
-typedef vector<PlcBase *> TPlcObjLst;
-typedef vector<SqlBase *> TSqlObjLst;
-typedef vector<NetBase *> TNetObjLst;
+typedef map<string, ObjBase* > TObjMap;
 
 class DevManager
 {
@@ -21,13 +19,29 @@ public:
 	static void EventMsg(EVENTTYPE iEvtType, void *pData, void *pUser);
 	void DoEventProcess(EVENTTYPE iEvtType, void *pData);
 
+private:
+	void HandleEventMitsubishi_q03udvcpu(void * pData);
+
+	void HandleEventMitsubishi_fx3u_32m(void * pData);
+
+	void HandleEventMitsubishi_q02uccpu(void * pData);
+
+	void HandleEventXinjie_xc3_32t_e(void * pData);
+
+	void HandleEventMondial(void * pData);
+
+	void HandleEventHuaxi(void * pData);
+
+	void HandleEventMicroplan(void * pData);
+
+	ObjBase * GetObjFromUrl(const char * url);
+
 
 private:
 	DevFactory m_factory;
 	ConfigHelper *m_config;
-	TSqlObjLst m_sqlObjLst;
-	TPlcObjLst m_plcObjLst;
-	TNetObjLst m_netObjLst;
+	TObjMap m_objLst;
+
 	MesSvr m_mesSvr;
 
 };

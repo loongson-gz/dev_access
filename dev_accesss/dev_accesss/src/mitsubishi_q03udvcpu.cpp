@@ -13,8 +13,8 @@ Mitsubishi_Q03UDVCPU::Mitsubishi_Q03UDVCPU(stPLCConf conf)
 	, m_conf(conf)
 	, m_fn(nullptr)
 {
-	WLogInfo("%s make %s:%d", __FUNCTION__, conf.szIpAddr, conf.uPort);
-
+	m_url = string(conf.szIpAddr) + "@" + std::to_string(conf.uPort);
+	WLogInfo("%s make %s", __FUNCTION__, m_url.c_str());
 }
 
 Mitsubishi_Q03UDVCPU::~Mitsubishi_Q03UDVCPU()
@@ -49,6 +49,16 @@ int Mitsubishi_Q03UDVCPU::Stop()
 	if (m_th.joinable())
 	{
 		m_th.join();
+	}
+	return 0;
+}
+
+int Mitsubishi_Q03UDVCPU::Get(const char * key, char *& val)
+{
+	if (stricmp(key, "name") == 0)
+	{
+		val = (char *)calloc(1, 128);
+		strncpy(val, m_conf.szTitle, sizeof(m_conf.szTitle));
 	}
 	return 0;
 }

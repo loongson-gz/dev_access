@@ -48,6 +48,14 @@ enum SQLDEVTYPE
 
 };
 
+//设备类型
+enum DEVTYPE
+{
+	ePLCDEV = 0,				//PLC 设备
+	eSQLDEV ,					//数据库类设备
+	eNETDEV						//网络设备
+};
+
 //事件类型
 enum EVENTTYPE 
 {

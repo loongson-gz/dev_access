@@ -10,13 +10,17 @@ Mitsubishi_FX3U_32M::Mitsubishi_FX3U_32M(stPLCConf conf)
 	: m_bStop(false)
 	, m_fn(nullptr)
 	, m_pUser(nullptr)
+	, m_conf(conf)
 {
 	WLogInfo("%s make", __FUNCTION__);
-	port = conf.uPort;
-	host = conf.szIpAddr;
+	m_uPort = conf.uPort;
+	m_strHost = conf.szIpAddr;
 	id = conf.id;
 	interval = conf.interval;
-	mb.reset(new Modbus(host, port));
+	mb.reset(new Modbus(m_strHost, m_uPort));
+
+	m_url = m_strHost + "@" + std::to_string(m_uPort);
+	WLogInfo("%s make %s", __FUNCTION__, m_url.c_str());
 }
 
 Mitsubishi_FX3U_32M::~Mitsubishi_FX3U_32M()
@@ -42,6 +46,15 @@ int Mitsubishi_FX3U_32M::Stop()
 	return 0;
 }
 
+int Mitsubishi_FX3U_32M::Get(const char * key, char *& val)
+{
+	if (stricmp(key, "name") == 0)
+	{
+		val = (char *)calloc(1, 256);
+		strncpy(val, m_conf.szTitle, sizeof(m_conf.szTitle));
+	}
+	return 0;
+}
 
 uint16_t Mitsubishi_FX3U_32M::ModbusStart(int address)
 {
@@ -144,7 +157,7 @@ void Mitsubishi_FX3U_32M::DoStart()
 					tick = (time_t)unixTime;
 					tm = *localtime(&tick);
 					strftime(data.Timestamp, sizeof(data.Timestamp), "%Y-%m-%d %H:%M:%S", &tm);
-					sprintf(data.DevInfo, host, "@", port);
+					strncpy(data.szDevUrl, m_url.c_str(), sizeof(data.szDevUrl));
 					data.StationStatus_1 = OldValue[0] % 20;
 					data.StationOkAmount_1 = OldValue[1];
 					data.StationTotalAmount_1 = OldValue[2];

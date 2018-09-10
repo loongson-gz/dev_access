@@ -14,8 +14,8 @@ Mondial::Mondial(stSQLConf conf)
 	, m_pUser(nullptr)
 	, m_fn(nullptr)
 {
-	WLogInfo("%s make", __FUNCTION__);
-
+	m_url = string(conf.szDnsName) + "@" + string(conf.szDbName);
+	WLogInfo("%s make %s", __FUNCTION__, m_url.c_str());
 }
 
 Mondial::~Mondial()
@@ -63,6 +63,30 @@ int Mondial::Stop()
 		m_th.join();
 	}
 	return 0;
+}
+
+int Mondial::Get(const char * key, char *& val)
+{
+	if (stricmp(key, "name") == 0)
+	{
+		val = (char *)calloc(1, 128);
+		strncpy(val, m_conf.szTitle, sizeof(m_conf.szTitle));
+	}
+	return 0;
+}
+
+int Mondial::Set(const char * key, const char * val)
+{
+	if (strcmp(key, "control") == 0)
+	{
+		SetNgProduct(val);
+	}
+	return 0;
+}
+
+void Mondial::SetNgProduct(const char *barcode)
+{
+	m_pClient->UpdateFailProductData(barcode);
 }
 
 void Mondial::SetEventCallback(EventMsgFn fn, void * pUser)

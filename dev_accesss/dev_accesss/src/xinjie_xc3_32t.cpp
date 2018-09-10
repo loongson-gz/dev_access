@@ -23,6 +23,9 @@ XinJieXc3::XinJieXc3(stPLCConf conf)
 	mScanStatus = true;
 	m_interval = conf.interval * 1000;
 	m_mbPtr.reset(new Modbus(m_strHost, m_uPort));
+
+	m_url = string(conf.szIpAddr) + "@" + std::to_string(conf.uPort);
+	WLogInfo("%s make %s", __FUNCTION__, m_url.c_str());
 }
 
 XinJieXc3::~XinJieXc3()
@@ -186,7 +189,7 @@ void XinJieXc3::DoStart()
 					tick = (time_t)unixTime;
 					tm = *localtime(&tick);
 					strftime(data.Timestamp, sizeof(data.Timestamp), "%Y-%m-%d %H:%M:%S", &tm);
-					snprintf(data.DevInfo, sizeof(data.DevInfo), "%s@%d", m_strHost.c_str(), m_uPort);
+					snprintf(data.szDevUrl, sizeof(data.szDevUrl), "%s@%d", m_strHost.c_str(), m_uPort);
 					m_fn(eEVENT_XINJIE_XC3_32T_E, (void *)&data, m_pUser);
 					memset(&data, 0, sizeof(data));
 				}

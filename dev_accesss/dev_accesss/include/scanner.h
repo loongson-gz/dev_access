@@ -6,6 +6,7 @@
 
 
 typedef struct Scanner_Data {
+	char szDevUrl[128];
 	char UniquelyIdentifies[64];
 	char Timestamp[64];
 }stScanner_Data;

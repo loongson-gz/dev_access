@@ -1,15 +1,19 @@
 #ifndef __PLC_BASE_H__
 #define __PLC_BASE_H__
-#include "Modbus.h"
-#include "dev_access_type.h"
 
-class PlcBase {
+#include "obj_base.h"
+#include "Modbus.h"
+
+class PlcBase  : public ObjBase {
 public:
 	PlcBase();
-	virtual ~PlcBase();
+	~PlcBase();
 
-	virtual int Start() = 0;
-	virtual int Stop() = 0;
+	int GetBaseType()
+	{
+		return ePLCDEV;
+	}
+
 	virtual void SetEventCallback(EventMsgFn fn, void *pUser) {}
 };
 

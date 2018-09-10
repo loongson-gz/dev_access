@@ -14,8 +14,8 @@ HuaXi::HuaXi(stSQLConf conf)
 	, m_pUser(nullptr)
 	, m_fn(nullptr)
 {
-	WLogInfo("%s make", __FUNCTION__);
-
+	m_url = string(conf.szIpAddr) + "@" + std::to_string(conf.uPort);
+	WLogInfo("%s make %s", __FUNCTION__, m_url.c_str());
 }
 
 HuaXi::~HuaXi()
@@ -62,6 +62,21 @@ int HuaXi::Stop()
 	return 0;
 }
 
+int HuaXi::Get(const char * key, char *& val)
+{
+	if (stricmp(key, "name") == 0)
+	{
+		val = (char *)calloc(1, 128);
+		strncpy(val, m_conf.szTitle, sizeof(m_conf.szTitle));
+	}
+	return 0;
+}
+
+int HuaXi::Set(const char *key, const char *val)
+{
+	return 0;
+}
+
 void HuaXi::SetEventCallback(EventMsgFn fn, void * pUser)
 {
 	m_fn = fn;
@@ -78,17 +93,19 @@ void HuaXi::DoStart()
 		{
 			stHuaXiSQLData tmp = data.at(i);
 			stHuaXiData res;
-			res.szProductBarCode = tmp.szProductBarCode;
-			res.szLeakage = tmp.szLeakage;
+			memset(&res, 0, sizeof(res));
+			strncpy(res.szDevUrl, m_url.c_str(), sizeof(res.szDevUrl));
+			strncpy(res.szProductBarCode, tmp.szProductBarCode.c_str(), sizeof(res.szProductBarCode));
+			strncpy(res.szLeakage, tmp.szLeakage.c_str(), sizeof(res.szLeakage));
 			if (tmp.szUserDate.empty())
 			{
 				res.iCheckResult = tmp.iAutoCheckResult % 2;
-				res.szCheckDate = tmp.szAutoCheckDate;
+				strncpy(res.szCheckDate, tmp.szAutoCheckDate.c_str(), sizeof(res.szCheckDate));
 			}
 			else
 			{
 				res.iCheckResult = tmp.iUserCheckResult % 2;
-				res.szCheckDate = tmp.szUserDate;
+				strncpy(res.szCheckDate, tmp.szUserDate.c_str(), sizeof(res.szCheckDate));
 			}
 
 			if (m_fn)

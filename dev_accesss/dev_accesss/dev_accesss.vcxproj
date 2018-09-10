@@ -230,6 +230,7 @@ xcopy /y $(ProjectDir)dev_config.xml $(OutDir)</Command>
     <ClInclude Include="include\mondial_client.h" />
     <ClInclude Include="include\mytime.h" />
     <ClInclude Include="include\net_base.h" />
+    <ClInclude Include="include\obj_base.h" />
     <ClInclude Include="include\plc_base.h" />
     <ClInclude Include="include\scanner.h" />
     <ClInclude Include="include\sql_base.h" />

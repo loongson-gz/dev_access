@@ -6,6 +6,7 @@
 
 typedef struct stMitsubishi_Q03UDVCPU_Data_
 {
+	char szDevUrl[128];							//设备url
 	uint32_t iCountOfInput;						//"投入产量",
 	uint32_t iCountOfFinishedOutput;			//"完成产量"
 	uint32_t iCountOfAirNg;						//"气密检测 NG数量"
@@ -25,6 +26,8 @@ public:
 	int Init();
 	int Start();
 	int Stop();
+
+	virtual int Get(const char *key, char *&val);
 
 	void SetEventCallback(EventMsgFn fn, void *pUser);
 

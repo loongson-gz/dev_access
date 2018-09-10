@@ -5,6 +5,7 @@
 MondialClient::MondialClient(stSQLConf conf)
 	: m_conf(conf)
 	, m_pDbHelper(nullptr)
+	, m_iSN(0)
 {
 	WLogInfo("%s make", __FUNCTION__);
 
@@ -69,3 +70,8 @@ int MondialClient::GetData(TMondialDataLst &retLst)
 	return 0;
 }
 
+void MondialClient::UpdateFailProductData(const char *barcode)
+{
+	m_pDbHelper->UpdateFailProductData(m_iSN++ % 10, barcode);
+
+}

@@ -13,9 +13,13 @@ public:
 	int Start();
 	int Stop();
 
-	void SetEventCallback(EventMsgFn fn, void *pUser);
+	virtual int Get(const char *key,  char *&val);
+	virtual int Set(const char *key, const char *val);
 
+	void SetEventCallback(EventMsgFn fn, void *pUser);
 	void DoStart();
+private:
+	void SetNgProduct(const char * barcode);
 
 private:
 	thread m_th;

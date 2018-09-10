@@ -3,13 +3,6 @@
 
 #include "dbhelper.h"
 
-typedef struct stHuaXiData_
-{
-	string szProductBarCode;
-	string szLeakage;
-	int  iCheckResult;				// 0 不合格， 1 合格
-	string szCheckDate;				// 检测时间
-}stHuaXiData;
 
 class HuaXiClient {
 public:

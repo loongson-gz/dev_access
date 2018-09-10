@@ -6,7 +6,7 @@
 
 
 typedef struct stMitsubishi_FX3U_32M_Data_t {
-	char DevInfo[64];
+	char szDevUrl[128];
 	uint16_t StationStatus_1;
 	uint16_t StationOkAmount_1;
 	uint16_t StationTotalAmount_1;
@@ -26,6 +26,8 @@ public:
 
 	int Start();
 	int Stop();
+	virtual int Get(const char *key,  char *&val);
+
 	uint16_t ModbusStart(int address);
 	bool ModbusInit(int id);
 	void SetEventCallback(EventMsgFn fn, void *pUser);
@@ -33,8 +35,8 @@ public:
 	void DoStart();
 
 private:
-	int port;
-	char *host;
+	uint16_t m_uPort;
+	string m_strHost;
 	int interval;
 	unsigned char id;
 	ModbusPtr mb;
@@ -44,6 +46,7 @@ private:
 	EventMsgFn m_fn;
 	void *m_pUser;
 
+	stPLCConf m_conf;
 };
 
 #endif // !__MITSUBISHI_FX3U_32M_H__

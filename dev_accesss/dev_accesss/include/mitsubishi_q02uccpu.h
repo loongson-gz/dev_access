@@ -6,6 +6,7 @@
 
 typedef struct stMitsubishi_Q02UUCPU_Data_
 {
+	char szDevUrl[128];							//设备url
 	uint32_t iDeviceStatus;						//"设备状态",
 	float fStopTime;							//"倍速链延时停止锁存时间"
 	uint32_t iProductCount;						//"产品计数"
@@ -20,6 +21,13 @@ public:
 	int Init();
 	int Start();
 	int Stop();
+
+	virtual int Get(const char *key,  char *&val);
+	virtual int Set(const char *key, const char *val);
+
+	int SetNode1(int status);
+
+	int SetNode2(int status);
 
 	void SetEventCallback(EventMsgFn fn, void *pUser);
 

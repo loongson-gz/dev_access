@@ -1,7 +1,7 @@
 <root>
 	<plc>
 		<dev>
-			<title>dev1</title>
+			<title>电气检测</title>
 			<ip>192.168.104.199</ip>
 			<port>502</port>
 			<!--设备ID -->
@@ -12,7 +12,7 @@
 			<interval>5</interval>
 		</dev>
 		<dev>
-			<title>dev1</title>
+			<title>生产线主控</title>
 			<ip>192.168.104.141</ip>
 			<port>3002</port>
 			<!--设备ID -->
@@ -23,7 +23,7 @@
 			<interval>30</interval>
 		</dev>
 		<dev>
-			<title>dev2</title>
+			<title>生产线主控</title>
 			<ip>192.168.103.82</ip>
 			<port>4806</port>
 			<!--设备ID -->
@@ -34,7 +34,7 @@
 			<interval>10</interval>
 		</dev>
         <dev>
-			<title>dev3</title>
+			<title>气密性检测</title>
 			<ip>192.168.103.232</ip>
 			<port>502</port>
 			<!--设备ID -->
@@ -47,7 +47,7 @@
 	</plc>
 	<sql>
 		<dev>
-			<title>dev1</title>
+			<title>气密性检测</title>
 			<!-- 数据类型：0:sql server 1: oracle 2:mysql 3:access-->
 			<dbtype>0</dbtype>
 			<ip>192.168.104.147</ip>
@@ -64,7 +64,7 @@
 			<interval>30</interval>
 		</dev>
 		<dev>
-			<title>dev1</title>
+			<title>综合检测</title>
 			<!-- 数据类型：0:sql server 1: oracle 2:mysql 3:access-->
 			<dbtype>0</dbtype>
 			<ip>192.168.104.144</ip>
@@ -74,14 +74,14 @@
 			<!-- 数据库名 -->
 			<dbname>mondial</dbname>
 			<!-- 数据库 数据源名称-->
-			<dns>mondial_1</dns>
+			<dns>access_test</dns>
 			<!-- 设备类型 0:梦地 1:铧禧 2:迈克普兰-->
 			<devtype>0</devtype>
 			<!-- 操作间隔 单位为：秒 -->
 			<interval>30</interval>
 		</dev>
 		<dev>
-			<title>dev1</title>
+			<title>高压水检测</title>
 			<!-- 数据类型：0:sql server 1: oracle 2:mysql 3:access-->
 			<dbtype>1</dbtype>
 			<ip>120.77.226.172</ip>
@@ -100,7 +100,7 @@
 	</sql>
     <net>
         <dev>
-			<title>dev1</title>
+			<title>扫码枪</title>
 			<ip>192.168.104.199</ip>
 			<port>9999</port>
 			<!--设备类型 0:scanner-->

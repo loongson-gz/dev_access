@@ -15,7 +15,7 @@ typedef struct XinJieXc3_TestItemData {
 
 
 typedef struct XinJieXc3_Data {
-	char DevInfo[64];
+	char szDevUrl[64];
 	char UniquelyIdentifies[64];
 	char Timestamp[64];
 	//stXinJieXc3_TestItemData CompressiveStrength;

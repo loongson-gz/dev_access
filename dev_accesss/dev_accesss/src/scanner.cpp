@@ -8,6 +8,8 @@ DWORD WINAPI ScannerResult(LPVOID lpParameter);
 Scanner::Scanner(stNETConf conf)
 {
 	mPort = conf.uPort;
+	m_url = string(conf.szIpAddr) + "@" + std::to_string(conf.uPort);
+	WLogInfo("%s make %s", __FUNCTION__, m_url.c_str());
 }
 
 Scanner::~Scanner()
@@ -81,6 +83,7 @@ void Scanner::DoScannerResult(SOCKET sock_clt)
 				unixTime = (int)time(&now);
 				tick = (time_t)unixTime;
 				tm = *localtime(&tick);
+				strncpy(data.szDevUrl, m_url.c_str(), sizeof(data.szDevUrl));
 				strftime(data.Timestamp, sizeof(data.Timestamp), "%Y-%m-%d %H:%M:%S", &tm);
 				m_fn(eEVENT_SCANNER, (void *)&data, m_pUser);
 				memset(&data, 0, sizeof(data));
