@@ -24,7 +24,7 @@ MondialClient::~MondialClient()
 int MondialClient::Init()
 {
 	try {
-		m_pDbHelper = new AccessHelper(m_conf.szDnsName);
+		m_pDbHelper = new AccessHelper(m_conf.szDsnName);
 		int ret = m_pDbHelper->ConnectToSvr();
 		if (ret != 0)
 		{
@@ -46,7 +46,7 @@ int MondialClient::GetData(TMondialDataLst &retLst)
 	time_t now = t.GetTimestmap();
 	string strEndTime = t.GetTimeString1(now);
 
-	now -= m_conf.interval;
+	now -= m_conf.iPollInterval;
 	string strBeginTime = t.GetTimeString1(now);
 	stringstream ss;
 	ss << "SELECT  TEST_TIME, BAR_CODE_1, TIME_USED, QUALITY FROM PRODUCT_RPT "

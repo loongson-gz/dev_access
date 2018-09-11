@@ -14,7 +14,16 @@ AccessHelper::~AccessHelper()
 
 int AccessHelper::ConnectToSvr()
 {
-	bool bRet = m_dbCust.OpenEx(m_strDsn.c_str(), CDatabase::noOdbcDialog);
+	try
+	{
+		bool bRet = m_dbCust.OpenEx(m_strDsn.c_str(), CDatabase::noOdbcDialog);
+		return bRet ? 0 : -1;
+	}
+	catch (...)
+	{
+		WLogError("%s: ", __FUNCTION__);
+		return -1;
+	}
 //	bool bRet = m_dbCust.OpenEx(m_strDsn.c_str());
 	return 0;
 }

@@ -130,6 +130,6 @@ void Mitsubishi_Q03UDVCPU::DoStart()
 			m_fn(eEVENT_MITSUBISHI_Q03UDVCPU, (void *)&data, m_pUser);
 		}
 
-		this_thread::sleep_for(chrono::seconds(m_conf.interval));
+		this_thread::sleep_for(chrono::seconds(m_conf.iPollInterval));
 	}
 }

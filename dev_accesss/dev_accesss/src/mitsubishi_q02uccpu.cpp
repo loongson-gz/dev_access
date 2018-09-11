@@ -196,6 +196,6 @@ void Mitsubishi_Q02UUCPU::DoStart()
 			m_fn(eEVENT_MITSUBISHI_Q02UCCPU, (void *)&data, m_pUser);
 		}
 
-		this_thread::sleep_for(chrono::seconds(m_conf.interval));
+		this_thread::sleep_for(chrono::seconds(m_conf.iPollInterval));
 	}
 }

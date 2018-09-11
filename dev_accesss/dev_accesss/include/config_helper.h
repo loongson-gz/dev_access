@@ -2,15 +2,7 @@
 #define __CONFIG_HELPER_H__
 
 #include "common.h"
-
-typedef vector<stSQLConf> TSQLLst;
-typedef TSQLLst::iterator TSQLLstIter;
-
-typedef vector<stPLCConf> TPLCLst;
-typedef TPLCLst::iterator TPLCLstIter;
-
-typedef vector<stNETConf> TNETLst;
-typedef TNETLst::iterator TNETLstIter;
+#include "dbhelper.h"
 
 
 class ConfigHelper {
@@ -24,16 +16,14 @@ public:
 	TSQLLst GetSqlLst();
 	TPLCLst GetPlcLst();
 	TNETLst GetNetLst();
-	stSQLConf GetSqlConf();
+	stSvrConf GetSvrConf();
 private:
 	int ParseConf(const char *file);
 
 private:
-	TSQLLst m_sqlLst;
-	TPLCLst m_plcLst;
-	TNETLst m_netLst;
 	string m_strFile;
-	stSQLConf m_svrConf;
+	DbHelper *m_dbHelper;
+	string m_strDsn;
 
 };
 

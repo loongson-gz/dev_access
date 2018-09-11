@@ -34,17 +34,36 @@ typedef struct stHuaXiSQLData_
 	int  iSecond;						//检测时长
 }stHuaXiSQLData;
 
+typedef struct stSvrConf_
+{
+	char szUser[256];		//用户名
+	char szPwd[256];		//密码
+	char szDnsName[256];	//数据库数据源名称
+	char szDbName[256];		//数据库名
+}stSvrConf;
 
-typedef vector<stHuaXiSQLData> THuaXiSQLDataLst;
+typedef std::vector<stHuaXiSQLData> THuaXiSQLDataLst;
+
+typedef std::vector<stSQLConf> TSQLLst;
+
+typedef std::vector<stPLCConf> TPLCLst;
+
+typedef std::vector<stNETConf> TNETLst;
 
 class DbHelper {
 public:
 	DbHelper(const char *usr, const char *pwd, const char *database, const char *dsn);
+	DbHelper(const char *dsn);
 	~DbHelper();
 
 	int ConnectToSvr();
 	int InsertData(const char *szSql);
 	int GetData(const char *szSql, THuaXiSQLDataLst &res);
+	int GetData(const char *szSql, TSQLLst &res);
+	int GetData(const char *szSql, TPLCLst &res);
+	int GetData(const char *szSql, TNETLst &res);
+	int GetData(const char *szSql, stSvrConf &res);
+
 
 private:
 	Poco::Data::SessionPool *m_pool;

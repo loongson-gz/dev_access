@@ -19,9 +19,9 @@ XinJieXc3::XinJieXc3(stPLCConf conf)
 	WLogInfo("%s make", __FUNCTION__);
 	m_uPort = conf.uPort;
 	m_strHost = conf.szIpAddr;
-	m_id = conf.id;
+	m_id = conf.iSlaveId;
 	mScanStatus = true;
-	m_interval = conf.interval * 1000;
+	m_interval = conf.iPollInterval * 1000;
 	m_mbPtr.reset(new Modbus(m_strHost, m_uPort));
 
 	m_url = string(conf.szIpAddr) + "@" + std::to_string(conf.uPort);

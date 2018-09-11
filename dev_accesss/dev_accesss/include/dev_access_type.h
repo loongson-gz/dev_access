@@ -52,8 +52,8 @@ enum SQLDEVTYPE
 enum DEVTYPE
 {
 	ePLCDEV = 0,				//PLC 设备
-	eSQLDEV ,					//数据库类设备
-	eNETDEV						//网络设备
+	eSQLDEV = 1,				//数据库类设备
+	eNETDEV	= 2					//网络设备
 };
 
 //事件类型
@@ -73,37 +73,48 @@ enum EVENTTYPE
 typedef struct _stPLCConf
 {
 	char szTitle[256];		//标题
+	char szDevCode[128];	//设备编码
+	char szHostType[128];	//协议类型
 	char szIpAddr[20];		//IP地址
 	uint16_t uPort;			//端口号
-	unsigned char id;		//设备地址
-	//PLCMODE mode;			//协议类型
-	PLCDEVTYPE devType;		//设备类型
-	int interval;			//与设备交互的操作间隔
+	char szUser[256];		//用户名
+	char szPwd[256];		//密码
+	uint8_t iSlaveId;		//设备地址
+	int iPollInterval;		//与设备交互的操作间隔
+	int iLineNumber;		//流水线编号
+	char szParam[256];		//附加参数
 }stPLCConf;
 
 //数据库配置
 typedef struct _stSQLConf
 {
 	char szTitle[256];		//标题
+	char szDevCode[128];	//设备编码
+	char szHostType[128];	//协议类型
 	char szIpAddr[20];		//IP地址
 	uint16_t uPort;			//端口号
 	char szUser[256];		//用户名
 	char szPwd[256];		//密码
+	char szDsnName[256];	//数据库数据源名称
 	char szDbName[256];		//数据库名
-	char szDnsName[256];	//数据库数据源名称
-	SQLDEVTYPE devType;		//设备类型
-	int interval;			//与设备交互的操作间隔
+	int iPollInterval;		//与设备交互的操作间隔
+	int iLineNumber;		//流水线编号
+	char szParam[256];		//附加参数
 }stSQLConf;
 
 //网络设备 配置
 typedef struct _stNETConf
 {
 	char szTitle[256];		//标题
+	char szDevCode[128];	//设备编码
+	char szHostType[128];	//协议类型
 	char szIpAddr[20];		//IP地址
 	uint16_t uPort;			//端口号
-
-	PLCDEVTYPE devType;		//设备类型
-	int interval;			//与设备交互的操作间隔
+	char szUser[256];		//用户名
+	char szPwd[256];		//密码
+	int iPollInterval;		//与设备交互的操作间隔
+	int iLineNumber;		//流水线编号
+	char szParam[256];		//附加参数
 }stNETConf;
 
 

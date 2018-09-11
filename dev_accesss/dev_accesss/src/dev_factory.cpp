@@ -16,23 +16,14 @@ PlcBase * DevFactory::CreatePlcDev(stPLCConf *conf)
 	}
 
 	PlcBase *dev = nullptr;
-	switch (conf->devType)
-	{
-	case eXINJIE_XC3_32T_E:
+	if(strcmp(conf->szHostType, "XINJIE_XC3_32T_E") == 0)
 		dev = new XinJieXc3(*conf);
-		break;
-	case eMITSUBISHI_Q02UCCPU:
+	else if (strcmp(conf->szHostType, "MITSUBISHI_Q02UCCPU") == 0)
 		dev = new Mitsubishi_Q02UUCPU(*conf);
-		break;
-	case eMITSUBISHI_Q03UDVCPU:
+	else if (strcmp(conf->szHostType, "MITSUBISHI_Q03UDVCPU") == 0)
 		dev = new Mitsubishi_Q03UDVCPU(*conf);
-		break;
-	case eMITSUBISHI_FX3U_32M:
+	else if (strcmp(conf->szHostType, "MITSUBISHI_FX3U_32M") == 0)
 		dev = new Mitsubishi_FX3U_32M(*conf);
-		break;
-	default:
-		break;
-	}
 
 	return dev;
 }
@@ -45,20 +36,12 @@ SqlBase * DevFactory::CreateSqlDev(stSQLConf *conf)
 	}
 
 	SqlBase *dev = nullptr;
-	switch (conf->devType)
-	{
-	case eMICROPLAN:
+	if (strcmp(conf->szHostType, "MICROPLAN") == 0)
 		dev = new MicroPlan(*conf);
-		break;
-	case eMONDIAL:
+	else if (strcmp(conf->szHostType, "MONDIAL") == 0)
 		dev = new Mondial(*conf);
-		break;
-	case eHUAXI:
+	else if (strcmp(conf->szHostType, "HUAXI") == 0)
 		dev = new HuaXi(*conf);
-		break;
-	default:
-		break;
-	}
 
 	return  dev;
 }
@@ -72,14 +55,8 @@ NetBase * DevFactory::CreateNetDev(stNETConf *conf)
 	}
 
 	NetBase *dev = nullptr;
-	switch (conf->devType)
-	{
-	case eSCANNER:
+	if (strcmp(conf->szHostType, "SCANNER") == 0)
 		dev = new Scanner(*conf);
-		break;
-	default:
-		break;
-	}
 
 	return dev;
 }

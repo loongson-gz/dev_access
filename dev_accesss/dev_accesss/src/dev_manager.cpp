@@ -3,6 +3,7 @@
 #include "version.h"
 
 DevManager::DevManager()
+	: m_pMesSvr(nullptr)
 {
 	WLogInit("./log", "dev_", 5, 128, 1000, true);
 	WLogInfo("version:%d.%d.%s", VER_MAJOR, VER_MINOR, VER_REVISION);
@@ -28,7 +29,16 @@ int DevManager::Start()
 		WLogError("config init err ...............");
 		return ret;
 	}
-	m_mesSvr.Start();
+	try
+	{
+		stSvrConf conf = m_config->GetSvrConf();
+		m_pMesSvr = new MesSvr(conf);
+		m_pMesSvr->Start();
+	}
+	catch (const std::exception& e)
+	{
+		WLogError("%s %s", __FUNCTION__, e.what());
+	}
 
 	TSQLLst sqlLst = m_config->GetSqlLst();
 	for (auto it = sqlLst.begin(); it != sqlLst.end(); ++it)
@@ -180,25 +190,25 @@ void DevManager::HandleEventMitsubishi_q03udvcpu(void *pData)
 		WLogError("%s obj is null", __FUNCTION__);
 		return;
 	}
-	m_mesSvr.SetDepartmentAndProLineCode("CJ_00006", "CX-00006");
-	m_mesSvr.SetWorkShopAndProDLine("灶具总装车间", "灶具实验线");
+	m_pMesSvr->SetDepartmentAndProLineCode("CJ_00006", "CX-00006");
+	m_pMesSvr->SetWorkShopAndProDLine("灶具总装车间", "灶具实验线");
 	//m_mesSvr.SetDevTitleAndCode("SBXX000019", "生产线主控");
 	
 	char *szName = nullptr;
 	obj->Get("name", szName);
-	m_mesSvr.SetDevTitleAndCode("SBXX000019", szName);
+	m_pMesSvr->SetDevTitleAndCode("SBXX000019", szName);
 	free(szName);
 
 	int i = 0;
-	m_mesSvr.InsertToSvr(pName[i++], data->iProductionTime);
-	m_mesSvr.InsertToSvr(pName[i++], data->iCountOfInput);
-	m_mesSvr.InsertToSvr(pName[i++], data->iCountOfFinishedOutput);
-	m_mesSvr.InsertToSvr(pName[i++], data->iCountOfAirNg);
-	m_mesSvr.InsertToSvr(pName[i++], data->iCountOfTestFireNg_1);
-	m_mesSvr.InsertToSvr(pName[i++], data->iCountOfTestFireNg_2);
-	m_mesSvr.InsertToSvr(pName[i++], data->iCountOfRepair_1);
-	m_mesSvr.InsertToSvr(pName[i++], data->iCountOfRepair_2);
-	m_mesSvr.InsertToSvr(pName[i++], data->iCountOfRepair_3);
+	m_pMesSvr->InsertToSvr(pName[i++], data->iProductionTime);
+	m_pMesSvr->InsertToSvr(pName[i++], data->iCountOfInput);
+	m_pMesSvr->InsertToSvr(pName[i++], data->iCountOfFinishedOutput);
+	m_pMesSvr->InsertToSvr(pName[i++], data->iCountOfAirNg);
+	m_pMesSvr->InsertToSvr(pName[i++], data->iCountOfTestFireNg_1);
+	m_pMesSvr->InsertToSvr(pName[i++], data->iCountOfTestFireNg_2);
+	m_pMesSvr->InsertToSvr(pName[i++], data->iCountOfRepair_1);
+	m_pMesSvr->InsertToSvr(pName[i++], data->iCountOfRepair_2);
+	m_pMesSvr->InsertToSvr(pName[i++], data->iCountOfRepair_3);
 }
 
 void DevManager::HandleEventMitsubishi_q02uccpu(void *pData)
@@ -220,18 +230,18 @@ void DevManager::HandleEventMitsubishi_q02uccpu(void *pData)
 		return;
 	}
 
-	m_mesSvr.SetDepartmentAndProLineCode("CJ_00001", "CX-00007");
-	m_mesSvr.SetWorkShopAndProDLine("热水总装验证车间", "热水实验线");
+	m_pMesSvr->SetDepartmentAndProLineCode("CJ_00001", "CX-00007");
+	m_pMesSvr->SetWorkShopAndProDLine("热水总装验证车间", "热水实验线");
 	//m_mesSvr.SetDevTitleAndCode("SBXX000020", "生产线主控");
 	char *szName = nullptr;
 	obj->Get("name", szName);
-	m_mesSvr.SetDevTitleAndCode("SBXX000020", szName);
+	m_pMesSvr->SetDevTitleAndCode("SBXX000020", szName);
 
 	int i = 0;
-	m_mesSvr.InsertToSvr(pName[i++], pRunState[data->iDeviceStatus]);
-	m_mesSvr.InsertToSvr(pName[i++], std::to_string(data->fStopTime).c_str());
-	m_mesSvr.InsertToSvr(pName[i++], data->iProductCount);
-	m_mesSvr.InsertToSvr(pName[i++], to_string(data->fProductBeats).c_str());
+	m_pMesSvr->InsertToSvr(pName[i++], pRunState[data->iDeviceStatus]);
+	m_pMesSvr->InsertToSvr(pName[i++], std::to_string(data->fStopTime).c_str());
+	m_pMesSvr->InsertToSvr(pName[i++], data->iProductCount);
+	m_pMesSvr->InsertToSvr(pName[i++], to_string(data->fProductBeats).c_str());
 }
 
 
@@ -265,27 +275,27 @@ void DevManager::HandleEventMitsubishi_fx3u_32m(void *pData)
 		WLogError("%s obj is null", __FUNCTION__);
 		return;
 	}
-	m_mesSvr.SetDepartmentAndProLineCode("CJ_00006", "CX-00006");
-	m_mesSvr.SetWorkShopAndProDLine("灶具总装车间", "灶具实验线");
+	m_pMesSvr->SetDepartmentAndProLineCode("CJ_00006", "CX-00006");
+	m_pMesSvr->SetWorkShopAndProDLine("灶具总装车间", "灶具实验线");
 	//m_mesSvr.SetDevTitleAndCode("SBXX000018", "气密性检测");
 
 	char *szName = nullptr;
 	obj->Get("name", szName);
-	m_mesSvr.SetDevTitleAndCode("SBXX000018", szName);
+	m_pMesSvr->SetDevTitleAndCode("SBXX000018", szName);
 	free(szName);
 
 
-	m_mesSvr.InsertToSvr("气密性1号工程状态", pSt[data->StationStatus_1]);
+	m_pMesSvr->InsertToSvr("气密性1号工程状态", pSt[data->StationStatus_1]);
 	//m_mesSvr.InsertToSvr("1号工位状态", (int)(data->StationStatus_1));
-	m_mesSvr.InsertToSvr("气密性1号工程OK数量", (int)(data->StationOkAmount_1));
-	m_mesSvr.InsertToSvr("气密性1号工程总测数量", (int)(data->StationTotalAmount_1));
-	m_mesSvr.InsertToSvr("气密性1号工程NG数量", (int)(data->StationNgAmount_1));
+	m_pMesSvr->InsertToSvr("气密性1号工程OK数量", (int)(data->StationOkAmount_1));
+	m_pMesSvr->InsertToSvr("气密性1号工程总测数量", (int)(data->StationTotalAmount_1));
+	m_pMesSvr->InsertToSvr("气密性1号工程NG数量", (int)(data->StationNgAmount_1));
 
-	m_mesSvr.InsertToSvr("气密性2号工程状态", pSt[data->StationStatus_2]);
+	m_pMesSvr->InsertToSvr("气密性2号工程状态", pSt[data->StationStatus_2]);
 	//m_mesSvr.InsertToSvr("2号工位状态", (int)(data->StationStatus_2));
-	m_mesSvr.InsertToSvr("气密性2号工程OK数量", (int)(data->StationOkAmount_2));
-	m_mesSvr.InsertToSvr("气密性2号工程总测数量", (int)(data->StationTotalAmount_2));
-	m_mesSvr.InsertToSvr("气密性2号工程NG数量", (int)(data->StationNgAmount_2));
+	m_pMesSvr->InsertToSvr("气密性2号工程OK数量", (int)(data->StationOkAmount_2));
+	m_pMesSvr->InsertToSvr("气密性2号工程总测数量", (int)(data->StationTotalAmount_2));
+	m_pMesSvr->InsertToSvr("气密性2号工程NG数量", (int)(data->StationNgAmount_2));
 
 }
 
@@ -300,19 +310,19 @@ void DevManager::HandleEventXinjie_xc3_32t_e(void *pData)
 		return;
 	}
 
-	m_mesSvr.SetDepartmentAndProLineCode("CJ_00001", "CX-00007");
-	m_mesSvr.SetWorkShopAndProDLine("热水总装验证车间", "热水实验线");
+	m_pMesSvr->SetDepartmentAndProLineCode("CJ_00001", "CX-00007");
+	m_pMesSvr->SetWorkShopAndProDLine("热水总装验证车间", "热水实验线");
 	//m_mesSvr.SetDevTitleAndCode("SBXX000022", "电气检测");
 	char *szName = nullptr;
 	obj->Get("name", szName);
-	m_mesSvr.SetDevTitleAndCode("SBXX000022", szName);
+	m_pMesSvr->SetDevTitleAndCode("SBXX000022", szName);
 	free(szName);
 
 	int i = 0;
-	m_mesSvr.InsertToSvr("产品条码", data->UniquelyIdentifies);
+	m_pMesSvr->InsertToSvr("产品条码", data->UniquelyIdentifies);
 	for (size_t i = 0; i < 4; i++)
 	{
-		m_mesSvr.InsertToSvr(data->Results[i].ItemName, data->Results[i].ItemValue1);
+		m_pMesSvr->InsertToSvr(data->Results[i].ItemName, data->Results[i].ItemValue1);
 	}
 }
 
@@ -327,12 +337,12 @@ void DevManager::HandleEventMondial(void *pData)
 	}
 
 
-	m_mesSvr.SetDepartmentAndProLineCode("CJ_00001", "CX-00007");
-	m_mesSvr.SetWorkShopAndProDLine("热水总装验证车间", "热水实验线");
+	m_pMesSvr->SetDepartmentAndProLineCode("CJ_00001", "CX-00007");
+	m_pMesSvr->SetWorkShopAndProDLine("热水总装验证车间", "热水实验线");
 	//m_mesSvr.SetDevTitleAndCode("SBXX000023", "综合检测");
 	char *szName = nullptr;
 	obj->Get("name", szName);
-	m_mesSvr.SetDevTitleAndCode("SBXX000023", szName);
+	m_pMesSvr->SetDevTitleAndCode("SBXX000023", szName);
 	free(szName);
 
 	char *pName[3] = {
@@ -343,15 +353,15 @@ void DevManager::HandleEventMondial(void *pData)
 	char *pRet[2] = { "不合格", "合格" };
 
 	int i = 0;
-	m_mesSvr.InsertToSvr(pName[i++], data->rpt.strBarCode.c_str());
+	m_pMesSvr->InsertToSvr(pName[i++], data->rpt.strBarCode.c_str());
 	int iRes = 0;
 	int pos = 0;
 	if ((pos = data->rpt.strQuality.find("PASS")) != string::npos)
 	{
 		iRes = 1;
 	}
-	m_mesSvr.InsertToSvr(pName[i++], pRet[iRes]);
-	m_mesSvr.InsertToSvr(pName[i++], atoi(data->rpt.strTimeUsed.c_str()));
+	m_pMesSvr->InsertToSvr(pName[i++], pRet[iRes]);
+	m_pMesSvr->InsertToSvr(pName[i++], atoi(data->rpt.strTimeUsed.c_str()));
 
 }
 
@@ -374,19 +384,19 @@ void DevManager::HandleEventHuaxi(void *pData)
 		return;
 	}
 
-	m_mesSvr.SetDepartmentAndProLineCode("CJ_00001", "CX-00007");
-	m_mesSvr.SetWorkShopAndProDLine("热水总装验证车间", "热水实验线");
+	m_pMesSvr->SetDepartmentAndProLineCode("CJ_00001", "CX-00007");
+	m_pMesSvr->SetWorkShopAndProDLine("热水总装验证车间", "热水实验线");
 	//m_mesSvr.SetDevTitleAndCode("SBXX000021", "气密性检测");
 	char *szName = nullptr;
 	obj->Get("name", szName);
-	m_mesSvr.SetDevTitleAndCode("SBXX000021", szName);
+	m_pMesSvr->SetDevTitleAndCode("SBXX000021", szName);
 	free(szName);
 
 	int i = 0;
-	m_mesSvr.InsertToSvr(pName[i++], data->szProductBarCode);
-	m_mesSvr.InsertToSvr(pName[i++], data->szLeakage);
-	m_mesSvr.InsertToSvr(pName[i++], pRet[data->iCheckResult]);
-	m_mesSvr.InsertToSvr(pName[i++], data->szCheckDate);
+	m_pMesSvr->InsertToSvr(pName[i++], data->szProductBarCode);
+	m_pMesSvr->InsertToSvr(pName[i++], data->szLeakage);
+	m_pMesSvr->InsertToSvr(pName[i++], pRet[data->iCheckResult]);
+	m_pMesSvr->InsertToSvr(pName[i++], data->szCheckDate);
 
 }
 

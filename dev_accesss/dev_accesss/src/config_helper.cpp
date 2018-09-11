@@ -6,17 +6,40 @@
 
 ConfigHelper::ConfigHelper()
 	: m_strFile("./dev_config.xml")
+	, m_dbHelper(nullptr)
+	, m_strDsn("dsn_dev_db")
 {
-	memset(&m_svrConf, 0, sizeof(m_svrConf));
+	//memset(&m_svrConf, 0, sizeof(m_svrConf));
 }
 
 ConfigHelper::~ConfigHelper()
 {
+	if (m_dbHelper)
+	{
+		delete m_dbHelper;
+		m_dbHelper = nullptr;
+	}
 }
 
 int ConfigHelper::Init()
 {
 	int ret = ParseConf(m_strFile.c_str());
+	try
+	{
+		m_dbHelper = new DbHelper(m_strDsn.c_str());
+		int ret = m_dbHelper->ConnectToSvr();
+		if (ret != 0)
+		{
+			WLogError("%s:%d dsn:%s", __FUNCTION__, __LINE__, m_strDsn.c_str());
+			return ret;
+		}
+	}
+	catch (const std::exception &e)
+	{
+		WLogError("%s:%d %s", __FUNCTION__, __LINE__, e.what());
+		return -1;
+	}
+
 	return ret;
 }
 
@@ -28,26 +51,50 @@ ConfigHelper *ConfigHelper::GetInstance()
 
 TSQLLst ConfigHelper::GetSqlLst()
 {
-	return m_sqlLst;
+	stringstream ss;
+	ss << "select title, dev_code, host_type,  ip_addr, `port`, username, `password`, dsn_name, db_name, poll_interval, line_number, param  from t_dev_info where dev_kind ="
+		<< eSQLDEV;
+	string sql = ss.str();
+	TSQLLst sqlLst;
+	m_dbHelper->GetData(sql.c_str(), sqlLst);
+	return sqlLst;
 }
 
 TPLCLst ConfigHelper::GetPlcLst()
 {
-	return m_plcLst;
+	stringstream ss;
+	ss << "select title, dev_code, host_type, ip_addr, `port`, username, `password`, slave_id, poll_interval, line_number, param from t_dev_info where dev_kind ="
+		<< ePLCDEV;
+	string sql = ss.str();
+	TPLCLst plcLst;
+	m_dbHelper->GetData(sql.c_str(), plcLst);
+	return plcLst;
 }
 
 TNETLst ConfigHelper::GetNetLst()
 {
-	return m_netLst;
+	stringstream ss;
+	ss << "select title, dev_code, host_type,  ip_addr, `port`, username, `password`,  poll_interval, line_number, param  from t_dev_info where dev_kind ="
+		<< eNETDEV;
+	string sql = ss.str();
+	TNETLst netLst;
+	m_dbHelper->GetData(sql.c_str(), netLst);
+	return netLst;
 }
 
-stSQLConf ConfigHelper::GetSqlConf()
+stSvrConf ConfigHelper::GetSvrConf()
 {
-	return m_svrConf;
+	stringstream ss;
+	ss << "select *  from t_mes_info ";
+	string sql = ss.str();
+	stSvrConf svrConf;
+	m_dbHelper->GetData(sql.c_str(), svrConf);
+	return svrConf;
 }
 
 int ConfigHelper::ParseConf(const char *file)
 {
+#if 0
 	TiXmlDocument xmlDoc;
 	xmlDoc.LoadFile(file);
 
@@ -81,7 +128,7 @@ int ConfigHelper::ParseConf(const char *file)
 		conf.uPort = atoi(strPort.c_str());
 		conf.id = atoi(strId.c_str());
 		conf.devType = (PLCDEVTYPE)atoi(strDevType.c_str());
-		conf.interval = atoi(strInterval.c_str());
+		conf.iPollInterval = atoi(strInterval.c_str());
 
 		m_plcLst.push_back(conf);
 	}
@@ -116,7 +163,7 @@ int ConfigHelper::ParseConf(const char *file)
 		strncpy(conf.szDbName, strDbname.c_str(), sizeof(conf.szDbName));
 		strncpy(conf.szDnsName, strDns.c_str(), sizeof(conf.szDnsName));
 		conf.devType = (SQLDEVTYPE)atoi(strDevType.c_str());
-		conf.interval = atoi(strInterval.c_str());
+		conf.iPollInterval = atoi(strInterval.c_str());
 
 		m_sqlLst.push_back(conf);
 	}
@@ -166,10 +213,10 @@ int ConfigHelper::ParseConf(const char *file)
 		strncpy(conf.szIpAddr, strIp.c_str(), sizeof(conf.szIpAddr));
 		conf.uPort = atoi(strPort.c_str());
 		conf.devType = (PLCDEVTYPE)atoi(strDevType.c_str());
-		conf.interval = atoi(strInterval.c_str());
+		conf.iPollInterval = atoi(strInterval.c_str());
 
 		m_netLst.push_back(conf);
 	}
-
+#endif
 	return 0;
 }

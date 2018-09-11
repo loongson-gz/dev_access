@@ -5,7 +5,7 @@
 
 class MesSvr {
 public:
-	MesSvr();
+	MesSvr(stSvrConf conf);
 	~MesSvr();
 
 	static MesSvr *GetInstance();
@@ -22,7 +22,7 @@ public:
 private:
 	int Init();
 
-	stSQLConf m_conf;
+	stSvrConf m_conf;
 	DbHelper *m_db;
 	string m_strDevCode;
 	string m_strDevName;

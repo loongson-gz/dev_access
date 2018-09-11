@@ -15,8 +15,8 @@ Mitsubishi_FX3U_32M::Mitsubishi_FX3U_32M(stPLCConf conf)
 	WLogInfo("%s make", __FUNCTION__);
 	m_uPort = conf.uPort;
 	m_strHost = conf.szIpAddr;
-	id = conf.id;
-	interval = conf.interval;
+	id = conf.iSlaveId;
+	interval = conf.iPollInterval;
 	mb.reset(new Modbus(m_strHost, m_uPort));
 
 	m_url = m_strHost + "@" + std::to_string(m_uPort);

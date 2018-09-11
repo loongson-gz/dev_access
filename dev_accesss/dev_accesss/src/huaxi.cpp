@@ -14,7 +14,7 @@ HuaXi::HuaXi(stSQLConf conf)
 	, m_pUser(nullptr)
 	, m_fn(nullptr)
 {
-	m_url = string(conf.szIpAddr) + "@" + std::to_string(conf.uPort);
+	m_url = string(conf.szDsnName) + "@" + string(conf.szDbName);
 	WLogInfo("%s make %s", __FUNCTION__, m_url.c_str());
 }
 
@@ -115,6 +115,6 @@ void HuaXi::DoStart()
 		}
 
 
-		this_thread::sleep_for(chrono::seconds(m_conf.interval));
+		this_thread::sleep_for(chrono::seconds(m_conf.iPollInterval));
 	}
 }

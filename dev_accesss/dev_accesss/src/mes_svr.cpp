@@ -33,7 +33,8 @@ string GetTime()
 }
 
 
-MesSvr::MesSvr()
+MesSvr::MesSvr(stSvrConf conf)
+	:m_conf(conf)
 {
 }
 
@@ -146,7 +147,6 @@ int MesSvr::InsertToSvr(const char *key, int val)
 int MesSvr::Init()
 {
 	try {
-		m_conf = ConfigHelper::GetInstance()->GetSqlConf();
 		m_db = new DbHelper(m_conf.szUser, m_conf.szPwd, m_conf.szDbName, m_conf.szDnsName);
 		int ret = m_db->ConnectToSvr();
 		if (ret != 0)

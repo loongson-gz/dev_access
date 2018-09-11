@@ -42,7 +42,7 @@ private:
 	ConfigHelper *m_config;
 	TObjMap m_objLst;
 
-	MesSvr m_mesSvr;
+	MesSvr *m_pMesSvr;
 
 };
 

@@ -23,7 +23,7 @@ HuaXiClient::~HuaXiClient()
 int HuaXiClient::Init()
 {
 	try {
-		m_pDbHelper = new DbHelper(m_conf.szUser, m_conf.szPwd, m_conf.szDbName, m_conf.szDnsName);
+		m_pDbHelper = new DbHelper(m_conf.szUser, m_conf.szPwd, m_conf.szDbName, m_conf.szDsnName);
 		int ret = m_pDbHelper->ConnectToSvr();
 		if (ret != 0)
 		{
@@ -48,7 +48,7 @@ int HuaXiClient::GetData(THuaXiSQLDataLst &data)
 		time_t now = t.GetTimestmap();
 		string strEndTime = t.GetTimeString(now);
 
-		now -= m_conf.interval;
+		now -= m_conf.iPollInterval;
 		string strBeginTime = t.GetTimeString(now);
 
 
