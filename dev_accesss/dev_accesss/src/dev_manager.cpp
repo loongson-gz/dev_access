@@ -406,6 +406,9 @@ void DevManager::SetDevCodeAndTitleToSvr(ObjBase *obj)
 {
 	char *conf = nullptr;
 	obj->Get("conf", conf);
+	stBaseConf *pConf = (stBaseConf *)(conf);
+	m_pMesSvr->SetDevTitleAndCode(pConf->szDevCode, pConf->szTitle);
+#if 0
 	if (obj->GetBaseType() == ePLCDEV)
 	{
 		stPLCConf *pConf = (stPLCConf *)(conf);
@@ -421,5 +424,6 @@ void DevManager::SetDevCodeAndTitleToSvr(ObjBase *obj)
 		stNETConf *pConf = (stNETConf *)(conf);
 		m_pMesSvr->SetDevTitleAndCode(pConf->szDevCode, pConf->szTitle);
 	}
+#endif
 	free(conf);
 }

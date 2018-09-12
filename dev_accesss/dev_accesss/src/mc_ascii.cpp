@@ -24,7 +24,7 @@ int McAscii::Init()
 	m_sockfd = Connect(m_ipaddr.c_str(), m_port, SOCK_STREAM);
 	if (m_sockfd < 0)
 	{
-		WLogError("%s:%d connect err.", m_ipaddr.c_str(), m_port);
+		WLogError("%s %s:%d connect err.", __FUNCTION__, m_ipaddr.c_str(), m_port);
 		return -1;
 	}
 	SetSocketNBlock(m_sockfd, true);

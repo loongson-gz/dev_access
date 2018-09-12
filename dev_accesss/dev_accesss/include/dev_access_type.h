@@ -69,8 +69,8 @@ enum EVENTTYPE
 	eEVENT_SCANNER
 };
 
-//plc 配置
-typedef struct _stPLCConf
+//网络设备 配置
+typedef struct _stBaseConf
 {
 	char szTitle[256];		//标题
 	char szDevCode[128];	//设备编码
@@ -79,42 +79,29 @@ typedef struct _stPLCConf
 	uint16_t uPort;			//端口号
 	char szUser[256];		//用户名
 	char szPwd[256];		//密码
-	uint8_t iSlaveId;		//设备地址
 	int iPollInterval;		//与设备交互的操作间隔
 	int iLineNumber;		//流水线编号
 	char szParam[256];		//附加参数
+}stBaseConf;
+
+
+//plc 配置
+typedef struct _stPLCConf : public stBaseConf
+{
+	uint8_t iSlaveId;		//设备地址
 }stPLCConf;
 
 //数据库配置
-typedef struct _stSQLConf
+typedef struct _stSQLConf : public stBaseConf
 {
-	char szTitle[256];		//标题
-	char szDevCode[128];	//设备编码
-	char szHostType[128];	//协议类型
-	char szIpAddr[20];		//IP地址
-	uint16_t uPort;			//端口号
-	char szUser[256];		//用户名
-	char szPwd[256];		//密码
 	char szDsnName[256];	//数据库数据源名称
 	char szDbName[256];		//数据库名
-	int iPollInterval;		//与设备交互的操作间隔
-	int iLineNumber;		//流水线编号
-	char szParam[256];		//附加参数
 }stSQLConf;
 
 //网络设备 配置
-typedef struct _stNETConf
+typedef struct _stNETConf : public stBaseConf
 {
-	char szTitle[256];		//标题
-	char szDevCode[128];	//设备编码
-	char szHostType[128];	//协议类型
-	char szIpAddr[20];		//IP地址
-	uint16_t uPort;			//端口号
-	char szUser[256];		//用户名
-	char szPwd[256];		//密码
-	int iPollInterval;		//与设备交互的操作间隔
-	int iLineNumber;		//流水线编号
-	char szParam[256];		//附加参数
+
 }stNETConf;
 
 

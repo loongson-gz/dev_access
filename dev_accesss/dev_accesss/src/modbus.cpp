@@ -58,12 +58,12 @@ bool Modbus::ModbusConnect()
 {
 	if (HOST == "" || PORT == 0) 
 	{
-		WLogDebug("Missing Host and Port");
+		WLogError("%s Missing Host and Port", __FUNCTION__);
 		return false;
 	}
 	else 
 	{
-		WLogDebug("Found Proper Host %s and Port %d", HOST.c_str(), PORT);
+		WLogInfo("%s Found Proper Host %s and Port %d", __FUNCTION__, HOST.c_str(), PORT);
 	}
 
 	if (InitSocket())
@@ -71,12 +71,12 @@ bool Modbus::ModbusConnect()
 		_socket = Connect(HOST.c_str(), PORT, SOCK_STREAM);
 		if (_socket == -1)
 		{
-			WLogDebug("Cannot Connecte to the %s", HOST.c_str());
+			WLogError("%s Cannot Connected to the %s", __FUNCTION__, HOST.c_str());
 			return false;
 		}
 		else
 		{
-			WLogDebug("Connected to the %s successful", HOST.c_str());
+			WLogInfo("%s Connected to the %s successful", __FUNCTION__, HOST.c_str());
 		}
 	}
 	else
