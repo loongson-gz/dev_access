@@ -33,6 +33,8 @@ public:
 
 	int Start();
 	int Stop();
+	virtual int Get(const char *key, char *&val);
+
 	void SetEventCallback(EventMsgFn fn, void * pUser);
 	void DoStart();
 	bool ModbusInit(int id);
@@ -55,6 +57,7 @@ private:
 	bool mScanStatus;
 	EventMsgFn m_fn;
 	void *m_pUser;
+	stPLCConf m_conf;
 };
 
 #endif // !__XINJIE_XC3_32T_H__

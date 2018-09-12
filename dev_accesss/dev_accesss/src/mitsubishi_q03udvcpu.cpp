@@ -60,6 +60,11 @@ int Mitsubishi_Q03UDVCPU::Get(const char * key, char *& val)
 		val = (char *)calloc(1, 128);
 		strncpy(val, m_conf.szTitle, sizeof(m_conf.szTitle));
 	}
+	else if (stricmp(key, "conf") == 0)
+	{
+		val = (char *)calloc(1, sizeof(m_conf));
+		memcpy(val, &m_conf, sizeof(m_conf));
+	}
 	return 0;
 }
 
@@ -117,6 +122,7 @@ void Mitsubishi_Q03UDVCPU::DoStart()
 		if (m_fn)
 		{
 			stMitsubishi_Q03UDVCPU_Data data;
+			strncpy(data.szDevUrl, m_url.c_str(), sizeof(data.szDevUrl));
 			data.iCountOfInput = a[0];
 			data.iCountOfFinishedOutput = a[1];
 			data.iCountOfAirNg = a[2];

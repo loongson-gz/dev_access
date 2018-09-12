@@ -36,6 +36,8 @@ private:
 
 	ObjBase * GetObjFromUrl(const char * url);
 
+	void SetDevCodeAndTitleToSvr(ObjBase * obj);
+
 
 private:
 	DevFactory m_factory;

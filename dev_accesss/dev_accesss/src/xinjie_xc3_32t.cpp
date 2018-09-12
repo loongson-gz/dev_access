@@ -15,6 +15,7 @@ static void ThdFn2(void *args)
 
 XinJieXc3::XinJieXc3(stPLCConf conf)
 	: m_bStop(false)
+	, m_conf(conf)
 {
 	WLogInfo("%s make", __FUNCTION__);
 	m_uPort = conf.uPort;
@@ -55,6 +56,17 @@ int XinJieXc3::Stop()
 	}
 
 	m_mbPtr->ModbusClose();
+	return 0;
+}
+
+int XinJieXc3::Get(const char * key, char *& val)
+{
+	if (stricmp(key, "conf") == 0)
+	{
+		val = (char *)calloc(1, sizeof(m_conf));
+		memcpy(val, &m_conf, sizeof(m_conf));
+	}
+
 	return 0;
 }
 

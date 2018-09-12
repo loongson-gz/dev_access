@@ -61,6 +61,11 @@ int Mitsubishi_Q02UUCPU::Get(const char * key, char *& val)
 		val = (char *)calloc(1, 128);
 		strncpy(val, m_conf.szTitle, sizeof(m_conf.szTitle));
 	}
+	else if (stricmp(key, "conf") == 0)
+	{
+		val = (char *)calloc(1, sizeof(m_conf));
+		memcpy(val, &m_conf, sizeof(m_conf));
+	}
 	return 0;
 }
 

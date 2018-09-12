@@ -18,7 +18,7 @@ private:
 	int mPort;
 	EventMsgFn m_fn;
 	void *m_pUser;
-
+	stNETConf m_conf;
 
 public:
 	Scanner(stNETConf conf);
@@ -26,6 +26,8 @@ public:
 
 	int Start();
 	int Stop();
+	virtual int Get(const char *key, char *&val);
+
 	void SetEventCallback(EventMsgFn fn, void * pUser);
 	void DoScannerResult(SOCKET sock_clt);
 };
