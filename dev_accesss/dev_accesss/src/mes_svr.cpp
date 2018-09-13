@@ -1,5 +1,6 @@
+//#include "config_helper.h"
 #include "mes_svr.h"
-#include "config_helper.h"
+
 
 string GBKToUTF8(const std::string& strGBK)
 {

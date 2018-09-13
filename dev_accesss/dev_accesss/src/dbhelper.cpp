@@ -58,7 +58,7 @@ int DbHelper::ConnectToSvr()
 	}
 	catch (const std::exception& e)
 	{
-		WLogInfo("%s:%d [%s] %s", __FUNCTION__, __LINE__, m_url.c_str(), e.what());
+		WLogError("%s:%d [%s] %s", __FUNCTION__, __LINE__, m_url.c_str(), e.what());
 		m_bConnect = false;
 		return -1;
 	}
@@ -84,7 +84,7 @@ int DbHelper::InsertData(const char *szSql)
 	}
 	catch (std::exception& e)
 	{
-		WLogInfo("%s:%d %s", __FUNCTION__, __LINE__, e.what());
+		WLogError("%s:%d sql:%s,err:%s", __FUNCTION__, __LINE__, szSql, e.what());
 		return -1;
 	}
 	
@@ -135,7 +135,7 @@ int DbHelper::GetData(const char * szSql, THuaXiSQLDataLst &res)
 	}
 	catch (const std::exception& e)
 	{
-		WLogInfo("%s:%d %s", __FUNCTION__, __LINE__, e.what());
+		WLogError("%s:%d sql:%s,err:%s", __FUNCTION__, __LINE__, szSql, e.what());
 		return -1;
 	}
 
@@ -179,7 +179,7 @@ int DbHelper::GetData(const char * szSql, TSQLLst &res)
 	}
 	catch (const std::exception& e)
 	{
-		WLogInfo("%s:%d %s", __FUNCTION__, __LINE__, e.what());
+		WLogError("%s:%d sql:%s,err:%s", __FUNCTION__, __LINE__, szSql, e.what());
 		return -1;
 	}
 	return 0;
@@ -222,7 +222,7 @@ int DbHelper::GetData(const char *szSql, TPLCLst &res)
 	}
 	catch (const std::exception& e)
 	{
-		WLogInfo("%s:%d %s", __FUNCTION__, __LINE__, e.what());
+		WLogError("%s:%d sql:%s,err:%s", __FUNCTION__, __LINE__, szSql, e.what());
 		return -1;
 	}
 	return 0;
@@ -264,7 +264,7 @@ int DbHelper::GetData(const char * szSql, TNETLst &res)
 	}
 	catch (const std::exception& e)
 	{
-		WLogInfo("%s:%d %s", __FUNCTION__, __LINE__, e.what());
+		WLogError("%s:%d sql:%s,err:%s", __FUNCTION__, __LINE__, szSql, e.what());
 		return -1;
 	}
 	return 0;
@@ -291,7 +291,28 @@ int DbHelper::GetData(const char * szSql, stSvrConf & res)
 	}
 	catch (const std::exception& e)
 	{
-		WLogInfo("%s:%d %s", __FUNCTION__, __LINE__, e.what());
+		WLogError("%s:%d sql:%s,err:%s", __FUNCTION__, __LINE__, szSql, e.what());
+		return -1;
+	}
+	return 0;
+}
+
+int DbHelper::GetData(const char * szSql, int & id)
+{
+	if (!m_bConnect || !m_ses)
+	{
+		return -1;
+	}
+	try
+	{
+		string usr, pwd, db_name, dsn_name;
+		int id;
+		Poco::Data::Statement sql(*m_ses);
+		sql << szSql, into(id), now;
+	}
+	catch (const std::exception& e)
+	{
+		WLogError("%s:%d sql:%s,err:%s", __FUNCTION__, __LINE__, szSql, e.what());
 		return -1;
 	}
 	return 0;

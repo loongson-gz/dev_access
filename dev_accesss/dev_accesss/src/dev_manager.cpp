@@ -193,8 +193,13 @@ void DevManager::HandleEventMitsubishi_q03udvcpu(void *pData)
 	m_pMesSvr->SetDepartmentAndProLineCode("CJ_00006", "CX-00006");
 	m_pMesSvr->SetWorkShopAndProDLine("灶具总装车间", "灶具实验线");
 	//m_mesSvr.SetDevTitleAndCode("SBXX000019", "生产线主控");
-	
-	SetDevCodeAndTitleToSvr(obj);
+
+	char *conf = nullptr;
+	obj->Get("conf", conf);
+	stBaseConf *pConf = (stBaseConf *)(conf);
+	m_pMesSvr->SetDevTitleAndCode(pConf->szDevCode, pConf->szTitle);
+	m_config->InsertData(pConf->szDevCode, data);
+	free(conf);
 
 	int i = 0;
 	m_pMesSvr->InsertToSvr(pName[i++], data->iProductionTime);
@@ -230,7 +235,12 @@ void DevManager::HandleEventMitsubishi_q02uccpu(void *pData)
 	m_pMesSvr->SetDepartmentAndProLineCode("CJ_00001", "CX-00007");
 	m_pMesSvr->SetWorkShopAndProDLine("热水总装验证车间", "热水实验线");
 	//m_mesSvr.SetDevTitleAndCode("SBXX000020", "生产线主控");
-	SetDevCodeAndTitleToSvr(obj);
+	char *conf = nullptr;
+	obj->Get("conf", conf);
+	stBaseConf *pConf = (stBaseConf *)(conf);
+	m_pMesSvr->SetDevTitleAndCode(pConf->szDevCode, pConf->szTitle);
+	m_config->InsertData(pConf->szDevCode, data);
+	free(conf);
 
 	int i = 0;
 	m_pMesSvr->InsertToSvr(pName[i++], pRunState[data->iDeviceStatus]);
@@ -273,8 +283,12 @@ void DevManager::HandleEventMitsubishi_fx3u_32m(void *pData)
 	m_pMesSvr->SetDepartmentAndProLineCode("CJ_00006", "CX-00006");
 	m_pMesSvr->SetWorkShopAndProDLine("灶具总装车间", "灶具实验线");
 	//m_mesSvr.SetDevTitleAndCode("SBXX000018", "气密性检测");
-
-	SetDevCodeAndTitleToSvr(obj);
+	char *conf = nullptr;
+	obj->Get("conf", conf);
+	stBaseConf *pConf = (stBaseConf *)(conf);
+	m_pMesSvr->SetDevTitleAndCode(pConf->szDevCode, pConf->szTitle);
+	m_config->InsertData(pConf->szDevCode, data);
+	free(conf);
 
 	m_pMesSvr->InsertToSvr("气密性1号工程状态", pSt[data->StationStatus_1]);
 	//m_mesSvr.InsertToSvr("1号工位状态", (int)(data->StationStatus_1));
@@ -304,7 +318,12 @@ void DevManager::HandleEventXinjie_xc3_32t_e(void *pData)
 	m_pMesSvr->SetDepartmentAndProLineCode("CJ_00001", "CX-00007");
 	m_pMesSvr->SetWorkShopAndProDLine("热水总装验证车间", "热水实验线");
 	//m_mesSvr.SetDevTitleAndCode("SBXX000022", "电气检测");
-	SetDevCodeAndTitleToSvr(obj);
+	char *conf = nullptr;
+	obj->Get("conf", conf);
+	stBaseConf *pConf = (stBaseConf *)(conf);
+	m_pMesSvr->SetDevTitleAndCode(pConf->szDevCode, pConf->szTitle);
+	m_config->InsertData(pConf->szDevCode, data);
+	free(conf);
 
 	int i = 0;
 	m_pMesSvr->InsertToSvr("产品条码", data->UniquelyIdentifies);
@@ -328,7 +347,12 @@ void DevManager::HandleEventMondial(void *pData)
 	m_pMesSvr->SetDepartmentAndProLineCode("CJ_00001", "CX-00007");
 	m_pMesSvr->SetWorkShopAndProDLine("热水总装验证车间", "热水实验线");
 	//m_mesSvr.SetDevTitleAndCode("SBXX000023", "综合检测");
-	SetDevCodeAndTitleToSvr(obj);
+	char *conf = nullptr;
+	obj->Get("conf", conf);
+	stBaseConf *pConf = (stBaseConf *)(conf);
+	m_pMesSvr->SetDevTitleAndCode(pConf->szDevCode, pConf->szTitle);
+	m_config->InsertData(pConf->szDevCode, data);
+	free(conf);
 
 	char *pName[3] = {
 		"产品条码",
@@ -372,7 +396,12 @@ void DevManager::HandleEventHuaxi(void *pData)
 	m_pMesSvr->SetDepartmentAndProLineCode("CJ_00001", "CX-00007");
 	m_pMesSvr->SetWorkShopAndProDLine("热水总装验证车间", "热水实验线");
 	//m_mesSvr.SetDevTitleAndCode("SBXX000021", "气密性检测");
-	SetDevCodeAndTitleToSvr(obj);
+	char *conf = nullptr;
+	obj->Get("conf", conf);
+	stBaseConf *pConf = (stBaseConf *)(conf);
+	m_pMesSvr->SetDevTitleAndCode(pConf->szDevCode, pConf->szTitle);
+	m_config->InsertData(pConf->szDevCode, data);
+	free(conf);
 
 	int i = 0;
 	m_pMesSvr->InsertToSvr(pName[i++], data->szProductBarCode);

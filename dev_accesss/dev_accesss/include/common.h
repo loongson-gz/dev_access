@@ -19,4 +19,6 @@ using namespace std;
 
 #define DEBUG_WHERE WLogInfo("%s:%d %s", __FILE__, __LINE__, __FUNCTION__)
 
+#define  ARRAY_SIZE(x) (sizeof(x)/sizeof(x[0]))
+
 #endif

@@ -63,7 +63,7 @@ public:
 	int GetData(const char *szSql, TPLCLst &res);
 	int GetData(const char *szSql, TNETLst &res);
 	int GetData(const char *szSql, stSvrConf &res);
-
+	int GetData(const char *szSql, int &id);
 
 private:
 	Poco::Data::SessionPool *m_pool;

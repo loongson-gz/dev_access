@@ -2,16 +2,11 @@
 #define __DEV_FACTORY_H__
 
 #include "mondial.h"
-
-//#include "plc_base.h"
-//#include "sql_base.h"
-//#include "net_base.h"
 #include "xinjie_xc3_32t.h"
 #include "mitsubishi_q02uccpu.h"
 #include "mitsubishi_q03udvcpu.h"
 #include "mitsubishi_fx3u_32m.h"
 #include "scanner.h"
-
 #include "microplan.h"
 #include "huaxi.h"
 

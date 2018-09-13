@@ -2,8 +2,8 @@
 #define __DEV_MANAGER_H__
 
 #include "dev_factory.h"
-#include "mes_svr.h"
 #include "config_helper.h"
+#include "mes_svr.h"
 
 typedef map<string, ObjBase* > TObjMap;
 
