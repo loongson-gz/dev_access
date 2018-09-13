@@ -6,6 +6,8 @@
 #include "mes_svr.h"
 
 typedef map<string, ObjBase* > TObjMap;
+typedef set<string> TBarcodeLst;
+
 
 class DevManager
 {
@@ -34,9 +36,23 @@ private:
 
 	void HandleEventMicroplan(void * pData);
 
+	void HandleEventScanner(void * pData);
+
+	// 获取线体设备控制对象
+	ObjBase * GetControlObj();
+
+	// 通过URL获取设备对象
 	ObjBase * GetObjFromUrl(const char * url);
 
 	void SetDevCodeAndTitleToSvr(ObjBase * obj);
+
+	/*
+	@brief: 流程控制
+	@param[in]: szBarcode 产品条码
+	@param[in]: iLineNumber  流水线号
+	@param[in]: isOk	产品判定结果
+	*/
+	void HandleControlFlow(const char * szBarcode, int iLineNumber, bool isOk);
 
 
 private:
@@ -45,7 +61,8 @@ private:
 	TObjMap m_objLst;
 
 	MesSvr *m_pMesSvr;
-
+	TBarcodeLst m_productLst;	//NG 的产品列表
+	TBarcodeLst m_productLst2;	//气密性检测之后 NG 的产品列表
 };
 
 

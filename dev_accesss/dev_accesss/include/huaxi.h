@@ -7,8 +7,8 @@
 typedef struct stHuaXiData_
 {
 	char szDevUrl[128];					//设备url
-	char szProductBarCode[64];
-	char szLeakage[32];
+	char szProductBarCode[64];			//产品条码
+	char szLeakage[32];					//泄漏量
 	int  iCheckResult;					// 0 不合格， 1 合格
 	char szCheckDate[32];				// 检测时间
 }stHuaXiData;

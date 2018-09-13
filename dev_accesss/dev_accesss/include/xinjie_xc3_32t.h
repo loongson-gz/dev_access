@@ -16,8 +16,9 @@ typedef struct XinJieXc3_TestItemData {
 
 typedef struct XinJieXc3_Data {
 	char szDevUrl[64];
-	char UniquelyIdentifies[64];
-	char Timestamp[64];
+	char UniquelyIdentifies[64];		//产品条码
+	int  iCheckResult;					//检查结果 0：不合格 1：合格
+	char Timestamp[64];					//检测时间
 	//stXinJieXc3_TestItemData CompressiveStrength;
 	//stXinJieXc3_TestItemData LeakageCurrent;
 	//stXinJieXc3_TestItemData GroundingResistance;

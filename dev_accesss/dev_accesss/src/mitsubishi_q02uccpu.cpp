@@ -76,7 +76,6 @@ int Mitsubishi_Q02UUCPU::Set(const char *key, const char *val)
 		int st = *((int *)(val));
 		int ret = SetNode1(st);
 		return ret;
-
 	}
 	else if (strcmp(key, "control1") == 0)
 	{
@@ -90,11 +89,11 @@ int Mitsubishi_Q02UUCPU::Set(const char *key, const char *val)
 int Mitsubishi_Q02UUCPU::SetNode1(int status)
 {
 	int ret = 0;
-	if (status == 0)
+	if (status == 0) //退出
 	{
 		ret = m_pMcAcsii->Write("D511", 360);
 	}
-	else
+	else   //放行
 	{
 		ret = m_pMcAcsii->Write("D511", 361);
 	}
@@ -109,12 +108,12 @@ int Mitsubishi_Q02UUCPU::SetNode1(int status)
 int Mitsubishi_Q02UUCPU::SetNode2(int status)
 {
 	int ret = 0;
-	if (status == 0)
+	if (status == 0) //退出
 	{
 		ret = m_pMcAcsii->Write("D530", 460);
 
 	}
-	else
+	else  //放行
 	{
 		ret = m_pMcAcsii->Write("D530", 461);
 	}

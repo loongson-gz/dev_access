@@ -42,7 +42,6 @@ int HuaXi::Init()
 		return -1;
 	}
 	
-
 	return 0;
 }
 

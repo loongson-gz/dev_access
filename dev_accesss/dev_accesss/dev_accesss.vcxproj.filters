@@ -135,6 +135,9 @@
     <ClCompile Include="src\mytime.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\microplan_client.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\common.h">
@@ -249,6 +252,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\obj_base.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\microplan_client.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -184,6 +184,7 @@ xcopy /y $(ProjectDir)dev_config.xml $(OutDir)</Command>
     <ClCompile Include="src\mc_data_type.cpp" />
     <ClCompile Include="src\mes_svr.cpp" />
     <ClCompile Include="src\microplan.cpp" />
+    <ClCompile Include="src\microplan_client.cpp" />
     <ClCompile Include="src\mitsubishi_fx3u_32m.cpp" />
     <ClCompile Include="src\mitsubishi_q02uccpu.cpp" />
     <ClCompile Include="src\mitsubishi_q03udvcpu.cpp" />
@@ -221,6 +222,7 @@ xcopy /y $(ProjectDir)dev_config.xml $(OutDir)</Command>
     <ClInclude Include="include\mc_data_type.h" />
     <ClInclude Include="include\mes_svr.h" />
     <ClInclude Include="include\microplan.h" />
+    <ClInclude Include="include\microplan_client.h" />
     <ClInclude Include="include\mitsubishi_fx3u_32m.h" />
     <ClInclude Include="include\mitsubishi_q02uccpu.h" />
     <ClInclude Include="include\mitsubishi_q03udvcpu.h" />
