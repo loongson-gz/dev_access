@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50548
 File Encoding         : 65001
 
-Date: 2018-09-13 10:59:01
+Date: 2018-09-14 17:03:22
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -33,25 +33,27 @@ CREATE TABLE `t_dev_info` (
   `dsn_name` varchar(255) DEFAULT NULL,
   `db_name` varchar(255) DEFAULT NULL,
   `poll_interval` int(11) DEFAULT '30',
-  `line_number` int(11) DEFAULT NULL,
+  `workshop` int(11) NOT NULL DEFAULT '1',
+  `production_line_nmber` int(11) NOT NULL DEFAULT '1',
+  `line_number` int(11) NOT NULL DEFAULT '0',
   `param` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=gbk;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=gbk COMMENT='production_line_nmber 产线编号，默认为1，不同的车间编号 N*100+M，即第N号车间的M号产线。';
 
 -- ----------------------------
 -- Records of t_dev_info
 -- ----------------------------
-INSERT INTO `t_dev_info` VALUES ('1', '电气检测', 'SBXX000022', '0', 'XINJIE_XC3_32T_E', '192.168.104.199', '502', null, null, '1', null, null, '30', '1', '');
-INSERT INTO `t_dev_info` VALUES ('2', '生产线主控', 'SBXX000020', '0', 'MITSUBISHI_Q02UCCPU', '192.168.104.141', '3002', null, null, '0', null, null, '30', '9', null);
-INSERT INTO `t_dev_info` VALUES ('3', '生产线主控', 'SBXX000019', '0', 'MITSUBISHI_Q03UDVCPU', '192.168.103.82', '4806', null, null, '0', null, null, '30', '0', null);
-INSERT INTO `t_dev_info` VALUES ('4', '气密性检测', 'SBXX000018', '0', 'MITSUBISHI_FX3U_32M', '192.168.103.232', '502', null, null, '1', null, null, '30', '0', null);
-INSERT INTO `t_dev_info` VALUES ('5', '综合检测1', 'SBXX000023', '1', 'MONDIAL', null, null, null, null, null, 'mondial_1', null, '30', '3', null);
-INSERT INTO `t_dev_info` VALUES ('6', '气密性检测', 'SBXX000021', '1', 'HUAXI', null, null, 'sa', 'lc000.net', null, 'huaxi_macrodb', 'macroDB', '30', '7', null);
-INSERT INTO `t_dev_info` VALUES ('7', '高压水检测', 'SBXX000027', '1', 'MICROPLAN', null, null, null, null, null, 'microplan_', null, '30', '2', null);
-INSERT INTO `t_dev_info` VALUES ('8', '固扫1', 'SBXX000026', '2', 'SCANNER', null, '9999', null, null, null, null, null, '30', '6', null);
-INSERT INTO `t_dev_info` VALUES ('9', '综合检测2', 'SBXX000024', '1', 'MONDIAL', null, null, null, null, null, 'mondial_2', null, '30', '4', null);
-INSERT INTO `t_dev_info` VALUES ('10', '综合检测3', 'SBXX000025', '1', 'MONDIAL', null, null, null, null, null, 'mondial_3', null, '30', '5', null);
-INSERT INTO `t_dev_info` VALUES ('11', '固扫2', 'SBXX000028', '2', 'SCANNER', null, '9998', null, null, null, null, null, '30', '8', null);
+INSERT INTO `t_dev_info` VALUES ('1', '电气检测', 'SBXX000022', '0', 'XINJIE_XC3_32T_E', '192.168.104.199', '502', null, null, '1', null, null, '30', '2', '1', '1', '');
+INSERT INTO `t_dev_info` VALUES ('2', '生产线主控', 'SBXX000020', '0', 'MITSUBISHI_Q02UCCPU', '192.168.104.141', '3002', null, null, '0', null, null, '30', '1', '1', '9', null);
+INSERT INTO `t_dev_info` VALUES ('3', '生产线主控', 'SBXX000019', '0', 'MITSUBISHI_Q03UDVCPU', '192.168.103.82', '4806', null, null, '0', null, null, '30', '2', '1', '0', null);
+INSERT INTO `t_dev_info` VALUES ('4', '气密性检测', 'SBXX000018', '0', 'MITSUBISHI_FX3U_32M', '192.168.103.232', '502', null, null, '1', null, null, '30', '2', '1', '0', null);
+INSERT INTO `t_dev_info` VALUES ('5', '综合检测1', 'SBXX000023', '1', 'MONDIAL', null, null, null, null, null, 'mondial_1', null, '30', '1', '1', '3', null);
+INSERT INTO `t_dev_info` VALUES ('6', '气密性检测', 'SBXX000021', '1', 'HUAXI', null, null, 'sa', 'lc000.net', null, 'huaxi_macrodb', 'macroDB', '30', '2', '1', '7', null);
+INSERT INTO `t_dev_info` VALUES ('7', '高压水检测', 'SBXX000027', '1', 'MICROPLAN', null, null, null, null, null, 'microplan_', null, '30', '2', '1', '2', null);
+INSERT INTO `t_dev_info` VALUES ('8', '固扫1', 'SBXX000026', '2', 'SCANNER', null, '9999', null, null, null, null, null, '30', '2', '1', '6', null);
+INSERT INTO `t_dev_info` VALUES ('9', '综合检测2', 'SBXX000024', '1', 'MONDIAL', null, null, null, null, null, 'mondial_2', null, '30', '2', '1', '4', null);
+INSERT INTO `t_dev_info` VALUES ('10', '综合检测3', 'SBXX000025', '1', 'MONDIAL', null, null, null, null, null, 'mondial_3', null, '30', '2', '1', '5', null);
+INSERT INTO `t_dev_info` VALUES ('11', '固扫2', 'SBXX000028', '2', 'SCANNER', null, '9998', null, null, null, null, null, '30', '2', '1', '8', null);
 
 -- ----------------------------
 -- Table structure for t_fx3u_32m
