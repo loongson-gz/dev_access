@@ -72,16 +72,18 @@ enum EVENTTYPE
 //网络设备 配置
 typedef struct _stBaseConf
 {
-	char szTitle[256];		//标题
-	char szDevCode[128];	//设备编码
-	char szHostType[128];	//协议类型
-	char szIpAddr[20];		//IP地址
-	uint16_t uPort;			//端口号
-	char szUser[256];		//用户名
-	char szPwd[256];		//密码
-	int iPollInterval;		//与设备交互的操作间隔
-	int iLineNumber;		//流水线编号
-	char szParam[256];		//附加参数
+	char szTitle[256];					//标题
+	char szDevCode[128];				//设备编码
+	char szHostType[128];				//协议类型
+	char szIpAddr[20];					//IP地址
+	uint16_t uPort;						//端口号
+	char szUser[256];					//用户名
+	char szPwd[256];					//密码
+	int iPollInterval;					//与设备交互的操作间隔
+	int iWorkshop;						//车间编号
+	int iProductionLineNumber;			//产线编号
+	int iLineNumber;					//流水线编号
+	char szParam[256];					//附加参数
 }stBaseConf;
 
 

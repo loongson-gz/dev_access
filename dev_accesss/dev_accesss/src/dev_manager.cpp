@@ -2,6 +2,9 @@
 #include "SocketAPI/SocketAPI.h"
 #include "version.h"
 
+//每个车间最大的产线数量, 用于将车间和产线两级结构变为产线一级结构
+#define WORKSHOP_MAX_LINE  100
+
 //线体控制的流水线号
 #define CONTROL_LINE_NUMBER   9
 //第一个固扫的流水线号
@@ -49,48 +52,7 @@ int DevManager::Start()
 		WLogError("%s %s", __FUNCTION__, e.what());
 	}
 
-	TSQLLst sqlLst = m_config->GetSqlLst();
-	for (auto it = sqlLst.begin(); it != sqlLst.end(); ++it)
-	{
-		stSQLConf conf = *it;
-		SqlBase *obj = m_factory.CreateSqlDev(&conf);
-		if (!obj)
-		{
-			continue;
-		}
-		obj->SetEventCallback(&DevManager::EventMsg, this);
-		obj->Start();
-		m_objLst.insert(make_pair(obj->GetUrl(), obj));
-	}
-
-	TPLCLst plcLst = m_config->GetPlcLst();
-	for (auto it = plcLst.begin(); it != plcLst.end(); ++it)
-	{
-		stPLCConf conf = *it;
-		PlcBase *obj = m_factory.CreatePlcDev(&conf);
-		if (!obj)
-		{
-			continue;
-		}
-		obj->SetEventCallback(&DevManager::EventMsg, this);
-		obj->Start();
-		m_objLst.insert(make_pair(obj->GetUrl(), obj));
-	}
-
-	TNETLst netLst = m_config->GetNetLst();
-	for (auto it = netLst.begin(); it != netLst.end(); ++it)
-	{
-		stNETConf conf = *it;
-		NetBase *obj = m_factory.CreateNetDev(&conf);
-		if (!obj)
-		{
-			continue;
-		}
-		obj->SetEventCallback(&DevManager::EventMsg, this);
-		obj->Start();
-		m_objLst.insert(make_pair(obj->GetUrl(), obj));
-	}
-
+	CreateDevObj();
 	return 0;
 }
 
@@ -182,6 +144,62 @@ void DevManager::DoEventProcess(EVENTTYPE iEvtType, void * pData)
 	default:
 		WLogInfo("====================unknow EvtType:%d", iEvtType);
 		break;
+	}
+}
+
+void DevManager::CreateDevObj()
+{
+	if (!m_config->IsInit())
+	{
+		return;
+	}
+	TSQLLst sqlLst = m_config->GetSqlLst();
+	for (auto it = sqlLst.begin(); it != sqlLst.end(); ++it)
+	{
+		stSQLConf conf = *it;
+		SqlBase *obj = m_factory.CreateSqlDev(&conf);
+		if (!obj)
+		{
+			continue;
+		}
+		obj->SetEventCallback(&DevManager::EventMsg, this);
+		obj->Start();
+		m_objLst.insert(make_pair(obj->GetUrl(), obj));
+	
+		int num = conf.iWorkshop * WORKSHOP_MAX_LINE + conf.iProductionLineNumber;
+		m_productLineLst.insert(make_pair(obj, num));
+	}
+
+	TPLCLst plcLst = m_config->GetPlcLst();
+	for (auto it = plcLst.begin(); it != plcLst.end(); ++it)
+	{
+		stPLCConf conf = *it;
+		PlcBase *obj = m_factory.CreatePlcDev(&conf);
+		if (!obj)
+		{
+			continue;
+		}
+		obj->SetEventCallback(&DevManager::EventMsg, this);
+		obj->Start();
+		m_objLst.insert(make_pair(obj->GetUrl(), obj));
+		int num = conf.iWorkshop * WORKSHOP_MAX_LINE + conf.iProductionLineNumber;
+		m_productLineLst.insert(make_pair(obj, num));
+	}
+
+	TNETLst netLst = m_config->GetNetLst();
+	for (auto it = netLst.begin(); it != netLst.end(); ++it)
+	{
+		stNETConf conf = *it;
+		NetBase *obj = m_factory.CreateNetDev(&conf);
+		if (!obj)
+		{
+			continue;
+		}
+		obj->SetEventCallback(&DevManager::EventMsg, this);
+		obj->Start();
+		m_objLst.insert(make_pair(obj->GetUrl(), obj));
+		int num = conf.iWorkshop * WORKSHOP_MAX_LINE + conf.iProductionLineNumber;
+		m_productLineLst.insert(make_pair(obj, num));
 	}
 }
 
@@ -333,7 +351,9 @@ void DevManager::HandleEventXinjie_xc3_32t_e(void *pData)
 	stBaseConf *pConf = (stBaseConf *)(conf);
 	m_pMesSvr->SetDevTitleAndCode(pConf->szDevCode, pConf->szTitle);
 	m_config->InsertData(pConf->szDevCode, data);
-	HandleControlFlow(data->UniquelyIdentifies, pConf->iLineNumber, data->iCheckResult);
+
+	int num = pConf->iWorkshop * WORKSHOP_MAX_LINE + pConf->iProductionLineNumber;
+	HandleControlFlow(data->UniquelyIdentifies, num, pConf->iLineNumber, data->iCheckResult);
 	free(conf);
 
 	m_pMesSvr->SetDepartmentAndProLineCode("CJ_00001", "CX-00007");
@@ -373,7 +393,8 @@ void DevManager::HandleEventMondial(void *pData)
 	stBaseConf *pConf = (stBaseConf *)(conf);
 	m_pMesSvr->SetDevTitleAndCode(pConf->szDevCode, pConf->szTitle);
 	m_config->InsertData(pConf->szDevCode, data);
-	HandleControlFlow(data->rpt.strBarCode.c_str(), pConf->iLineNumber, iRes);
+	int num = pConf->iWorkshop * WORKSHOP_MAX_LINE + pConf->iProductionLineNumber;
+	HandleControlFlow(data->rpt.strBarCode.c_str(), num, pConf->iLineNumber, iRes);
 	free(conf);
 
 	char *pName[3] = {
@@ -451,10 +472,11 @@ void DevManager::HandleEventScanner(void *pData)
 		return;
 	}
 
-	ObjBase *controlObj = GetControlObj();
 	char *conf = nullptr;
 	obj->Get("conf", conf);
 	stBaseConf *pConf = (stBaseConf *)(conf);
+	ObjBase *controlObj = GetControlObj(pConf->iProductionLineNumber);
+
 	if (pConf->iLineNumber == SCANNER_1_LINE_NUMBER)	//第一个固扫的流水号
 	{
 		int val = 0;
@@ -486,22 +508,26 @@ void DevManager::HandleEventScanner(void *pData)
 }
 
 
-ObjBase *DevManager::GetControlObj()
+ObjBase *DevManager::GetControlObj(int productionLineNum)
 {
 	ObjBase *controlObj = nullptr;
-	for (auto it = m_objLst.begin(); it != m_objLst.end(); ++it)
+	for (auto it = m_productLineLst.begin(); it != m_productLineLst.end(); ++it)
 	{
-		ObjBase *tmpObj = it->second;
-		char *conf = nullptr;
-		tmpObj->Get("conf", conf);
-		stBaseConf *pConf = (stBaseConf *)(conf);
-		if (pConf->iLineNumber == CONTROL_LINE_NUMBER)	//找到线体控制对象
+		int num = it->second;
+		if (num == productionLineNum)
 		{
-			controlObj = tmpObj;
+			ObjBase *tmpObj = it->first;
+			char *conf = nullptr;
+			tmpObj->Get("conf", conf);
+			stBaseConf *pConf = (stBaseConf *)(conf);
+			if (pConf->iLineNumber == CONTROL_LINE_NUMBER)	//找到线体控制对象
+			{
+				controlObj = tmpObj;
+				free(conf);
+				break;
+			}
 			free(conf);
-			break;
 		}
-		free(conf);
 	}
 
 	return controlObj;
@@ -548,36 +574,40 @@ void DevManager::SetDevCodeAndTitleToSvr(ObjBase *obj)
 	free(conf);
 }
 
-void DevManager::HandleControlFlow(const char *szBarcode, int iLineNumber, bool isOk)
+void DevManager::HandleControlFlow(const char *szBarcode, int productionLineNumber, int iLineNumber, bool isOk)
 {
-	for (auto it = m_objLst.begin(); it != m_objLst.end(); ++it)
+	for (auto it = m_productLineLst.begin(); it != m_productLineLst.end(); ++it)
 	{
-		ObjBase *obj = it->second;
-		if (!obj)
+		int num = it->second;
+		if (num == productionLineNumber)
 		{
-			continue;
-		}
+			ObjBase *obj = it->first;
+			if (!obj)
+			{
+				continue;
+			}
 
-		char *conf = nullptr;
-		obj->Get("conf", conf);
-		stBaseConf *pConf = (stBaseConf *)(conf);
-		if (pConf->iLineNumber > iLineNumber && pConf)
-		{
-			if (isOk)
+			char *conf = nullptr;
+			obj->Get("conf", conf);
+			stBaseConf *pConf = (stBaseConf *)(conf);
+			if (pConf->iLineNumber > iLineNumber && pConf)
 			{
-				obj->Set("product_ok", szBarcode);
-			}
-			else
-			{
-				obj->Set("product_ng", szBarcode);
-				if (m_productLst.size() > 128)
+				if (isOk)
 				{
-					auto it = m_productLst.begin();
-					m_productLst.erase(it);
+					obj->Set("product_ok", szBarcode);
 				}
-				m_productLst.insert(szBarcode);
+				else
+				{
+					obj->Set("product_ng", szBarcode);
+					if (m_productLst.size() > 128)
+					{
+						auto it = m_productLst.begin();
+						m_productLst.erase(it);
+					}
+					m_productLst.insert(szBarcode);
+				}
 			}
+			free(conf);
 		}
-		free(conf);
 	}
 }

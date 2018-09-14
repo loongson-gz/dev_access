@@ -153,9 +153,9 @@ int DbHelper::GetData(const char * szSql, TSQLLst &res)
 		Poco::Data::Statement sql(*m_ses);
 
 		string title, devCode, hostType, ipAddr, usr, pwd, dsnName, dbName, param;
-		int port, pollInterval, lineNumber;
+		int port, pollInterval, workshop, productionLineNo, lineNumber;
 		sql << szSql, into(title), into(devCode), into(hostType), into(ipAddr), into(port), into(usr), into(pwd),
-			into(dsnName), into(dbName), into(pollInterval), into(lineNumber), into(param), range(0, 1);
+			into(dsnName), into(dbName), into(pollInterval), into(workshop), into(productionLineNo), into(lineNumber), into(param), range(0, 1);
 		while (!sql.done())
 		{
 			sql.execute();
@@ -172,6 +172,8 @@ int DbHelper::GetData(const char * szSql, TSQLLst &res)
 			strncpy(conf.szDsnName, dsnName.c_str(), sizeof(conf.szDsnName));
 			strncpy(conf.szParam, param.c_str(), sizeof(conf.szParam));
 			conf.iPollInterval = pollInterval;
+			conf.iWorkshop = workshop;
+			conf.iProductionLineNumber = productionLineNo;
 			conf.iLineNumber = lineNumber;
 
 			res.push_back(conf);
@@ -196,9 +198,9 @@ int DbHelper::GetData(const char *szSql, TPLCLst &res)
 		Poco::Data::Statement sql(*m_ses);
 
 		string title, devCode, hostType, ipAddr, usr, pwd, param;
-		int port, slaveId, pollInterval, lineNumber;
+		int port, slaveId, pollInterval, workshop, productionLineNo, lineNumber;
 		sql << szSql, into(title), into(devCode), into(hostType), into(ipAddr), into(port), into(usr), into(pwd),
-			into(slaveId),  into(pollInterval), into(lineNumber), into(param), range(0, 1);
+			into(slaveId),  into(pollInterval), into(workshop), into(productionLineNo), into(lineNumber), into(param), range(0, 1);
 		while (!sql.done())
 		{
 			sql.execute();
@@ -215,6 +217,8 @@ int DbHelper::GetData(const char *szSql, TPLCLst &res)
 			strncpy(conf.szParam, param.c_str(), sizeof(conf.szParam));
 			conf.iSlaveId = slaveId;
 			conf.iPollInterval = pollInterval;
+			conf.iWorkshop = workshop;
+			conf.iProductionLineNumber = productionLineNo;
 			conf.iLineNumber = lineNumber;
 
 			res.push_back(conf);
@@ -239,9 +243,9 @@ int DbHelper::GetData(const char * szSql, TNETLst &res)
 		Poco::Data::Statement sql(*m_ses);
 
 		string title, devCode, hostType, ipAddr, usr, pwd,  param;
-		int port, pollInterval, lineNumber;
+		int port, pollInterval, workshop, productionLineNo, lineNumber;
 		sql << szSql, into(title), into(devCode), into(hostType), into(ipAddr), into(port), into(usr), into(pwd),
-			into(pollInterval), into(lineNumber), into(param), range(0, 1);
+			into(pollInterval), into(workshop), into(productionLineNo), into(lineNumber), into(param), range(0, 1);
 		while (!sql.done())
 		{
 			sql.execute();
@@ -257,6 +261,8 @@ int DbHelper::GetData(const char * szSql, TNETLst &res)
 			strncpy(conf.szPwd, pwd.c_str(), sizeof(conf.szPwd));
 			strncpy(conf.szParam, param.c_str(), sizeof(conf.szParam));
 			conf.iPollInterval = pollInterval;
+			conf.iWorkshop = workshop;
+			conf.iProductionLineNumber = productionLineNo;
 			conf.iLineNumber = lineNumber;
 
 			res.push_back(conf);
