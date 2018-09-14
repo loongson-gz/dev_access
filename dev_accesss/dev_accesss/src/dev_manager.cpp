@@ -11,7 +11,11 @@ DevManager::DevManager()
 	: m_pMesSvr(nullptr)
 {
 	WLogInit("./log", "dev_", 5, 128, 1000, true);
-	WLogInfo("version:%d.%d.%s", VER_MAJOR, VER_MINOR, VER_REVISION);
+	WLogInfo("VERSION:%d.%d.%s", VER_MAJOR, VER_MINOR, VER_REVISION);
+	WLogInfo("%s", GIT_URL);
+	WLogInfo("%s", GIT_HASH_NUM);
+	WLogInfo("%s", GIT_AUTHOR);
+	WLogInfo("%s", COMMIT_DATE);
 
 	WLogInfo("%s make", __FUNCTION__);
 	InitSocket();
