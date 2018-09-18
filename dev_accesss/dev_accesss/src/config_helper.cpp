@@ -125,7 +125,7 @@ int ConfigHelper::InsertData(const char * szDevCode, stMitsubishi_Q03UDVCPU_Data
 	int ret = -1;
 	if (m_dbHelper)
 	{
-		int ret = m_dbHelper->InsertData(sql.c_str());
+		ret = m_dbHelper->InsertData(sql.c_str());
 	}
 	return ret;
 }
@@ -144,7 +144,7 @@ int ConfigHelper::InsertData(const char * szDevCode, stMitsubishi_Q02UUCPU_Data 
 	int ret = -1;
 	if (m_dbHelper)
 	{
-		int ret = m_dbHelper->InsertData(sql.c_str());
+		ret = m_dbHelper->InsertData(sql.c_str());
 	}
 	return ret;
 }
@@ -168,7 +168,7 @@ int ConfigHelper::InsertData(const char * szDevCode, stMitsubishi_FX3U_32M_Data 
 	int ret = -1;
 	if (m_dbHelper)
 	{
-		int ret = m_dbHelper->InsertData(sql.c_str());
+		ret = m_dbHelper->InsertData(sql.c_str());
 	}
 	return ret;
 }
@@ -239,7 +239,7 @@ int ConfigHelper::InsertData(int id, stXinJieXc3_TestItemData data)
 	int ret = -1;
 	if (m_dbHelper)
 	{
-		int ret = m_dbHelper->InsertData(sql.c_str());
+		ret = m_dbHelper->InsertData(sql.c_str());
 	}
 	return ret;
 }
@@ -292,7 +292,7 @@ int ConfigHelper::InsertData(const char * szDevCode, stHuaXiData * data)
 	int ret = -1;
 	if (m_dbHelper)
 	{
-		int ret = m_dbHelper->InsertData(sql.c_str());
+		ret = m_dbHelper->InsertData(sql.c_str());
 	}
 	return ret;
 }

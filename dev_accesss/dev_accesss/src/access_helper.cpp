@@ -39,7 +39,7 @@ void AccessHelper::GetProductReport(TProductReportLst &vRet)
 		while (!rs.IsEOF())
 		{
 			stProductReport rept;
-			for (short i = 0; i < 4; i++)
+			for (int i = 0; i < 4; i++)
 			{
 				CString cs;
 				rs.GetFieldValue(i, cs);
@@ -78,7 +78,7 @@ void AccessHelper::GetProductReport(const char *sql, TProductReportLst &vRet)
 		while (!rs.IsEOF())
 		{
 			stProductReport rept;
-			for (short i = 0; i < 4; i++)
+			for (int i = 0; i < 4; i++)
 			{
 				CString cs;
 				rs.GetFieldValue(i, cs);

@@ -216,6 +216,11 @@ void DevManager::HandleEventMitsubishi_q03udvcpu(void *pData)
 	char *conf = nullptr;
 	obj->Get("conf", conf);
 	stBaseConf *pConf = (stBaseConf *)(conf);
+	if (!pConf)
+	{
+		WLogError("%s:%d get conf err.", __FUNCTION__, __LINE__);
+		return;
+	}
 	m_pMesSvr->SetDevTitleAndCode(pConf->szDevCode, pConf->szTitle);
 	m_config->InsertData(pConf->szDevCode, data);
 	free(conf);
@@ -258,6 +263,11 @@ void DevManager::HandleEventMitsubishi_q02uccpu(void *pData)
 	char *conf = nullptr;
 	obj->Get("conf", conf);
 	stBaseConf *pConf = (stBaseConf *)(conf);
+	if (!pConf)
+	{
+		WLogError("%s:%d get conf err.", __FUNCTION__, __LINE__);
+		return;
+	}
 	m_pMesSvr->SetDevTitleAndCode(pConf->szDevCode, pConf->szTitle);
 	m_config->InsertData(pConf->szDevCode, data);
 	free(conf);
@@ -294,6 +304,11 @@ void DevManager::HandleEventMitsubishi_fx3u_32m(void *pData)
 	char *conf = nullptr;
 	obj->Get("conf", conf);
 	stBaseConf *pConf = (stBaseConf *)(conf);
+	if (!pConf)
+	{
+		WLogError("%s:%d get conf err.", __FUNCTION__, __LINE__);
+		return;
+	}
 	m_pMesSvr->SetDevTitleAndCode(pConf->szDevCode, pConf->szTitle);
 	m_config->InsertData(pConf->szDevCode, data);
 	free(conf);
@@ -349,6 +364,11 @@ void DevManager::HandleEventXinjie_xc3_32t_e(void *pData)
 	char *conf = nullptr;
 	obj->Get("conf", conf);
 	stBaseConf *pConf = (stBaseConf *)(conf);
+	if (!pConf)
+	{
+		WLogError("%s:%d get conf err.", __FUNCTION__, __LINE__);
+		return;
+	}
 	m_pMesSvr->SetDevTitleAndCode(pConf->szDevCode, pConf->szTitle);
 	m_config->InsertData(pConf->szDevCode, data);
 
@@ -376,7 +396,6 @@ void DevManager::HandleEventMondial(void *pData)
 		return;
 	}
 
-
 	m_pMesSvr->SetDepartmentAndProLineCode("CJ_00001", "CX-00007");
 	m_pMesSvr->SetWorkShopAndProDLine("热水总装验证车间", "热水实验线");
 	//m_mesSvr.SetDevTitleAndCode("SBXX000023", "综合检测");
@@ -391,6 +410,11 @@ void DevManager::HandleEventMondial(void *pData)
 	char *conf = nullptr;
 	obj->Get("conf", conf);
 	stBaseConf *pConf = (stBaseConf *)(conf);
+	if (!pConf)
+	{
+		WLogError("%s:%d get conf err.", __FUNCTION__, __LINE__);
+		return;
+	}
 	m_pMesSvr->SetDevTitleAndCode(pConf->szDevCode, pConf->szTitle);
 	m_config->InsertData(pConf->szDevCode, data);
 	int num = pConf->iWorkshop * WORKSHOP_MAX_LINE + pConf->iProductionLineNumber;
@@ -425,6 +449,11 @@ void DevManager::HandleEventHuaxi(void *pData)
 	char *conf = nullptr;
 	obj->Get("conf", conf);
 	stBaseConf *pConf = (stBaseConf *)(conf);
+	if (!pConf)
+	{
+		WLogError("%s:%d get conf err.", __FUNCTION__, __LINE__);
+		return;
+	}
 	m_pMesSvr->SetDevTitleAndCode(pConf->szDevCode, pConf->szTitle);
 	m_config->InsertData(pConf->szDevCode, data);
 	if (data->iCheckResult == 0)
@@ -475,6 +504,11 @@ void DevManager::HandleEventScanner(void *pData)
 	char *conf = nullptr;
 	obj->Get("conf", conf);
 	stBaseConf *pConf = (stBaseConf *)(conf);
+	if (!pConf)
+	{
+		WLogError("%s:%d get conf err.", __FUNCTION__, __LINE__);
+		return;
+	}
 	ObjBase *controlObj = GetControlObj(pConf->iProductionLineNumber);
 
 	if (pConf->iLineNumber == SCANNER_1_LINE_NUMBER)	//第一个固扫的流水号
@@ -520,7 +554,7 @@ ObjBase *DevManager::GetControlObj(int productionLineNum)
 			char *conf = nullptr;
 			tmpObj->Get("conf", conf);
 			stBaseConf *pConf = (stBaseConf *)(conf);
-			if (pConf->iLineNumber == CONTROL_LINE_NUMBER)	//找到线体控制对象
+			if (pConf && pConf->iLineNumber == CONTROL_LINE_NUMBER)	//找到线体控制对象
 			{
 				controlObj = tmpObj;
 				free(conf);
@@ -553,6 +587,11 @@ void DevManager::SetDevCodeAndTitleToSvr(ObjBase *obj)
 	char *conf = nullptr;
 	obj->Get("conf", conf);
 	stBaseConf *pConf = (stBaseConf *)(conf);
+	if (!pConf)
+	{
+		WLogError("%s:%d get conf err.", __FUNCTION__, __LINE__);
+		return;
+	}
 	m_pMesSvr->SetDevTitleAndCode(pConf->szDevCode, pConf->szTitle);
 #if 0
 	if (obj->GetBaseType() == ePLCDEV)
@@ -590,7 +629,7 @@ void DevManager::HandleControlFlow(const char *szBarcode, int productionLineNumb
 			char *conf = nullptr;
 			obj->Get("conf", conf);
 			stBaseConf *pConf = (stBaseConf *)(conf);
-			if (pConf->iLineNumber > iLineNumber && pConf)
+			if (pConf && pConf->iLineNumber > iLineNumber)
 			{
 				if (isOk)
 				{

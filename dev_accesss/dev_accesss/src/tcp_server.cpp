@@ -4,6 +4,9 @@
 
 
 TcpServer::TcpServer(unsigned short Port)
+	: mSockClt(-1)
+	, mh_thread(nullptr)
+	, mAddrClt()
 {
 	mServerStatusIsOk = false;
 	if (InitSocket())

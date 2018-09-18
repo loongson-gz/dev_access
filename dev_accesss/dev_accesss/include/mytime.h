@@ -11,6 +11,8 @@ public:
 	std::string GetTimeString(time_t t);
 	std::string GetTimeString1(time_t t);
 
+	std::string GetTimeString2(time_t t);
+
 private:
 	time_t m_now;
 

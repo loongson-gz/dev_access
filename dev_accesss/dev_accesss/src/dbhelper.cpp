@@ -100,7 +100,7 @@ int DbHelper::GetData(const char * szSql, THuaXiSQLDataLst &res)
 	try
 	{
 		stHuaXiSQLData data;
-		memset(&data, 0, sizeof(data));
+		//memset(&data, 0, sizeof(data));
 
 		Poco::Data::Statement sql(*m_ses);
 		sql << szSql, into(data.szProductBarCode), into(data.szResultFlag), into(data.szLeakage),
@@ -113,7 +113,7 @@ int DbHelper::GetData(const char * szSql, THuaXiSQLDataLst &res)
 			if (!data.szProductBarCode.empty())
 			{
 				stHuaXiSQLData tmp;
-				memset(&tmp, 0, sizeof(tmp));
+				//memset(&tmp, 0, sizeof(tmp));
 
 				tmp.szProductBarCode = data.szProductBarCode;
 				tmp.szResultFlag = data.szResultFlag;
@@ -311,7 +311,6 @@ int DbHelper::GetData(const char * szSql, int & id)
 	}
 	try
 	{
-		string usr, pwd, db_name, dsn_name;
 		int id;
 		Poco::Data::Statement sql(*m_ses);
 		sql << szSql, into(id), now;
@@ -321,6 +320,11 @@ int DbHelper::GetData(const char * szSql, int & id)
 		WLogError("%s:%d sql:%s,err:%s", __FUNCTION__, __LINE__, szSql, e.what());
 		return -1;
 	}
+	return 0;
+}
+
+int DbHelper::GetData(const char * szSql, TMicroPlanDataLst & res)
+{
 	return 0;
 }
 

@@ -102,7 +102,7 @@ int Mitsubishi_Q02UUCPU::SetNode1(int status)
 	m_pMcAcsii->Read("D511", 2, val);
 	cout << "D511 361:" << val << endl;
 
-	return 0;
+	return ret;
 }
 
 int Mitsubishi_Q02UUCPU::SetNode2(int status)

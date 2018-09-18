@@ -70,7 +70,7 @@ uint16_t Mitsubishi_FX3U_32M::ModbusStart(int address)
 	}
 	catch (const std::exception& e)
 	{
-		throw e;
+		throw ;
 	}
 	
 	return read_holding_regs;

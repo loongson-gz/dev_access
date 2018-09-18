@@ -7,6 +7,8 @@ McAscii::McAscii(const char * ip, uint16_t port)
 	, m_port(port)
 	, m_sockfd(-1)
 	, m_pPlcWriteCmd(nullptr)
+	, m_plcReadCmd()
+	, m_iWriteLen(0)
 {
 }
 

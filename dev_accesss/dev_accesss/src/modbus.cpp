@@ -193,7 +193,7 @@ void Modbus::ModbusRead(int address, int amount, int func)
 	}
 	catch (const std::exception& e)
 	{
-		throw e;
+		throw ;
 	}
 }
 
@@ -230,7 +230,7 @@ void Modbus::ModbusReadHoldingRegisters(int address, int amount, uint16_t *buffe
 		}
 		catch (exception &e) 
 		{
-			throw e;
+			throw ;
 		}
 	}
 	else 
@@ -273,7 +273,7 @@ void Modbus::ModbusReadInputRegisters(int address, int amount, uint16_t *buffer)
 		}
 		catch (exception &e) 
 		{
-			throw e;
+			throw ;
 		}
 	}
 	else 
@@ -314,7 +314,7 @@ void Modbus::ModbusReadCoils(int address, int amount, bool *buffer)
 		}
 		catch (exception &e) 
 		{
-			throw e;
+			throw ;
 		}
 	}
 	else 
@@ -357,7 +357,7 @@ void Modbus::ModbusReadInputBits(int address, int amount, bool* buffer)
 		}
 		catch (exception &e) 
 		{
-			throw e;
+			throw ;
 		}
 	}
 	else 
@@ -394,7 +394,7 @@ void Modbus::ModbusWriteCoil(int address, bool to_write)
 		}
 		catch (exception &e) 
 		{
-			throw e;
+			throw ;
 		}
 	}
 	else 
@@ -425,17 +425,13 @@ void Modbus::ModbusWriteRegister(int address, uint16_t value)
 		{
 			throw ModbusConnectException();
 		}
-		if (k < 0)
-		{
-			throw ModbusConnectException();
-		}
 		try 
 		{
 			ModbusErrorHandle(to_rec, WRITE_COIL);
 		}
 		catch (exception &e) 
 		{
-			throw e;
+			throw ;
 		}
 	}
 	else 
@@ -478,7 +474,7 @@ void Modbus::ModbusWriteCoils(int address, int amount, bool *value)
 		}
 		catch (exception &e) 
 		{
-			throw e;
+			throw ;
 		}
 	}
 	else 
@@ -517,7 +513,7 @@ void Modbus::ModbusWriteRegisters(int address, int amount, uint16_t *value)
 		}
 		catch (exception &e) 
 		{
-			throw e;
+			throw ;
 		}
 	}
 	else 

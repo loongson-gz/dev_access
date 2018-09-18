@@ -50,6 +50,18 @@ typedef std::vector<stPLCConf> TPLCLst;
 
 typedef std::vector<stNETConf> TNETLst;
 
+
+
+typedef struct stMicroPlanData_
+{
+	char szDevUrl[64];					//设备url
+	char szProductBarcode[64];			//产品条码
+	double fTimeUsed;					//测试总用时
+	int iResult; 						//测试结果 0:不合格， 1：合格
+}stMicroPlanData;
+
+typedef vector<stMicroPlanData> TMicroPlanDataLst;
+
 class DbHelper {
 public:
 	DbHelper(const char *usr, const char *pwd, const char *database, const char *dsn);
@@ -64,7 +76,7 @@ public:
 	int GetData(const char *szSql, TNETLst &res);
 	int GetData(const char *szSql, stSvrConf &res);
 	int GetData(const char *szSql, int &id);
-
+	int GetData(const char *szSql, TMicroPlanDataLst &res);
 private:
 	Poco::Data::SessionPool *m_pool;
 	Poco::Data::Session *m_ses;

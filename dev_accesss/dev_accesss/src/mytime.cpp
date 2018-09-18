@@ -29,3 +29,14 @@ std::string MyTime::GetTimeString1(time_t t)
 	std::string str(buf);
 	return str;
 }
+
+std::string MyTime::GetTimeString2(time_t t)
+{
+	tm *p = localtime(&t);
+	char buf[128] = { 0 };
+	snprintf(buf, sizeof(buf), "%04d/%d/%d %d:%02d:%02d",
+		1900 + p->tm_year, 1 + p->tm_mon, p->tm_mday, p->tm_hour, p->tm_min, p->tm_sec);
+
+	std::string str(buf);
+	return str;
+}

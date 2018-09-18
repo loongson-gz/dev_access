@@ -36,7 +36,7 @@ int MicroPlan::Init()
 
 		m_th = thread(ThdFn, this);
 	}
-	catch (std::exception e)
+	catch (std::exception &e)
 	{
 		WLogInfo("%s:%s", __FUNCTION__, e.what());
 		return -1;

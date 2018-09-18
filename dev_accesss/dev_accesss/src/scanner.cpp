@@ -7,6 +7,8 @@ DWORD WINAPI ScannerResult(LPVOID lpParameter);
 
 Scanner::Scanner(stNETConf conf)
 	: m_conf(conf)
+	, m_fn(nullptr)
+	, m_pUser(nullptr)
 {
 	mPort = conf.uPort;
 	m_url = string(conf.szIpAddr) + "@" + std::to_string(conf.uPort);

@@ -24,7 +24,7 @@ MicroPlanClient::~MicroPlanClient()
 int MicroPlanClient::Init()
 {
 	try {
-		m_pDbHelper = new AccessHelper(m_conf.szDsnName);
+		m_pDbHelper = new DbHelper(m_conf.szDsnName);
 		int ret = m_pDbHelper->ConnectToSvr();
 		if (ret != 0)
 		{
@@ -44,21 +44,21 @@ int MicroPlanClient::GetData(TMicroPlanDataLst &retLst)
 {
 	MyTime t;
 	time_t now = t.GetTimestmap();
-	string strEndTime = t.GetTimeString1(now);
+	string strEndTime = t.GetTimeString2(now);
 
 	now -= m_conf.iPollInterval;
-	string strBeginTime = t.GetTimeString1(now);
+	string strBeginTime = t.GetTimeString2(now);
 	stringstream ss;
-	ss << "SELECT  TEST_TIME, BAR_CODE_1, TIME_USED, QUALITY FROM PRODUCT_RPT "
-	<< " where TEST_TIME>="
+	ss << "SELECT  SERIAL_NUMBER, TEST_TIME, TEST_RESULT FROM TEST "
+	<< " where  START_DATE_TIME>="
 	<< "'"<< strBeginTime << "'"
-	<< " and TEST_TIME<="
+	<< " and  START_DATE_TIME<="
 	<< "'"<< strEndTime <<"';";
 
 	string strSql = ss.str();
 
-	TProductReportLst rptLst;
-	m_pDbHelper->GetProductReport(strSql.c_str(), rptLst);
+	TMicroPlanDataLst rptLst;
+	m_pDbHelper->GetData(strSql.c_str(), rptLst);
 
 	for (auto it = rptLst.begin(); it < rptLst.end(); ++it)
 	{
@@ -70,6 +70,16 @@ int MicroPlanClient::GetData(TMicroPlanDataLst &retLst)
 
 void MicroPlanClient::UpdateFailProductData(const char *barcode)
 {
-	m_pDbHelper->UpdateFailProductData(m_iSN++ % 10, barcode);
-
+	MyTime t;
+	time_t now = t.GetTimestmap();
+	const char *table = "result";
+	stringstream ss;
+	ss << "insert into " << table << " values(0, "
+		<< "'" << barcode << "',"
+		<< " 'NG'"
+		<< " ,'" << t.GetTimeString(now) << "'"
+		<< ");";
+	
+	string sql = ss.str();
+	m_pDbHelper->InsertData(sql.c_str());
 }

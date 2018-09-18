@@ -4,7 +4,7 @@
 
 string GBKToUTF8(const std::string& strGBK)
 {
-	string strOutUTF8 = "";
+	string strOutUTF8("");
 	WCHAR * str1;
 	int n = MultiByteToWideChar(CP_ACP, 0, strGBK.c_str(), -1, NULL, 0);
 	str1 = new WCHAR[n];
@@ -36,6 +36,7 @@ string GetTime()
 
 MesSvr::MesSvr(stSvrConf conf)
 	:m_conf(conf)
+	, m_db(nullptr)
 {
 }
 
