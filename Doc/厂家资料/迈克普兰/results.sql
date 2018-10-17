@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50548
 File Encoding         : 65001
 
-Date: 2018-09-13 16:48:34
+Date: 2018-10-17 09:10:28
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -25,7 +25,7 @@ CREATE TABLE `check_result` (
   `CHECK_RESULT` varchar(32) NOT NULL,
   `CHECK_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=gbk COMMENT='PRODUCT_SN        产品条码\r\nCHECK_RESULT      检测结果  NG ：不合格\r\nCHECK_TIME         检测时间';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=gbk COMMENT='PRODUCT_SN        产品条码\r\nCHECK_RESULT      检测结果  NG ：不合格\r\nCHECK_TIME         检测时间';
 
 -- ----------------------------
 -- Table structure for defect
@@ -89,8 +89,8 @@ CREATE TABLE `test` (
   `OPERATOR` varchar(50) DEFAULT NULL,
   `SEQUENCE` varchar(50) DEFAULT NULL,
   `START_DATE_TIME` datetime DEFAULT NULL,
-  `TEST_TIME` datetime DEFAULT NULL,
-  ` TEST_RESULT` varchar(30) DEFAULT NULL,
+  `TEST_TIME` double DEFAULT NULL,
+  `TEST_RESULT` varchar(30) DEFAULT NULL,
   `TRANSFER` varchar(3) DEFAULT NULL,
   KEY `ID` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=gbk COMMENT='ID               CHAR (38)  PRIMARY KEY,  Test表格对应的搜索识别号\r\nMODEL                VARCHAR (50), Model为被测产品型号代码\r\nSERIAL_NUMBER                    VARCHAR (50), 被测产品序列号\r\nSTATION                            VARCHAR (50), 检测台的工位或者名称\r\nOPERATOR                    VARCHAR (50), 作业员信息\r\nSEQUENCE            VARCHAR (50), 使用的测试程序（工艺流程）\r\nSTART_DATE_TIME            DATETIME, 测试日期\r\nTEST_TIME            DOUBLE, 测试总时间\r\nTEST_RESULT            VARCHAR (30),最终测试结果\r\nTRANSFER            VARCHAR (3)是否成功传送到外部数据库标识\r\n';
