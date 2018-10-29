@@ -14,7 +14,7 @@ Mondial::Mondial(stSQLConf conf)
 	, m_pUser(nullptr)
 	, m_fn(nullptr)
 {
-	m_url = string(conf.szDsnName) + "@" + string(conf.szDbName);
+	m_url = string(conf.szDsnName) + "@" + string(conf.szDevCode);
 	WLogInfo("%s make %s", __FUNCTION__, m_url.c_str());
 }
 
@@ -35,6 +35,7 @@ int Mondial::Init()
 		int ret = m_pClient->Init();
 		if (ret != 0)
 		{
+			WLogError("%s:%d %s init err", __FUNCTION__, __LINE__, m_conf.szDsnName);
 			return ret;
 		}
 
@@ -82,9 +83,10 @@ int Mondial::Get(const char * key, char *& val)
 
 int Mondial::Set(const char * key, const char * val)
 {
-	if (strcmp(key, "control") == 0)
+	if (strcmp(key, "product_ng") == 0)
 	{
 		SetNgProduct(val);
+		WLogInfo("%s:%d product_ng:%s, url:%s", __FUNCTION__, __LINE__,  val, m_url.c_str());
 	}
 	return 0;
 }
@@ -112,6 +114,13 @@ void Mondial::DoStart()
 			for (auto it=dataLst.begin(); it!=dataLst.end(); ++it)
 			{
 				stMondialData data = *it;
+				string tmp = data.rpt.strBarCode;
+				int pos = tmp.find("\r\n");
+				if (pos != tmp.npos)
+				{
+					data.rpt.strBarCode = data.rpt.strBarCode.substr(0, pos);
+				}
+				strncpy(data.szDevUrl, m_url.c_str(), sizeof(data.szDevUrl));
 				m_fn(eEVENT_MONDIAL, (void *)&data, m_pUser);
 			}
 		}

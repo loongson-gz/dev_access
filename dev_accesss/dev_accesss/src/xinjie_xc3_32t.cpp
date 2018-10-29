@@ -96,6 +96,7 @@ void XinJieXc3::DoStart()
 	char OldUniquelyIdentifies[64] = { 0 };
 
 	stXinJieXc3_Data data;
+	data.iCheckResult = ePASSED;
 	while (!m_bStop)
 	{
 		while (!ModbusInit(m_id)) 
@@ -122,9 +123,15 @@ void XinJieXc3::DoStart()
 			}
 			
 			
-			if(strncmp(OldUniquelyIdentifies, data.UniquelyIdentifies, sizeof(OldUniquelyIdentifies)) != 0 
-				&& strlen(data.UniquelyIdentifies) != 0)
+			if(/*strncmp(OldUniquelyIdentifies, data.UniquelyIdentifies, sizeof(OldUniquelyIdentifies)) != 0 
+				&& */strlen(data.UniquelyIdentifies) != 0)
 			{
+				string tmp = data.UniquelyIdentifies;
+				int pos = tmp.find("\r\n");
+				if (pos != tmp.npos)
+				{
+					data.UniquelyIdentifies[pos] = '\0';
+				}
 				WLogInfo("热水线产品唯一标识码： %s", data.UniquelyIdentifies);
 				TestFinish = false;
 				strcpy(OldUniquelyIdentifies, data.UniquelyIdentifies);
@@ -142,6 +149,10 @@ void XinJieXc3::DoStart()
 							snprintf(data.Results[i].ItemValue2, sizeof(results[2]), "%s", (char *)results[2]);
 							snprintf(data.Results[i].ItemResult, sizeof(results[3]), "%s", (char *)results[3]);
 							snprintf(data.Results[i].ItemResultCode, sizeof(results[4]), "%s", (char *)results[4]);
+							if (strncmp((char *)results[3], "OK", 2) != 0)
+							{
+								data.iCheckResult = eFAILED;
+							}
 							Sleep(100);
 
 						}

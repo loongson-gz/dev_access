@@ -19,6 +19,7 @@ private:
 	EventMsgFn m_fn;
 	void *m_pUser;
 	stNETConf m_conf;
+	thread m_thd;
 
 public:
 	Scanner(stNETConf conf);
@@ -30,6 +31,8 @@ public:
 
 	void SetEventCallback(EventMsgFn fn, void * pUser);
 	void DoScannerResult(SOCKET sock_clt);
+	static void Thd(void *param);
+	void DoThd();
 };
 
 

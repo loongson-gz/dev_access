@@ -19,7 +19,7 @@ public:
 	void SetEventCallback(EventMsgFn fn, void *pUser);
 	void DoStart();
 private:
-	int SetCheckResult(const char *barcode);
+	int SetCheckResult(const char *barcode, const char *res);
 private:
 	thread m_th;
 	bool m_bStop;

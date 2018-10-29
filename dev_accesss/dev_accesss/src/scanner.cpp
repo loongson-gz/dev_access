@@ -11,7 +11,7 @@ Scanner::Scanner(stNETConf conf)
 	, m_pUser(nullptr)
 {
 	mPort = conf.uPort;
-	m_url = string(conf.szIpAddr) + "@" + std::to_string(conf.uPort);
+	m_url = string(conf.szIpAddr) + ":" + std::to_string(conf.uPort) + "@" + string(conf.szDevCode);
 	WLogInfo("%s make %s", __FUNCTION__, m_url.c_str());
 }
 
@@ -22,11 +22,8 @@ Scanner::~Scanner()
 
 int Scanner::Start()
 {
-	TcpServer svr(mPort);
-	stTcpData data;
-	data.owner = this;
-	data.fn = ScannerResult;
-	svr.WaitForClient(&data);
+	m_thd = thread(Scanner::Thd, this);
+
 	return 0;
 }
 
@@ -131,5 +128,23 @@ void Scanner::DoScannerResult(SOCKET sock_clt)
 		WLogError("Failed to shutdown the client socket!Error code: %d\n", GetLastError());
 		Close(sock_clt);
 	}
+}
+
+void Scanner::Thd(void * param)
+{
+	Scanner *This = (Scanner *)(param);
+	if (This)
+	{
+		This->DoThd();
+	}
+}
+
+void Scanner::DoThd()
+{
+	TcpServer svr(mPort);
+	stTcpData data;
+	data.owner = this;
+	data.fn = ScannerResult;
+	svr.WaitForClient(&data);
 }
 

@@ -56,11 +56,12 @@ typedef struct stMicroPlanData_
 {
 	char szDevUrl[64];					//设备url
 	char szProductBarcode[64];			//产品条码
+	char szStation[128];				//工作台名称
 	double fTimeUsed;					//测试总用时
 	int iResult; 						//测试结果 0:不合格， 1：合格
 }stMicroPlanData;
 
-typedef vector<stMicroPlanData> TMicroPlanDataLst;
+typedef std::vector<stMicroPlanData> TMicroPlanDataLst;
 
 class DbHelper {
 public:

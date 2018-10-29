@@ -44,12 +44,12 @@ int MicroPlanClient::GetData(TMicroPlanDataLst &retLst)
 {
 	MyTime t;
 	time_t now = t.GetTimestmap();
-	string strEndTime = t.GetTimeString2(now);
+	string strEndTime = t.GetTimeString2(now); //"2018-10-29 13:34:01";//
 
 	now -= m_conf.iPollInterval;
-	string strBeginTime = t.GetTimeString2(now);
+	string strBeginTime = t.GetTimeString2(now); //"2018-10-29 13:32:56";//
 	stringstream ss;
-	ss << "SELECT  SERIAL_NUMBER, TEST_TIME, TEST_RESULT FROM TEST "
+	ss << "SELECT  SERIAL_NUMBER, STATION, TEST_TIME, TEST_RESULT FROM TEST "
 	<< " where  START_DATE_TIME>="
 	<< "'"<< strBeginTime << "'"
 	<< " and  START_DATE_TIME<="
@@ -59,24 +59,23 @@ int MicroPlanClient::GetData(TMicroPlanDataLst &retLst)
 
 	TMicroPlanDataLst rptLst;
 	m_pDbHelper->GetData(strSql.c_str(), rptLst);
-
 	for (auto it = rptLst.begin(); it < rptLst.end(); ++it)
 	{
-		stMicroPlanData data;
+		stMicroPlanData data = *it;;
 		retLst.push_back(data);
 	}
 	return 0;
 }
 
-void MicroPlanClient::UpdateFailProductData(const char *barcode)
+void MicroPlanClient::UpdateFailProductData(const char *barcode, const char *res)
 {
 	MyTime t;
 	time_t now = t.GetTimestmap();
-	const char *table = "result";
+	const char *table = "check_result";
 	stringstream ss;
 	ss << "insert into " << table << " values(0, "
 		<< "'" << barcode << "',"
-		<< " 'NG'"
+		<< " '"<< res <<"'"
 		<< " ,'" << t.GetTimeString(now) << "'"
 		<< ");";
 	

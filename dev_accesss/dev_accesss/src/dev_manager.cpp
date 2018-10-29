@@ -153,6 +153,23 @@ void DevManager::CreateDevObj()
 	{
 		return;
 	}
+
+	TNETLst netLst = m_config->GetNetLst();
+	for (auto it = netLst.begin(); it != netLst.end(); ++it)
+	{
+		stNETConf conf = *it;
+		NetBase *obj = m_factory.CreateNetDev(&conf);
+		if (!obj)
+		{
+			continue;
+		}
+		obj->SetEventCallback(&DevManager::EventMsg, this);
+		obj->Start();
+		m_objLst.insert(make_pair(obj->GetUrl(), obj));
+		int num = conf.iWorkshop * WORKSHOP_MAX_LINE + conf.iProductionLineNumber;
+		m_productLineLst.insert(make_pair(obj, num));
+	}
+
 	TSQLLst sqlLst = m_config->GetSqlLst();
 	for (auto it = sqlLst.begin(); it != sqlLst.end(); ++it)
 	{
@@ -165,10 +182,11 @@ void DevManager::CreateDevObj()
 		obj->SetEventCallback(&DevManager::EventMsg, this);
 		obj->Start();
 		m_objLst.insert(make_pair(obj->GetUrl(), obj));
-	
+
 		int num = conf.iWorkshop * WORKSHOP_MAX_LINE + conf.iProductionLineNumber;
 		m_productLineLst.insert(make_pair(obj, num));
 	}
+
 
 	TPLCLst plcLst = m_config->GetPlcLst();
 	for (auto it = plcLst.begin(); it != plcLst.end(); ++it)
@@ -186,21 +204,6 @@ void DevManager::CreateDevObj()
 		m_productLineLst.insert(make_pair(obj, num));
 	}
 
-	TNETLst netLst = m_config->GetNetLst();
-	for (auto it = netLst.begin(); it != netLst.end(); ++it)
-	{
-		stNETConf conf = *it;
-		NetBase *obj = m_factory.CreateNetDev(&conf);
-		if (!obj)
-		{
-			continue;
-		}
-		obj->SetEventCallback(&DevManager::EventMsg, this);
-		obj->Start();
-		m_objLst.insert(make_pair(obj->GetUrl(), obj));
-		int num = conf.iWorkshop * WORKSHOP_MAX_LINE + conf.iProductionLineNumber;
-		m_productLineLst.insert(make_pair(obj, num));
-	}
 }
 
 void DevManager::HandleEventMitsubishi_q03udvcpu(void *pData)
@@ -400,13 +403,6 @@ void DevManager::HandleEventMondial(void *pData)
 	m_pMesSvr->SetWorkShopAndProDLine("热水总装验证车间", "热水实验线");
 	//m_mesSvr.SetDevTitleAndCode("SBXX000023", "综合检测");
 
-	int iRes = 0;
-	int pos = 0;
-	if ((pos = data->rpt.strQuality.find("PASS")) != string::npos)
-	{
-		iRes = 1;
-	}
-
 	char *conf = nullptr;
 	obj->Get("conf", conf);
 	stBaseConf *pConf = (stBaseConf *)(conf);
@@ -418,7 +414,7 @@ void DevManager::HandleEventMondial(void *pData)
 	m_pMesSvr->SetDevTitleAndCode(pConf->szDevCode, pConf->szTitle);
 	m_config->InsertData(pConf->szDevCode, data);
 	int num = pConf->iWorkshop * WORKSHOP_MAX_LINE + pConf->iProductionLineNumber;
-	HandleControlFlow(data->rpt.strBarCode.c_str(), num, pConf->iLineNumber, iRes);
+	HandleControlFlow(data->rpt.strBarCode.c_str(), num, pConf->iLineNumber, data->rpt.iResult);
 	free(conf);
 
 	char *pName[3] = {
@@ -430,8 +426,7 @@ void DevManager::HandleEventMondial(void *pData)
 
 	int i = 0;
 	m_pMesSvr->InsertToSvr(pName[i++], data->rpt.strBarCode.c_str());
-	
-	m_pMesSvr->InsertToSvr(pName[i++], pRet[iRes]);
+	m_pMesSvr->InsertToSvr(pName[i++], pRet[data->rpt.iResult]);
 	m_pMesSvr->InsertToSvr(pName[i++], atoi(data->rpt.strTimeUsed.c_str()));
 
 }
@@ -488,7 +483,33 @@ void DevManager::HandleEventHuaxi(void *pData)
 
 void DevManager::HandleEventMicroplan(void *pData)
 {
+	stMicroPlanData *data = (stMicroPlanData *)(pData);
+	ObjBase *obj = GetObjFromUrl(data->szDevUrl);
+	if (!obj)
+	{
+		WLogError("%s obj is null", __FUNCTION__);
+		return;
+	}
 
+	char *conf = nullptr;
+	obj->Get("conf", conf);
+	stBaseConf *pConf = (stBaseConf *)(conf);
+	if (!pConf)
+	{
+		WLogError("%s:%d get conf err.", __FUNCTION__, __LINE__);
+		return;
+	}
+	m_pMesSvr->SetDevTitleAndCode(pConf->szDevCode, pConf->szTitle);
+	m_config->InsertData(pConf->szDevCode, data);
+
+	int num = pConf->iWorkshop * WORKSHOP_MAX_LINE + pConf->iProductionLineNumber;
+	HandleControlFlow(data->szProductBarcode, num, pConf->iLineNumber, data->iResult);
+	free(conf);
+
+	m_pMesSvr->SetDepartmentAndProLineCode("CJ_00001", "CX-00007");
+	m_pMesSvr->SetWorkShopAndProDLine("热水总装验证车间", "热水实验线");
+	//m_mesSvr.SetDevTitleAndCode("SBXX000022", "电气检测");
+	m_pMesSvr->InsertToSvr("产品条码", data->szProductBarcode);
 }
 
 void DevManager::HandleEventScanner(void *pData)

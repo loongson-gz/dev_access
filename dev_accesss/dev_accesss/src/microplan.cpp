@@ -14,7 +14,7 @@ MicroPlan::MicroPlan(stSQLConf conf)
 	, m_pUser(nullptr)
 	, m_fn(nullptr)
 {
-	m_url = string(m_conf.szDsnName) + "@" + string(m_conf.szDbName);
+	m_url = string(m_conf.szDsnName) + "@" + string(m_conf.szDevCode);
 	WLogInfo("%s %s make", __FUNCTION__, m_url.c_str());
 
 }
@@ -68,12 +68,16 @@ int MicroPlan::Get(const char * key, char *& val)
 
 int MicroPlan::Set(const char * key, const char * val)
 {
-	if (strcmp(key, "product_ng") == 0)
+	int ret = 0;
+	if (strcmp(key, "product_ok") == 0)
 	{
-		int ret = SetCheckResult(val);
-		return ret;
+		ret = SetCheckResult(val, "OK");
 	}
-	return 0;
+	else if (strcmp(key, "product_ng") == 0) 	
+	{
+		ret = SetCheckResult(val, "NG");
+	}
+	return ret;
 }
 
 void MicroPlan::SetEventCallback(EventMsgFn fn, void * pUser)
@@ -88,17 +92,31 @@ void MicroPlan::DoStart()
 	{
 		TMicroPlanDataLst data;
 		m_pClient->GetData(data);
-
-		if (m_fn)
+		for (size_t i = 0; i < data.size(); i++)
 		{
-			m_fn(eEVENT_HUAXI, (void *)&data, m_pUser);
+			stMicroPlanData tmpData = data.at(i);
+			string tmp = tmpData.szProductBarcode;
+			int pos = tmp.find("\r\n");
+			if (pos != tmp.npos)
+			{
+				tmpData.szProductBarcode[pos] = '\0';
+			}
+			if (m_fn)
+			{
+				strncpy(tmpData.szDevUrl, m_url.c_str(), sizeof(tmpData.szDevUrl));
+				m_fn(eEVENT_MICROPLAN, (void *)&tmpData, m_pUser);
+			}
 		}
-
+		
 		this_thread::sleep_for(chrono::seconds(m_conf.iPollInterval));
 	}
 }
 
-int MicroPlan::SetCheckResult(const char *barcode)
+int MicroPlan::SetCheckResult(const char *barcode, const char *res)
 {
+	if (m_pClient)
+	{
+		m_pClient->UpdateFailProductData(barcode, res);
+	}
 	return 0;
 }

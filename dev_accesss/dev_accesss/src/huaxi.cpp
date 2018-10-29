@@ -14,7 +14,7 @@ HuaXi::HuaXi(stSQLConf conf)
 	, m_pUser(nullptr)
 	, m_fn(nullptr)
 {
-	m_url = string(conf.szDsnName) + "@" + string(conf.szDbName);
+	m_url = string(conf.szDsnName) + "@" + string(conf.szDevCode);
 	WLogInfo("%s make %s", __FUNCTION__, m_url.c_str());
 }
 

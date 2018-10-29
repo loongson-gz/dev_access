@@ -10,7 +10,7 @@ public:
 
 	int Init();
 	int GetData(TMicroPlanDataLst &retLst);
-	void UpdateFailProductData(const char * barcode);
+	void UpdateFailProductData(const char * barcode, const char *res);
 private:
 	DbHelper *m_pDbHelper;
 	stSQLConf m_conf;

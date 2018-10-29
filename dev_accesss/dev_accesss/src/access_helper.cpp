@@ -16,12 +16,13 @@ int AccessHelper::ConnectToSvr()
 {
 	try
 	{
-		bool bRet = m_dbCust.OpenEx(m_strDsn.c_str(), CDatabase::noOdbcDialog);
+		bool bRet = m_dbCust.OpenEx(m_strDsn.c_str());
+		//bool bRet = m_dbCust.OpenEx(m_strDsn.c_str(), CDatabase::noOdbcDialog);
 		return bRet ? 0 : -1;
 	}
 	catch (...)
 	{
-		WLogError("%s: ", __FUNCTION__);
+		WLogError("%s:%d,%s connect exception", __FUNCTION__, __LINE__, m_strDsn.c_str());
 		return -1;
 	}
 //	bool bRet = m_dbCust.OpenEx(m_strDsn.c_str());
@@ -58,7 +59,11 @@ void AccessHelper::GetProductReport(TProductReportLst &vRet)
 				}
 				else if (i == 3)
 				{
-					rept.strQuality = cs.GetBuffer(0);
+					rept.iResult = ePASSED;
+					if (cs.Compare("PASS") != 0)
+					{
+						rept.iResult = eFAILED;
+					}
 				}
 			}
 			cout << endl;
@@ -97,7 +102,11 @@ void AccessHelper::GetProductReport(const char *sql, TProductReportLst &vRet)
 				}
 				else if (i == 3)
 				{
-					rept.strQuality = cs.GetBuffer(0);
+					rept.iResult = ePASSED;
+					if (cs.Compare("PASS") != 0)
+					{
+						rept.iResult = eFAILED;
+					}
 				}
 			}
 			cout << endl;

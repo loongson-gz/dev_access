@@ -55,6 +55,7 @@ int DbHelper::ConnectToSvr()
 		//m_pool = new Poco::Data::SessionPool("ODBC", "dsn=dsn_mysql");
 
 		m_ses = new Poco::Data::Session(m_pool->get());
+		WLogInfo("%s:%d %s", __FUNCTION__, __LINE__, m_url.c_str());
 	}
 	catch (const std::exception& e)
 	{
@@ -109,7 +110,7 @@ int DbHelper::GetData(const char * szSql, THuaXiSQLDataLst &res)
 		while (!sql.done())
 		{
 			sql.execute();
-			cout << data.szProductBarCode << "," << data.szAutoCheckDate << "," << data.iAutoCheckResult << endl;
+			cout <<  __FUNCTION__ << "," << __LINE__ << ":"<< data.szProductBarCode << "," << data.szAutoCheckDate << "," << data.iAutoCheckResult << endl;
 			if (!data.szProductBarCode.empty())
 			{
 				stHuaXiSQLData tmp;
@@ -125,11 +126,11 @@ int DbHelper::GetData(const char * szSql, THuaXiSQLDataLst &res)
 				tmp.iSecond = data.iSecond;
 
 				res.push_back(tmp);
-				cout << "=======:" << tmp.szProductBarCode << endl;
+				cout << "=======:" << tmp.szProductBarCode << __FUNCTION__ << "," << __LINE__ << endl;
 			}
 			else
 			{
-				cout << "======= productBarCode lost ..." << endl;
+				cout << "======= productBarCode lost ..." << __FUNCTION__  << "," << __LINE__ << endl;
 			}
 		}
 	}
@@ -270,7 +271,7 @@ int DbHelper::GetData(const char * szSql, TNETLst &res)
 	}
 	catch (const std::exception& e)
 	{
-		WLogError("%s:%d sql:%s,err:%s", __FUNCTION__, __LINE__, szSql, e.what());
+		WLogError("%s:%d sql:%s,err:%s, url:%s", __FUNCTION__, __LINE__, szSql, e.what(), m_url.c_str());
 		return -1;
 	}
 	return 0;
@@ -311,7 +312,7 @@ int DbHelper::GetData(const char * szSql, int & id)
 	}
 	try
 	{
-		int id;
+//		int id;
 		Poco::Data::Statement sql(*m_ses);
 		sql << szSql, into(id), now;
 	}
@@ -325,6 +326,42 @@ int DbHelper::GetData(const char * szSql, int & id)
 
 int DbHelper::GetData(const char * szSql, TMicroPlanDataLst & res)
 {
+	if (!m_bConnect || !m_ses)
+	{
+		return -1;
+	}
+	try
+	{
+		Poco::Data::Statement sql(*m_ses);
+
+		string barcode, station, result;
+		double timeUsed;
+		sql << szSql, into(barcode), into(station), into(timeUsed), into(result), range(0, 1);
+		while (!sql.done())
+		{
+			sql.execute();
+			stMicroPlanData conf;
+			memset(&conf, 0, sizeof(conf));
+
+			strncpy(conf.szProductBarcode, barcode.c_str(), sizeof(conf.szProductBarcode));
+			strncpy(conf.szStation, station.c_str(), sizeof(conf.szStation));;
+			conf.fTimeUsed = timeUsed;
+			conf.iResult = ePASSED;
+			if (strcmp(result.c_str(), "Passed") != 0  && 
+				strcmp(result.c_str(), "²âÊÔÍ¨¹ý") != 0
+				)
+			{
+				conf.iResult = eFAILED;
+			}
+
+			res.push_back(conf);
+		}
+	}
+	catch (const std::exception& e)
+	{
+		WLogError("%s:%d sql:%s,err:%s, url:%s", __FUNCTION__, __LINE__, szSql, e.what(), m_url.c_str());
+		return -1;
+	}
 	return 0;
 }
 

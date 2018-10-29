@@ -25,6 +25,7 @@ public:
 	int InsertData(const char *szDevCode, stXinJieXc3_Data *data);
 	int InsertData(const char *szDevCode, stMondialData *data);
 	int InsertData(const char *szDevCode, stHuaXiData *data);
+	int InsertData(const char * szDevCode, stMicroPlanData * data);
 private:
 	int GetInsertId(const char *table, int & lastId);
 	int InsertData(int id, stXinJieXc3_TestItemData data);

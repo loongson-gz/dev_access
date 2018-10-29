@@ -185,6 +185,7 @@ int ConfigHelper::InsertData(const char * szDevCode, stXinJieXc3_Data * data)
 	ss << "insert into "<< table <<" values(0, "
 		<< "'" << szDevCode << "'"
 		<< "," << data->UniquelyIdentifies
+		<< "," << data->iCheckResult
 		<< ", NULL)";
 	string sql = ss.str();
 	int ret = m_dbHelper->InsertData(sql.c_str());
@@ -197,7 +198,7 @@ int ConfigHelper::InsertData(const char * szDevCode, stXinJieXc3_Data * data)
 	ret = GetInsertId(table, lastId);
 	if (ret != 0)
 	{
-		WLogError("%s insert errr .", __FUNCTION__);
+		WLogError("%s:%d insert errr .", __FUNCTION__, __LINE__);
 		return ret;
 	}
 
@@ -207,7 +208,7 @@ int ConfigHelper::InsertData(const char * szDevCode, stXinJieXc3_Data * data)
 		ret = InsertData(lastId, tmp);
 		if (ret != 0)
 		{
-			WLogError("%s insert errr .", __FUNCTION__);
+			WLogError("%s:%d insert errr .", __FUNCTION__, __LINE__);
 			continue;
 		}
 	}
@@ -246,20 +247,14 @@ int ConfigHelper::InsertData(int id, stXinJieXc3_TestItemData data)
 
 int ConfigHelper::InsertData(const char * szDevCode, stMondialData * data)
 {
-	int check_ret = 0;
-	if (data->rpt.strQuality.compare("FAIL") == 0)
-	{
-		check_ret = 1;
-	}
-
 	const char *table = "t_mondial";
 	stringstream ss;
-	ss << "insert into " << table <<  " values(0, "
+	ss << "insert into " << table << " values(0, "
 		<< "'" << szDevCode << "'"
 		<< "," << data->rpt.strTestTime
 		<< "," << data->rpt.strBarCode
 		<< "," << atoi(data->rpt.strTimeUsed.c_str())
-		<< "," << check_ret
+		<< "," << data->rpt.iResult
 		<< ", NULL)";
 	string sql = ss.str();
 	int ret = m_dbHelper->InsertData(sql.c_str());
@@ -297,3 +292,27 @@ int ConfigHelper::InsertData(const char * szDevCode, stHuaXiData * data)
 	return ret;
 }
 
+int ConfigHelper::InsertData(const char * szDevCode, stMicroPlanData * data)
+{
+	if (!m_dbHelper)
+	{
+		WLogInfo("%s:%d dhhelper is null", __FUNCTION__, __LINE__);
+		return -1;
+	}
+	const char *table = "t_microplan";
+	stringstream ss;
+	ss << "insert into " << table << " values(0, "
+		<< "'" << szDevCode << "'"
+		<< ",'" << data->szStation << "'"
+		<< ",'" << data->szProductBarcode << "'"
+		<< "," << data->iResult
+		<< "," << data->fTimeUsed
+		<< ", NULL)";
+	string sql = ss.str();
+	int ret = m_dbHelper->InsertData(sql.c_str());
+	if (ret != 0)
+	{
+		WLogError("%s insert errr .", __FUNCTION__);
+		return ret;
+	}
+}

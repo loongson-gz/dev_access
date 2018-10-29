@@ -69,6 +69,13 @@ enum EVENTTYPE
 	eEVENT_SCANNER
 };
 
+//检测结果
+enum RESULTTYPE 
+{
+	eFAILED = 0,		//不合格
+	ePASSED = 1			//合格
+};
+
 //网络设备 配置
 typedef struct _stBaseConf
 {

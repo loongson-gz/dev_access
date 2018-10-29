@@ -46,8 +46,9 @@ int MondialClient::GetData(TMondialDataLst &retLst)
 	time_t now = t.GetTimestmap();
 	string strEndTime = t.GetTimeString1(now);
 
+	//now -= 60*60*4;
 	now -= m_conf.iPollInterval;
-	string strBeginTime = t.GetTimeString1(now);
+	string strBeginTime = t.GetTimeString1(now); //"2018-10-26 10:34:01";
 	stringstream ss;
 	ss << "SELECT  TEST_TIME, BAR_CODE_1, TIME_USED, QUALITY FROM PRODUCT_RPT "
 	<< " where TEST_TIME>="
