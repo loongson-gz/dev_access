@@ -47,7 +47,7 @@ private:
 	1. 当前线体中 线体控制对象的流水号最大
 	@param[in]: productionLineNum 产线编号
 	*/
-	ObjBase * GetControlObj(int productionLineNum);
+	ObjBase * GetControlObj(int workshop, int productionLineNum);
 
 	// 通过URL获取设备对象
 	ObjBase * GetObjFromUrl(const char * url);

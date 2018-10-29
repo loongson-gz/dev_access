@@ -95,6 +95,8 @@ void Scanner::DoScannerResult(SOCKET sock_clt)
 				tick = (time_t)unixTime;
 				tm = *localtime(&tick);
 				strncpy(data.szDevUrl, m_url.c_str(), sizeof(data.szDevUrl));
+				buf_msg[strlen(buf_msg)-1] = '\0';
+				strcpy(data.UniquelyIdentifies, buf_msg);
 				strftime(data.Timestamp, sizeof(data.Timestamp), "%Y-%m-%d %H:%M:%S", &tm);
 				m_fn(eEVENT_SCANNER, (void *)&data, m_pUser);
 				memset(&data, 0, sizeof(data));

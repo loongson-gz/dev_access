@@ -3,7 +3,10 @@
 #include "version.h"
 
 //每个车间最大的产线数量, 用于将车间和产线两级结构变为产线一级结构
-#define WORKSHOP_MAX_LINE  100
+#define WORKSHOP_MAX_LINE  1000
+
+//每条线产最大的工位数
+#define LINE_MAX_NUM	100
 
 //线体控制的流水线号
 #define CONTROL_LINE_NUMBER   9
@@ -166,7 +169,7 @@ void DevManager::CreateDevObj()
 		obj->SetEventCallback(&DevManager::EventMsg, this);
 		obj->Start();
 		m_objLst.insert(make_pair(obj->GetUrl(), obj));
-		int num = conf.iWorkshop * WORKSHOP_MAX_LINE + conf.iProductionLineNumber;
+		int num = conf.iWorkshop * WORKSHOP_MAX_LINE + conf.iProductionLineNumber*LINE_MAX_NUM + conf.iLineNumber;
 		m_productLineLst.insert(make_pair(obj, num));
 	}
 
@@ -183,7 +186,7 @@ void DevManager::CreateDevObj()
 		obj->Start();
 		m_objLst.insert(make_pair(obj->GetUrl(), obj));
 
-		int num = conf.iWorkshop * WORKSHOP_MAX_LINE + conf.iProductionLineNumber;
+		int num = conf.iWorkshop * WORKSHOP_MAX_LINE + conf.iProductionLineNumber*LINE_MAX_NUM + conf.iLineNumber;
 		m_productLineLst.insert(make_pair(obj, num));
 	}
 
@@ -200,7 +203,7 @@ void DevManager::CreateDevObj()
 		obj->SetEventCallback(&DevManager::EventMsg, this);
 		obj->Start();
 		m_objLst.insert(make_pair(obj->GetUrl(), obj));
-		int num = conf.iWorkshop * WORKSHOP_MAX_LINE + conf.iProductionLineNumber;
+		int num = conf.iWorkshop * WORKSHOP_MAX_LINE + conf.iProductionLineNumber*LINE_MAX_NUM + conf.iLineNumber;
 		m_productLineLst.insert(make_pair(obj, num));
 	}
 
@@ -530,8 +533,14 @@ void DevManager::HandleEventScanner(void *pData)
 		WLogError("%s:%d get conf err.", __FUNCTION__, __LINE__);
 		return;
 	}
-	ObjBase *controlObj = GetControlObj(pConf->iProductionLineNumber);
 
+	ObjBase *controlObj = GetControlObj(pConf->iWorkshop, pConf->iProductionLineNumber);
+	if (!controlObj)
+	{
+		WLogError("%s:%d controlObj is null, workshop:%d lineNumber:%d ", 
+			__FUNCTION__, __LINE__, pConf->iWorkshop, pConf->iProductionLineNumber);
+		return;
+	}
 	if (pConf->iLineNumber == SCANNER_1_LINE_NUMBER)	//第一个固扫的流水号
 	{
 		int val = 0;
@@ -563,26 +572,28 @@ void DevManager::HandleEventScanner(void *pData)
 }
 
 
-ObjBase *DevManager::GetControlObj(int productionLineNum)
+ObjBase *DevManager::GetControlObj(int workshop, int productionLineNum)
 {
 	ObjBase *controlObj = nullptr;
 	for (auto it = m_productLineLst.begin(); it != m_productLineLst.end(); ++it)
 	{
-		int num = it->second;
-		if (num == productionLineNum)
+		ObjBase *tmpObj = it->first;
+		char *conf = nullptr;
+		tmpObj->Get("conf", conf);
+		stBaseConf *pConf = (stBaseConf *)(conf);
+		if (!pConf)
 		{
-			ObjBase *tmpObj = it->first;
-			char *conf = nullptr;
-			tmpObj->Get("conf", conf);
-			stBaseConf *pConf = (stBaseConf *)(conf);
-			if (pConf && pConf->iLineNumber == CONTROL_LINE_NUMBER)	//找到线体控制对象
-			{
-				controlObj = tmpObj;
-				free(conf);
-				break;
-			}
-			free(conf);
+			continue;
 		}
+		if ( pConf->iWorkshop == workshop
+			&& pConf->iProductionLineNumber == productionLineNum
+			&& pConf->iLineNumber == CONTROL_LINE_NUMBER)	//找到线体控制对象
+		{
+			controlObj = tmpObj;
+			free(conf);
+			break;
+		}
+		free(conf);
 	}
 
 	return controlObj;
