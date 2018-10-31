@@ -1,6 +1,7 @@
 #include "access_helper.h"
 
 AccessHelper::AccessHelper(const char * dsn)
+	:m_bConnect(false)
 {
 	m_strDsn = string("DSN=") + string(dsn);
 	WLogInfo("%s make, dsn:%s", __FUNCTION__, m_strDsn.c_str());
@@ -18,11 +19,13 @@ int AccessHelper::ConnectToSvr()
 	{
 		bool bRet = m_dbCust.OpenEx(m_strDsn.c_str());
 		//bool bRet = m_dbCust.OpenEx(m_strDsn.c_str(), CDatabase::noOdbcDialog);
+		m_bConnect = bRet;
 		return bRet ? 0 : -1;
 	}
 	catch (...)
 	{
 		WLogError("%s:%d,%s connect exception", __FUNCTION__, __LINE__, m_strDsn.c_str());
+		m_bConnect = false;
 		return -1;
 	}
 //	bool bRet = m_dbCust.OpenEx(m_strDsn.c_str());
@@ -176,6 +179,10 @@ void AccessHelper::GetItemReport(const char *pdtTestTime, const string &itemName
 
 void AccessHelper::InsertFailProductData(const char *prouductCode)
 {
+	if (!m_bConnect)
+	{
+		return;
+	}
 	stringstream ss;
 	ss << "insert into  MES前端不合格条码 values(0, "
 		<< "'" << prouductCode << "')";
@@ -183,12 +190,16 @@ void AccessHelper::InsertFailProductData(const char *prouductCode)
 	std::string strSql = ss.str();
 
 	m_dbCust.ExecuteSQL(strSql.c_str());
-
 }
 
 
 void AccessHelper::UpdateFailProductData(int id, const char *prouductCode)
 {
+	if (!m_bConnect)
+	{
+		return;
+	}
+
 	stringstream ss;
 	ss << "update MES前端不合格条码 set 条码="
 		<< "'" << prouductCode << "'"

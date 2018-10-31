@@ -64,7 +64,7 @@ private:
 	@param[in]: iLineNumber  流水线号
 	@param[in]: isOk	产品判定结果
 	*/
-	void HandleControlFlow(const char * szBarcode, int productionLineNumber, int iLineNumber, bool isOk);
+	void HandleControlFlow(const char * szBarcode, int workshop, int productionLineNumber, int iLineNumber, bool isOk);
 
 
 private:

@@ -75,14 +75,14 @@ int Mitsubishi_Q02UUCPU::Set(const char *key, const char *val)
 	{
 		int st = *((int *)(val));
 		int ret = SetNode1(st);
-		WLogInfo("%s:%d control:%s, url:%s", __FUNCTION__, __LINE__, val, m_url.c_str());
+		WLogInfo("%s:%d control:%d, url:%s", __FUNCTION__, __LINE__, st, m_url.c_str());
 		return ret;
 	}
 	else if (strcmp(key, "control1") == 0)
 	{
 		int st = *((int *)(val));
 		int ret = SetNode2(st);
-		WLogInfo("%s:%d control1:%s, url:%s", __FUNCTION__, __LINE__, val, m_url.c_str());
+		WLogInfo("%s:%d control1:%d, url:%s", __FUNCTION__, __LINE__, st, m_url.c_str());
 		return ret;
 	}
 	return 0;

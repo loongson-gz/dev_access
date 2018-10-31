@@ -378,8 +378,7 @@ void DevManager::HandleEventXinjie_xc3_32t_e(void *pData)
 	m_pMesSvr->SetDevTitleAndCode(pConf->szDevCode, pConf->szTitle);
 	m_config->InsertData(pConf->szDevCode, data);
 
-	int num = pConf->iWorkshop * WORKSHOP_MAX_LINE + pConf->iProductionLineNumber;
-	HandleControlFlow(data->UniquelyIdentifies, num, pConf->iLineNumber, data->iCheckResult);
+	HandleControlFlow(data->UniquelyIdentifies, pConf->iWorkshop, pConf->iProductionLineNumber, pConf->iLineNumber, data->iCheckResult);
 	free(conf);
 
 	m_pMesSvr->SetDepartmentAndProLineCode("CJ_00001", "CX-00007");
@@ -416,8 +415,7 @@ void DevManager::HandleEventMondial(void *pData)
 	}
 	m_pMesSvr->SetDevTitleAndCode(pConf->szDevCode, pConf->szTitle);
 	m_config->InsertData(pConf->szDevCode, data);
-	int num = pConf->iWorkshop * WORKSHOP_MAX_LINE + pConf->iProductionLineNumber;
-	HandleControlFlow(data->rpt.strBarCode.c_str(), num, pConf->iLineNumber, data->rpt.iResult);
+	HandleControlFlow(data->rpt.strBarCode.c_str(), pConf->iWorkshop, pConf->iProductionLineNumber, pConf->iLineNumber, data->rpt.iResult);
 	free(conf);
 
 	char *pName[3] = {
@@ -505,8 +503,7 @@ void DevManager::HandleEventMicroplan(void *pData)
 	m_pMesSvr->SetDevTitleAndCode(pConf->szDevCode, pConf->szTitle);
 	m_config->InsertData(pConf->szDevCode, data);
 
-	int num = pConf->iWorkshop * WORKSHOP_MAX_LINE + pConf->iProductionLineNumber;
-	HandleControlFlow(data->szProductBarcode, num, pConf->iLineNumber, data->iResult);
+	HandleControlFlow(data->szProductBarcode, pConf->iWorkshop, pConf->iProductionLineNumber, pConf->iLineNumber, data->iResult);
 	free(conf);
 
 	m_pMesSvr->SetDepartmentAndProLineCode("CJ_00001", "CX-00007");
@@ -645,40 +642,41 @@ void DevManager::SetDevCodeAndTitleToSvr(ObjBase *obj)
 	free(conf);
 }
 
-void DevManager::HandleControlFlow(const char *szBarcode, int productionLineNumber, int iLineNumber, bool isOk)
+void DevManager::HandleControlFlow(const char *szBarcode, int workshop, int productionLineNumber, int iLineNumber, bool isOk)
 {
 	for (auto it = m_productLineLst.begin(); it != m_productLineLst.end(); ++it)
 	{
-		int num = it->second;
-		if (num == productionLineNumber)
+		ObjBase *obj = it->first;
+		if (!obj)
 		{
-			ObjBase *obj = it->first;
-			if (!obj)
-			{
-				continue;
-			}
-
-			char *conf = nullptr;
-			obj->Get("conf", conf);
-			stBaseConf *pConf = (stBaseConf *)(conf);
-			if (pConf && pConf->iLineNumber > iLineNumber)
-			{
-				if (isOk)
-				{
-					obj->Set("product_ok", szBarcode);
-				}
-				else
-				{
-					obj->Set("product_ng", szBarcode);
-					if (m_productLst.size() > 128)
-					{
-						auto it = m_productLst.begin();
-						m_productLst.erase(it);
-					}
-					m_productLst.insert(szBarcode);
-				}
-			}
-			free(conf);
+			continue;
 		}
+		char *conf = nullptr;
+		obj->Get("conf", conf);
+		stBaseConf *pConf = (stBaseConf *)(conf);
+		if (!pConf)
+		{
+			continue;
+		}
+		if ( pConf->iWorkshop == workshop
+			&& pConf->iProductionLineNumber == productionLineNumber
+			&& pConf->iLineNumber > iLineNumber)
+		{
+			if (isOk)
+			{
+				obj->Set("product_ok", szBarcode);
+			}
+			else
+			{
+				obj->Set("product_ng", szBarcode);
+				if (m_productLst.size() > 128)
+				{
+					auto it = m_productLst.begin();
+					m_productLst.erase(it);
+				}
+				m_productLst.insert(szBarcode);
+			}
+		}
+		free(conf);
 	}
 }

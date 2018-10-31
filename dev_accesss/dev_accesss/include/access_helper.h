@@ -30,6 +30,7 @@ public:
 private:
 	CDatabase m_dbCust;
 	string m_strDsn;
+	bool m_bConnect;
 };
 
 #endif

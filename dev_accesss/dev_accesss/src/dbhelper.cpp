@@ -335,11 +335,15 @@ int DbHelper::GetData(const char * szSql, TMicroPlanDataLst & res)
 		Poco::Data::Statement sql(*m_ses);
 
 		string barcode, station, result;
-		double timeUsed;
+		double timeUsed = 0;
 		sql << szSql, into(barcode), into(station), into(timeUsed), into(result), range(0, 1);
 		while (!sql.done())
 		{
 			sql.execute();
+			if (barcode.empty())
+			{
+				continue;
+			}
 			stMicroPlanData conf;
 			memset(&conf, 0, sizeof(conf));
 

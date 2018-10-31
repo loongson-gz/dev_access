@@ -96,7 +96,6 @@ void XinJieXc3::DoStart()
 	char OldUniquelyIdentifies[64] = { 0 };
 
 	stXinJieXc3_Data data;
-	data.iCheckResult = ePASSED;
 	while (!m_bStop)
 	{
 		while (!ModbusInit(m_id)) 
@@ -109,6 +108,7 @@ void XinJieXc3::DoStart()
 		while (!m_bStop)
 		{
 			memset(&data, 0, sizeof(data));
+			data.iCheckResult = ePASSED;
 			//获取产品唯一码
 			try
 			{
@@ -122,16 +122,16 @@ void XinJieXc3::DoStart()
 				break;
 			}
 			
-			
-			if(/*strncmp(OldUniquelyIdentifies, data.UniquelyIdentifies, sizeof(OldUniquelyIdentifies)) != 0 
-				&& */strlen(data.UniquelyIdentifies) != 0)
+			string tmp = data.UniquelyIdentifies;
+			int pos = tmp.find("\r\n");
+			if (pos != tmp.npos)
 			{
-				string tmp = data.UniquelyIdentifies;
-				int pos = tmp.find("\r\n");
-				if (pos != tmp.npos)
-				{
-					data.UniquelyIdentifies[pos] = '\0';
-				}
+				data.UniquelyIdentifies[pos] = '\0';
+			}
+
+			if (strncmp(OldUniquelyIdentifies, data.UniquelyIdentifies, sizeof(OldUniquelyIdentifies)) != 0
+				&& strlen(data.UniquelyIdentifies) != 0)
+			{
 				WLogInfo("热水线产品唯一标识码： %s", data.UniquelyIdentifies);
 				TestFinish = false;
 				strcpy(OldUniquelyIdentifies, data.UniquelyIdentifies);

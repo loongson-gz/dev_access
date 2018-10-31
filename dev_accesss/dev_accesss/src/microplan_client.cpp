@@ -46,7 +46,7 @@ int MicroPlanClient::GetData(TMicroPlanDataLst &retLst)
 	time_t now = t.GetTimestmap();
 	string strEndTime = t.GetTimeString2(now); //"2018-10-29 13:34:01";//
 
-	now -= m_conf.iPollInterval;
+	now -= m_conf.iPollInterval+60*15;
 	string strBeginTime = t.GetTimeString2(now); //"2018-10-29 13:32:56";//
 	stringstream ss;
 	ss << "SELECT  SERIAL_NUMBER, STATION, TEST_TIME, TEST_RESULT FROM TEST "
