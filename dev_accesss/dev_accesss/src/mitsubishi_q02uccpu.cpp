@@ -183,8 +183,13 @@ void Mitsubishi_Q02UUCPU::DoStart()
 			}
 
 			string val;
-			m_pMcAcsii->Read(pAddr[i], len, val);		//读int 类型的为 2个字节, 位类型的为1个字节
-			int cnt;
+			int ret = m_pMcAcsii->Read(pAddr[i], len, val);		//读int 类型的为 2个字节, 位类型的为1个字节
+			if (ret  < 0)
+			{
+				WLogInfo("%s:%d read err addr:%s ", __FUNCTION__, __LINE__, pAddr[i]);
+				continue;
+			}
+			int cnt = 0;
 			sscanf_s(val.c_str(), "%x", &cnt);
 			WLogInfo("%s-->[%s]:([%s] %d)", pName[i], pAddr[i], val.c_str(), cnt);
 			a[i] = cnt;
